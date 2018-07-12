@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_add_select"
+    android:layout_width="300dp"
+    android:layout_height="400dp"
+    android:orientation="vertical"
+    tools:context="srjhlab.com.myownbarcode.AddSelectActivity">
+
+    <Button
+        android:id="@+id/btn_sel_key"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3.3"
+        android:background="@drawable/btn_sel_key_event"
+        />
+    <Button
+        android:id="@+id/btn_sel_scan"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3.3"
+        android:background="@drawable/btn_sel_scan_event"
+        />
+    <Button
+        android:id="@+id/btn_sel_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3.3"
+        android:background="@drawable/btn_sel_image_event"
+        />
+</LinearLayout>
