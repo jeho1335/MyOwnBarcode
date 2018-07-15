@@ -20,7 +20,7 @@ public class AddSelectActivity extends Activity {
             public void onClick(View v) {
                 Intent intent1 = new Intent(AddSelectActivity.this, AddFromKeyActivity.class);
                 startActivity(intent1);
-                overridePendingTransition(R.anim.fade, R.anim.hold);
+                overridePendingTransition(R.anim.fade_in, R.anim.hold);
                 AddSelectActivity.this.finish();
             }
         });
@@ -29,9 +29,9 @@ public class AddSelectActivity extends Activity {
         btn_sel_scan.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                ((MainActivity)MainActivity.context).setScan(pos);
+                ((MainActivity)MainActivity.context).setBarcodeScan(pos);
                 AddSelectActivity.this.finish();
-                overridePendingTransition(R.anim.fade, R.anim.hold);
+                overridePendingTransition(R.anim.fade_in, R.anim.hold);
             }
         });
 
@@ -41,7 +41,7 @@ public class AddSelectActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(AddSelectActivity.this, AddFromImageActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.fade, R.anim.hold);
+                overridePendingTransition(R.anim.fade_in, R.anim.hold);
                 AddSelectActivity.this.finish();
             }
         });

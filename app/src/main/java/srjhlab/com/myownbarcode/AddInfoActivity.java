@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -186,7 +185,7 @@ public class AddInfoActivity extends AppCompatActivity {
                     Drawable drawable = new BitmapDrawable(getBitmapFromByteArray.convertImg(img));
                     dbHelper.insert(name, color, value, drawable);
                     AddInfoActivity.this.finish();
-                    overridePendingTransition(R.anim.fade, R.anim.hold);
+                    overridePendingTransition(R.anim.fade_in, R.anim.hold);
                 }
             }
         });
@@ -196,7 +195,7 @@ public class AddInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AddInfoActivity.this.finish();
-                overridePendingTransition(R.anim.fade, R.anim.hold);
+                overridePendingTransition(R.anim.fade_in, R.anim.hold);
             }
         });
 

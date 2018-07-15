@@ -14,13 +14,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import srjhlab.com.myownbarcode.CommonUi.SelectDialog;
+import srjhlab.com.myownbarcode.Item.SelectDialogItem;
+import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct;
 
 /**
  * Created by Administrator on 2017-02-08.
  */
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private final Context context;
     List<CardviewItem> items;
     int item_layout;
@@ -49,38 +56,37 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(position < MainActivity.cardLength){
-                    Activity activity = (Activity)v.getContext();
+                if (position < MainActivity.cardLength) {
+                    Activity activity = (Activity) v.getContext();
                     Intent intent = new Intent(activity, BarcodeFocusActivity.class);
                     intent.putExtra("body", GetByteArrayFromDrawable.getByteArrayFromDrawable(drawable));
                     intent.putExtra("value", item.getValue());
                     intent.putExtra("name", item.getId());
                     activity.startActivity(intent);
-                    activity.overridePendingTransition(R.anim.fade, R.anim.hold);
-
-                }
-                else{
-                    Activity activity = (Activity)v.getContext();
-                    Intent intent  = new Intent(activity, AddSelectActivity.class);
-                    intent.putExtra("position" , position);
+                    activity.overridePendingTransition(R.anim.fade_in, R.anim.hold);
+                } else {
+                  /*  Activity activity = (Activity) v.getContext();
+                    Intent intent = new Intent(activity, AddSelectActivity.class);
+                    intent.putExtra("position", position);
                     activity.startActivity(intent);
-                    activity.overridePendingTransition(R.anim.fade, R.anim.hold);
+                    activity.overridePendingTransition(R.anim.fade_in, R.anim.hold);*/
+                    EventBus.getDefault().post(new CommonEventbusObejct(SelectDialogItem.INPUT_SELF));
                 }
             }
         });
-        holder.cardview.setOnLongClickListener(new View.OnLongClickListener(){
+        holder.cardview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(position < MainActivity.cardLength){
-                    Activity activity = (Activity)v.getContext();
-                    Intent intent  = new Intent(activity, BarcodeModifiyActivity.class);
-                    intent.putExtra("mid" , item.getMid());
+                if (position < MainActivity.cardLength) {
+                    Activity activity = (Activity) v.getContext();
+                    Intent intent = new Intent(activity, BarcodeModifiyActivity.class);
+                    intent.putExtra("mid", item.getMid());
                     intent.putExtra("id", item.getId());
                     intent.putExtra("body", GetByteArrayFromDrawable.getByteArrayFromDrawable(drawable));
                     intent.putExtra("color", item.getColor());
                     intent.putExtra("value", item.getValue());
                     activity.startActivity(intent);
-                    activity.overridePendingTransition(R.anim.fade, R.anim.hold);
+                    activity.overridePendingTransition(R.anim.fade_in, R.anim.hold);
                 }
                 return false;
             }

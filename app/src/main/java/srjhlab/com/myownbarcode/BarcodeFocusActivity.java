@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 public class BarcodeFocusActivity extends AppCompatActivity {
     byte[] body;
     Bitmap bmp;
@@ -44,6 +42,6 @@ public class BarcodeFocusActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         BarcodeFocusActivity.this.finish();
-        overridePendingTransition(R.anim.fade, R.anim.hold);
+        overridePendingTransition(R.anim.fade_in, R.anim.hold);
     }
 }

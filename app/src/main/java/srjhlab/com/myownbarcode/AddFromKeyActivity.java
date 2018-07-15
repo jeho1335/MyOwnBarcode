@@ -68,7 +68,7 @@ public class AddFromKeyActivity extends AppCompatActivity {
                     intent.putExtra("type", format);
                     intent.putExtra("value", value);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.fade, R.anim.hold);
+                    overridePendingTransition(R.anim.fade_in, R.anim.hold);
                     AddFromKeyActivity.this.finish();
                 }
             }

@@ -3,7 +3,6 @@ package srjhlab.com.myownbarcode;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -38,7 +37,7 @@ public class BarcodeModifiyActivity extends AppCompatActivity {
                 intent.putExtra("color", color);
                 intent.putExtra("value", value);
                 startActivity(intent);
-                overridePendingTransition(R.anim.fade, R.anim.hold);
+                overridePendingTransition(R.anim.fade_in, R.anim.hold);
                 BarcodeModifiyActivity.this.finish();
             }
         });
@@ -50,7 +49,7 @@ public class BarcodeModifiyActivity extends AppCompatActivity {
                 dbHelper.delete(mid);
                 Toast.makeText(getApplicationContext(), "바코드가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                 BarcodeModifiyActivity.this.finish();
-                overridePendingTransition(R.anim.fade, R.anim.hold);
+                overridePendingTransition(R.anim.fade_in, R.anim.hold);
             }
         });
     }

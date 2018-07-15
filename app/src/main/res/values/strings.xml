@@ -4,4 +4,17 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="val_code_39">CODE_39</string>
+    <string name="var_code_93">CODE_93</string>
+    <string name="var_code_128">CODE_128</string>
+    <string name="var_ean_8">EAN_8</string>
+    <string name="var_ean_13">EAN_13</string>
+    <string name="var_pdf_417">PDF_417</string>
+    <string name="var_upc_a">UPC_A</string>
+    <string name="var_upc_e">UPC_E</string>
+    <string name="var_codabar">CODABAR</string>
+    <string name="var_qr_code">QR_CODE</string>
+    <string name="var_aztec">AZTEC</string>
+
 </resources>

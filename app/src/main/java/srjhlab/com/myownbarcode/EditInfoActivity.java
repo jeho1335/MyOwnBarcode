@@ -1,14 +1,10 @@
 package srjhlab.com.myownbarcode;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -181,7 +177,7 @@ public class EditInfoActivity extends AppCompatActivity {
                 id = editText.getText().toString();
                 dbHelper.update(mid, id, color);
                 EditInfoActivity.this.finish();
-                overridePendingTransition(R.anim.fade, R.anim.hold);
+                overridePendingTransition(R.anim.fade_in, R.anim.hold);
             }
         });
 
@@ -190,7 +186,7 @@ public class EditInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditInfoActivity.this.finish();
-                overridePendingTransition(R.anim.fade, R.anim.hold);
+                overridePendingTransition(R.anim.fade_in, R.anim.hold);
             }
         });
     }

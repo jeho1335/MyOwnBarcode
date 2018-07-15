@@ -57,7 +57,7 @@ public class AddFromImageActivity extends AppCompatActivity {
                 scanFromImage.putImage(image);
                 if (scanFromImage.getFormat() == null || scanFromImage.getValue() == null) {
                     Toast.makeText(getApplicationContext(), "바코드를 인식할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                    overridePendingTransition(R.anim.fade, R.anim.hold);
+                    overridePendingTransition(R.anim.fade_in, R.anim.hold);
                     AddFromImageActivity.this.finish();
                 } else {
                     Bitmap bm = makeBarcode.MakeBarcode(scanFromImage.getValue(), scanFromImage.getFormat());
@@ -67,18 +67,18 @@ public class AddFromImageActivity extends AppCompatActivity {
                     intent.putExtra("type", scanFromImage.getFormat());
                     intent.putExtra("value", scanFromImage.getValue());
                     startActivity(intent);
-                    overridePendingTransition(R.anim.fade, R.anim.hold);
+                    overridePendingTransition(R.anim.fade_in, R.anim.hold);
                 }
                 AddFromImageActivity.this.finish();
 
             } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), "이미지 처리 과정에서 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
-                overridePendingTransition(R.anim.fade, R.anim.hold);
+                overridePendingTransition(R.anim.fade_in, R.anim.hold);
                 AddFromImageActivity.this.finish();
             }
         }
         else if(resultCode == RESULT_CANCELED){
-            overridePendingTransition(R.anim.fade, R.anim.hold);
+            overridePendingTransition(R.anim.fade_in, R.anim.hold);
             AddFromImageActivity.this.finish();
         }
     }
