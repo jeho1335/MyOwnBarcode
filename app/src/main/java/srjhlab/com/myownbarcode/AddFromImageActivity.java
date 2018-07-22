@@ -60,14 +60,14 @@ public class AddFromImageActivity extends AppCompatActivity {
                     overridePendingTransition(R.anim.fade_in, R.anim.hold);
                     AddFromImageActivity.this.finish();
                 } else {
-                    Bitmap bm = makeBarcode.MakeBarcode(scanFromImage.getValue(), scanFromImage.getFormat());
+                    /*Bitmap bm = makeBarcode.MakeBarcode(scanFromImage.getValue(), scanFromImage.getFormat());
                     Drawable drawable = new BitmapDrawable(bm);
                     Intent intent = new Intent(AddFromImageActivity.this, AddInfoActivity.class);
                     intent.putExtra("barcode", getByteArrayFromDrawable.getByteArrayFromDrawable(drawable));
                     intent.putExtra("type", scanFromImage.getFormat());
                     intent.putExtra("value", scanFromImage.getValue());
                     startActivity(intent);
-                    overridePendingTransition(R.anim.fade_in, R.anim.hold);
+                    overridePendingTransition(R.anim.fade_in, R.anim.hold);*/
                 }
                 AddFromImageActivity.this.finish();
 

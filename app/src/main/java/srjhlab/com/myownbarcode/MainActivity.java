@@ -31,7 +31,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import srjhlab.com.myownbarcode.CommonUi.AddBarcodeInfoDialog;
+import srjhlab.com.myownbarcode.CommonUi.AddFromKeyDialog;
 import srjhlab.com.myownbarcode.CommonUi.SelectDialog;
+import srjhlab.com.myownbarcode.Item.CommonBarcodeItem;
 import srjhlab.com.myownbarcode.Item.SelectDialogItem;
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct;
 import srjhlab.com.myownbarcode.Utils.ConstVariables;
@@ -126,14 +129,14 @@ public class MainActivity extends AppCompatActivity {
         if (result.getFormatName().equals("CODE_39") || result.getFormatName().equals("CODE_93") || result.getFormatName().equals("CODE_128") || result.getFormatName().equals("EAN_8") ||
                 result.getFormatName().equals("EAN_13") || result.getFormatName().equals("PDF_417") || result.getFormatName().equals("UPC_A") || result.getFormatName().equals("UPC_E") ||
                 result.getFormatName().equals("CODABAR") || result.getFormatName().equals("ITF") || result.getFormatName().equals("QR_CODE") || result.getFormatName().equals("AZTEC")) {
-            Bitmap bm = makeBarcode.MakeBarcode(result.getContents(), result.getFormatName());
+         /*   Bitmap bm = makeBarcode.MakeBarcode(result.getContents(), result.getFormatName());
             Drawable drawable = new BitmapDrawable(bm);
             Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
             intent.putExtra("barcode", getByteArrayFromDrawable.getByteArrayFromDrawable(drawable));
             intent.putExtra("type", result.getFormatName());
             intent.putExtra("value", result.getContents());
             startActivity(intent);
-            overridePendingTransition(R.anim.fade_in, R.anim.hold);
+            overridePendingTransition(R.anim.fade_in, R.anim.hold);*/
         } else {
             Toast.makeText(context, "지원하지 않는 포맷입니다", Toast.LENGTH_SHORT).show();
         }
@@ -236,11 +239,25 @@ public class MainActivity extends AppCompatActivity {
 
         }else if(object.getType() == ConstVariables.EVENTBUS_SHOW_BARCODE){
             Log.d(TAG, "##### EVENTBUS_SHOW_BARCODE #####");
-
         }else if(object.getType() == ConstVariables.EVENTBUS_MODIFY_BARCODE){
             Log.d(TAG, "##### EVENTBUS_MODIFY_BARCODE #####");
-
+        }else if(object.getType() == ConstVariables.EVENTBUS_ADD_FROM_KEY){
+            Log.d(TAG, "##### EVENTBUS_ADD_FROM_KEY #####");
+            final AddFromKeyDialog dialog = AddFromKeyDialog.newInstance();
+            dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
+        }else if(object.getType() == ConstVariables.EVENTBUS_ADD_FROM_CCAN){
+            Log.d(TAG, "##### EVENTBUS_ADD_FROM_CCAN #####");
+        }else if(object.getType() == ConstVariables.EVENTBUS_ADD_FROM_IMAGE){
+            Log.d(TAG, "##### EVENTBUS_ADD_FROM_IMAGE #####");
+        }else if(object.getType() == ConstVariables.EVENTBUS_ADD_BARCODE){
+            Log.d(TAG, "##### EVENTBUS_ADD_BARCODE #####");
+            final AddBarcodeInfoDialog dialog = AddBarcodeInfoDialog.newInstance();
+            dialog.setBarcodeItem((CommonBarcodeItem)object.getVal());
+            dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
         }
-
     }
+
+    /*
+    * END EVENTBUS RECEIVE
+    * */
 }

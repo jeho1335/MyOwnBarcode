@@ -3,7 +3,6 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
     android:background="#f1f0ec"
     android:orientation="vertical">
 
@@ -12,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="110dp"
         card_view:cardCornerRadius="10dp"
-        card_view:cardElevation="0dp">
+        card_view:cardElevation="0dp"></android.support.v7.widget.CardView>
 
-    </android.support.v7.widget.CardView>
 </LinearLayout>

@@ -10,10 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import srjhlab.com.myownbarcode.Item.SelectDialogItem;
 import srjhlab.com.myownbarcode.R;
+import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct;
+import srjhlab.com.myownbarcode.Utils.ConstVariables;
 
 public class SelectRecyclerviewAdapter extends RecyclerView.Adapter<SelectRecyclerviewAdapter.ViewHolder> implements View.OnClickListener {
     private final static String TAG = SelectRecyclerviewAdapter.class.getSimpleName();
@@ -58,13 +62,16 @@ public class SelectRecyclerviewAdapter extends RecyclerView.Adapter<SelectRecycl
         if (v instanceof CardView) {
             switch (v.getId()) {
                 case SelectDialogItem.INPUT_SELF:
-                    Log.d(TAG, "##### onC,lick ##### INPUT_SELF");
+                    Log.d(TAG, "##### onClick ##### INPUT_SELF");
+                    EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_FROM_KEY));
                     break;
                 case SelectDialogItem.INPUT_SCAN:
-                    Log.d(TAG, "##### onC,lick ##### INPUT_SCAN");
+                    Log.d(TAG, "##### onClick ##### INPUT_SCAN");
+                    EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_FROM_CCAN));
                     break;
                 case SelectDialogItem.INPUT_IMAGE:
-                    Log.d(TAG, "##### onC,lick ##### INPUT_IMAGE");
+                    Log.d(TAG, "##### onClick ##### INPUT_IMAGE");
+                    EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_FROM_IMAGE));
                     break;
             }
         }

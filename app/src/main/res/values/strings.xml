@@ -2,9 +2,11 @@
     <string name="app_name">나만의멤버십</string>
     <string name="title_activity_show_messages">ShowMessages</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- COmmon Ui-->
+    <string name="string_ok">확인</string>
+    <string name="string_cancel">취소</string>
 
+    <!-- AddFromDialog -->
     <string name="val_code_39">CODE_39</string>
     <string name="var_code_93">CODE_93</string>
     <string name="var_code_128">CODE_128</string>

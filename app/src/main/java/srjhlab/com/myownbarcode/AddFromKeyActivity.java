@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import srjhlab.com.myownbarcode.Utils.ValidityCheck;
+
 public class AddFromKeyActivity extends AppCompatActivity {
     public static Context context;
     ViewPager viewPager;
@@ -23,7 +25,6 @@ public class AddFromKeyActivity extends AppCompatActivity {
     Button btn_confirm, btn_cancel;
     MakeBarcode makeBarcode = new MakeBarcode();
     GetByteArrayFromDrawable convert = new GetByteArrayFromDrawable();
-    ValidityCheck validityCheck = new ValidityCheck();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class AddFromKeyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 value = editText.getText().toString();
                 //bmp = makeBarcode.MakeBarcode(value, format);
-                if(validityCheck.check(value, format) == true) {
+                /*if(validityCheck.check(value, format) == true) {
                     bmp = makeBarcode.MakeBarcode(value, format);
                     Drawable drawable = new BitmapDrawable(bmp);
                     Intent intent = new Intent(AddFromKeyActivity.this, AddInfoActivity.class);
@@ -70,7 +71,7 @@ public class AddFromKeyActivity extends AppCompatActivity {
                     startActivity(intent);
                     overridePendingTransition(R.anim.fade_in, R.anim.hold);
                     AddFromKeyActivity.this.finish();
-                }
+                }*/
             }
         });
 
