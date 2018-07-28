@@ -8,27 +8,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 import srjhlab.com.myownbarcode.Item.SelectDialogItem;
 import srjhlab.com.myownbarcode.R;
-import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct;
-import srjhlab.com.myownbarcode.Utils.ConstVariables;
 
 public class SelectRecyclerviewAdapter extends RecyclerView.Adapter<SelectRecyclerviewAdapter.ViewHolder> implements View.OnClickListener {
     private final static String TAG = SelectRecyclerviewAdapter.class.getSimpleName();
 
     private Context mContext = null;
     private List<SelectDialogItem> mItems = null;
+    private IClickListener mListener = null;
 
-    public SelectRecyclerviewAdapter(Context context, List<SelectDialogItem> items) {
+    public interface IClickListener{
+        void onClcik(int id);
+    }
+
+    public SelectRecyclerviewAdapter(Context context, List<SelectDialogItem> items, IClickListener listener) {
         Log.d(TAG, "##### SelectRecyclerviewAdapter #####");
         this.mContext = context;
         this.mItems = items;
+        this.mListener = listener;
     }
 
     @Override
@@ -63,15 +64,15 @@ public class SelectRecyclerviewAdapter extends RecyclerView.Adapter<SelectRecycl
             switch (v.getId()) {
                 case SelectDialogItem.INPUT_SELF:
                     Log.d(TAG, "##### onClick ##### INPUT_SELF");
-                    EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_FROM_KEY));
+                    mListener.onClcik(SelectDialogItem.INPUT_SELF);
                     break;
                 case SelectDialogItem.INPUT_SCAN:
                     Log.d(TAG, "##### onClick ##### INPUT_SCAN");
-                    EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_FROM_CCAN));
+                    mListener.onClcik(SelectDialogItem.INPUT_SCAN);
                     break;
                 case SelectDialogItem.INPUT_IMAGE:
                     Log.d(TAG, "##### onClick ##### INPUT_IMAGE");
-                    EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_FROM_IMAGE));
+                    mListener.onClcik(SelectDialogItem.INPUT_IMAGE);
                     break;
             }
         }

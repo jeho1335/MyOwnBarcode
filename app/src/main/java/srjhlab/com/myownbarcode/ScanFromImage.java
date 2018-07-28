@@ -16,10 +16,12 @@ import com.google.zxing.common.HybridBinarizer;
  */
 
 public class ScanFromImage {
-    String format, value = null;
+    private final static String TAG = ScanFromImage.class.getSimpleName();
+    private String mFormat, mValue;
 
     public void putImage(Bitmap bMap) {
-        int[] intArray = new int[bMap.getWidth()*bMap.getHeight()];
+        Log.d(TAG, "##### putImage #####");
+        int[] intArray = new int[bMap.getWidth() * bMap.getHeight()];
         //copy pixel data from the Bitmap into the 'intArray' array
         bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
 
@@ -29,20 +31,20 @@ public class ScanFromImage {
         Reader reader = new MultiFormatReader();
         try {
             Result result = reader.decode(bitmap);
-            format = result.getBarcodeFormat().toString();
-            value = result.getText();
-            Log.d("TAG" , "바코드 포맷 : " + format + " 바코드 값 : " + value);
-        }
-        catch (Exception e) {
+            mFormat = result.getBarcodeFormat().toString();
+            mValue = result.getText();
+        } catch (Exception e) {
             Log.e("test", "Error decoding barcode", e);
         }
     }
 
-    public String getFormat(){
-        return format;
+    public String getFormat() {
+        Log.d(TAG, "##### getForamt #####");
+        return mFormat;
     }
 
-    public String getValue(){
-        return value;
+    public String getValue() {
+        Log.d(TAG, "##### getValue #####");
+        return mValue;
     }
 }

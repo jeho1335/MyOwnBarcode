@@ -1,6 +1,5 @@
 package srjhlab.com.myownbarcode;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
@@ -52,8 +51,8 @@ public class MakeBarcode {
                 Log.d(TAG, "##### makeBarcode ##### CODE_39");
                 bmp = makeCODE39(value);
                 break;
-            case ConstVariables.CODE_98:
-                Log.d(TAG, "##### makeBarcode ##### CODE_98");
+            case ConstVariables.CODE_93:
+                Log.d(TAG, "##### makeBarcode ##### CODE_93");
                 bmp = makeCODE93(value);
                 break;
             case ConstVariables.CODE_128:

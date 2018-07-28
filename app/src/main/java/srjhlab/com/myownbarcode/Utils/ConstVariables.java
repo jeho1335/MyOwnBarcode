@@ -6,13 +6,14 @@ package srjhlab.com.myownbarcode.Utils;
     * Start EventBus message type
     * */
 
-    public final static int EVENTBUS_ADD_NEW_BARCPDE = 0;
+    public final static int EVENTBUS_ADD_NEW_BARCODE = 0;
     public final static int EVENTBUS_SHOW_BARCODE = 1;
     public final static int EVENTBUS_MODIFY_BARCODE = 2;
     public final static int EVENTBUS_ADD_FROM_KEY = 3;
     public final static int EVENTBUS_ADD_FROM_CCAN = 4;
     public final static int EVENTBUS_ADD_FROM_IMAGE = 5;
     public final static int EVENTBUS_ADD_BARCODE = 6;
+    public final static int EVENTBUS_ADD_BARCODE_SUCCESS = 7;
 
     /*
     * End EventBus message type
@@ -23,7 +24,7 @@ package srjhlab.com.myownbarcode.Utils;
     * */
 
     public final static int CODE_39 = 0;
-    public final static int CODE_98 = 1;
+    public final static int CODE_93 = 1;
     public final static int CODE_128 = 2;
     public final static int EAN_8 = 3;
     public final static int EAN_13 = 4;

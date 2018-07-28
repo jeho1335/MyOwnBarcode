@@ -1,6 +1,5 @@
 package srjhlab.com.myownbarcode.Item;
 
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 public class SelectDialogItem {

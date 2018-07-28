@@ -4,8 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import srjhlab.com.myownbarcode.AddFromKeyActivity;
-
 /**
  * Created by Administrator on 2017-05-16.
  */
@@ -32,13 +30,12 @@ public class ValidityCheck {
     public boolean check(String value, int format) {
         boolean validity = true;
         int length = value.length();
-        mContext= AddFromKeyActivity.context;
 
         switch (format) {
             case ConstVariables.CODE_39:
                 validity = checkCODE39(value);
                 break;
-            case ConstVariables.CODE_98:
+            case ConstVariables.CODE_93:
                 validity = checkCODE93(value);
                 break;
             case ConstVariables.CODE_128:

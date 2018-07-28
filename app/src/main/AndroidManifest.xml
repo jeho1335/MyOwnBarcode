@@ -21,12 +21,6 @@
             android:name=".AddSelectActivity"
             android:theme="@style/PopupTheme" />
         <activity
-            android:name=".AddInfoActivity"
-            android:theme="@style/PopupTheme" />
-        <activity
-            android:name=".AddFromKeyActivity"
-            android:theme="@style/PopupTheme" />
-        <activity
             android:name=".BarcodeModifiyActivity"
             android:theme="@style/PopupTheme" />
         <activity

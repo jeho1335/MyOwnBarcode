@@ -16,10 +16,8 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import srjhlab.com.myownbarcode.CommonUi.SelectDialog;
 import srjhlab.com.myownbarcode.Item.SelectDialogItem;
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct;
 

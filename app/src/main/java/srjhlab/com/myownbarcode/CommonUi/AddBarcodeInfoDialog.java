@@ -1,6 +1,10 @@
 package srjhlab.com.myownbarcode.CommonUi;
 
 import android.app.DialogFragment;
+import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -8,25 +12,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
+import srjhlab.com.myownbarcode.DbHelper;
 import srjhlab.com.myownbarcode.Item.CommonBarcodeItem;
 import srjhlab.com.myownbarcode.MakeBarcode;
 import srjhlab.com.myownbarcode.R;
+import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct;
+import srjhlab.com.myownbarcode.Utils.ConstVariables;
+import srjhlab.com.myownbarcode.Utils.ToastUtil;
+import srjhlab.com.myownbarcode.databinding.FragmentAddinfoBinding;
 
 public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClickListener {
     private final static String TAG = AddBarcodeInfoDialog.class.getSimpleName();
 
-    private ImageView mBarcodeImageview = null;
-    private TextView mBarcodeTypeTextview, mBarcodeValueTextview = null;
-    private EditText mBarcdeTitleEdittext = null;
+    private FragmentAddinfoBinding mBinding;
     private CommonBarcodeItem mItem = null;
+    private DbHelper mDbHelper = null;
 
-    private ImageView mOkImageView, mCancelImageView = null;
-
-    private ImageView col_1, col_2, col_3, col_4, col_5, col_6, col_7, col_8, col_9, col_10, col_11, col_12 = null;
+    private int mPicColor = -1;
+    private Drawable mDrawsable = null;
 
     public static AddBarcodeInfoDialog newInstance() {
         return new AddBarcodeInfoDialog();
@@ -35,43 +41,41 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.layout_add_barcode_info_dialog, container, false);
+        Log.d(TAG, "##### onCreateVIew #####");
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_addinfo, container, false);
+        mDbHelper = new DbHelper(getActivity(), getResources().getString(R.string.db_name), null, 1);
 
         getDialog().getWindow().getAttributes().windowAnimations = R.style.SelectDialogAnimation;
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getDialog().setCanceledOnTouchOutside(true);
 
-        initializeUi(v);
-        return v;
+        initializeUi();
+        return mBinding.getRoot();
     }
 
     @Override
     public void dismiss() {
+        Log.d(TAG, "##### dismiss #####");
         super.dismiss();
     }
 
-    private void initializeUi(View v) {
+    private void initializeUi() {
         Log.d(TAG, "##### inititializeUi #####");
+        mBinding.imageviewOkDialogAddBarcode.setOnClickListener(this);
+        mBinding.imageviewCancelDialogAddBarcode.setOnClickListener(this);
+        mBinding.colorPic1.setOnClickListener(this);
+        mBinding.colorPic2.setOnClickListener(this);
+        mBinding.colorPic3.setOnClickListener(this);
+        mBinding.colorPic4.setOnClickListener(this);
+        mBinding.colorPic5.setOnClickListener(this);
+        mBinding.colorPic6.setOnClickListener(this);
+        mBinding.colorPic7.setOnClickListener(this);
+        mBinding.colorPic8.setOnClickListener(this);
+        mBinding.colorPic9.setOnClickListener(this);
+        mBinding.colorPic10.setOnClickListener(this);
+        mBinding.colorPic11.setOnClickListener(this);
+        mBinding.colorPic12.setOnClickListener(this);
 
-        mBarcodeImageview = v.findViewById(R.id.imageview_barcode_dialog_add_barcode);
-        mBarcodeTypeTextview = v.findViewById(R.id.textview_type_dialog_add_barcode);
-        mBarcodeValueTextview = v.findViewById(R.id.textview_value_dialog_add_barcode);
-        mBarcdeTitleEdittext = v.findViewById(R.id.edittext_dialog_add_barcode);
-        mOkImageView = v.findViewById(R.id.imageview_ok_dialog_add_barcode);
-        mCancelImageView = v.findViewById(R.id.imageview_cancel_dialog_add_barcode);
-
-        col_1 = v.findViewById(R.id.color_pic_1);
-        col_2 = v.findViewById(R.id.color_pic_2);
-        col_3 = v.findViewById(R.id.color_pic_3);
-        col_4 = v.findViewById(R.id.color_pic_4);
-        col_5 = v.findViewById(R.id.color_pic_5);
-        col_6 = v.findViewById(R.id.color_pic_6);
-        col_7 = v.findViewById(R.id.color_pic_7);
-        col_8 = v.findViewById(R.id.color_pic_8);
-        col_9 = v.findViewById(R.id.color_pic_9);
-        col_10 = v.findViewById(R.id.color_pic_10);
-        col_11 = v.findViewById(R.id.color_pic_11);
-        col_12 = v.findViewById(R.id.color_pic_12);
         if (mItem.getValue() != null) {
             setOverviewBarcode(mItem.getType(), mItem.getValue());
         }
@@ -81,10 +85,127 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imageview_ok_dialog_add_barcode:
+                Log.d(TAG, "##### onCLick ##### imageview_ok_dialog_add_barcode");
+                saveBarcode();
                 break;
             case R.id.imageview_cancel_dialog_add_barcode:
+                Log.d(TAG, "##### onCLick ##### imageview_cancel_dialog_add_barcode");
+                dismiss();
+                break;
+            case R.id.color_pic_1:
+                Log.d(TAG, "##### onCLick ##### color_pic_1");
+                clearSelectedColor();
+                mPicColor = getResources().getColor(R.color.color_pic_1);
+                mBinding.colorPic1.setSelected(true);
+                break;
+            case R.id.color_pic_2:
+                Log.d(TAG, "##### onCLick ##### color_pic_2");
+                clearSelectedColor();
+                mPicColor = getResources().getColor(R.color.color_pic_2);
+                mBinding.colorPic2.setSelected(true);
+                break;
+            case R.id.color_pic_3:
+                Log.d(TAG, "##### onCLick ##### color_pic_3");
+                clearSelectedColor();
+                mPicColor = getResources().getColor(R.color.color_pic_3);
+                mBinding.colorPic3.setSelected(true);
+                break;
+            case R.id.color_pic_4:
+                Log.d(TAG, "##### onCLick ##### color_pic_4");
+                clearSelectedColor();
+                mPicColor = getResources().getColor(R.color.color_pic_4);
+                mBinding.colorPic4.setSelected(true);
+                break;
+            case R.id.color_pic_5:
+                Log.d(TAG, "##### onCLick ##### color_pic_5");
+                clearSelectedColor();
+                mPicColor = getResources().getColor(R.color.color_pic_5);
+                mBinding.colorPic5.setSelected(true);
+                break;
+            case R.id.color_pic_6:
+                Log.d(TAG, "##### onCLick ##### color_pic_6");
+                clearSelectedColor();
+                mPicColor = getResources().getColor(R.color.color_pic_6);
+                mBinding.colorPic6.setSelected(true);
+                break;
+            case R.id.color_pic_7:
+                Log.d(TAG, "##### onCLick ##### color_pic_7");
+                clearSelectedColor();
+                mPicColor = getResources().getColor(R.color.color_pic_7);
+                mBinding.colorPic7.setSelected(true);
+                break;
+            case R.id.color_pic_8:
+                Log.d(TAG, "##### onCLick ##### color_pic_8");
+                clearSelectedColor();
+                mPicColor = getResources().getColor(R.color.color_pic_8);
+                mBinding.colorPic8.setSelected(true);
+                break;
+            case R.id.color_pic_9:
+                Log.d(TAG, "##### onCLick ##### color_pic_9");
+                clearSelectedColor();
+                mPicColor = getResources().getColor(R.color.color_pic_9);
+                mBinding.colorPic9.setSelected(true);
+                break;
+            case R.id.color_pic_10:
+                Log.d(TAG, "##### onCLick ##### color_pic_10");
+                clearSelectedColor();
+                mPicColor = getResources().getColor(R.color.color_pic_10);
+                mBinding.colorPic10.setSelected(true);
+                break;
+            case R.id.color_pic_11:
+                Log.d(TAG, "##### onCLick ##### color_pic_11");
+                clearSelectedColor();
+                mPicColor = getResources().getColor(R.color.color_pic_11);
+                mBinding.colorPic11.setSelected(true);
+                break;
+            case R.id.color_pic_12:
+                Log.d(TAG, "##### onCLick ##### color_pic_12");
+                clearSelectedColor();
+                mPicColor = getResources().getColor(R.color.color_pic_12);
+                mBinding.colorPic12.setSelected(true);
                 break;
         }
+    }
+
+    private void saveBarcode() {
+        Log.d(TAG, "##### saveBarcode #####");
+
+        if (mPicColor == -1) {
+            ToastUtil.getInstance(getActivity()).showToast(getResources().getString(R.string.string_request_pic_color));
+            return;
+        }
+
+        if (mBinding.edittextDialogAddBarcode.getText().toString() == null
+                && mBinding.edittextDialogAddBarcode.getText().toString() == "") {
+            ToastUtil.getInstance(getActivity()).showToast(getResources().getString(R.string.string_request_write_name));
+            return;
+        }
+
+        if(mDbHelper != null) {
+            mDbHelper.insert(mBinding.edittextDialogAddBarcode.getText().toString(), mPicColor, mItem.getValue(), mDrawsable);
+            EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE_SUCCESS));
+            dismiss();
+        }else{
+            ToastUtil.getInstance(getActivity()).showToast(getResources().getString(R.string.string_unhandled_exception));
+            dismiss();
+        }
+    }
+
+    private void clearSelectedColor() {
+        Log.d(TAG, "##### clearSelectColor #####");
+
+        mBinding.colorPic1.setSelected(false);
+        mBinding.colorPic2.setSelected(false);
+        mBinding.colorPic3.setSelected(false);
+        mBinding.colorPic4.setSelected(false);
+        mBinding.colorPic5.setSelected(false);
+        mBinding.colorPic6.setSelected(false);
+        mBinding.colorPic7.setSelected(false);
+        mBinding.colorPic8.setSelected(false);
+        mBinding.colorPic9.setSelected(false);
+        mBinding.colorPic10.setSelected(false);
+        mBinding.colorPic11.setSelected(false);
+        mBinding.colorPic12.setSelected(false);
     }
 
     public void setBarcodeItem(CommonBarcodeItem item) {
@@ -94,9 +215,8 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
 
     private void setOverviewBarcode(int type, String value) {
         Log.d(TAG, "##### setOverviewBarcode #####");
-        if (mBarcodeImageview != null) {
-            mBarcodeImageview.setImageBitmap(MakeBarcode.getInstance().makeBarcode(type, value));
-        }
+        Bitmap imageBitmap = MakeBarcode.getInstance().makeBarcode(type, value);
+        mBinding.imageviewBarcodeDialogAddBarcode.setImageBitmap(imageBitmap);
+        mDrawsable = new BitmapDrawable(imageBitmap);
     }
-
 }

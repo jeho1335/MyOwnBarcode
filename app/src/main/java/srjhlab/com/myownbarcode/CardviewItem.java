@@ -2,8 +2,6 @@ package srjhlab.com.myownbarcode;
 
 import android.graphics.Bitmap;
 
-import com.google.zxing.common.BitMatrix;
-
 /**
  * Created by Administrator on 2017-02-08.
  */

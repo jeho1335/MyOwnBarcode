@@ -14,27 +14,6 @@ public class AddSelectActivity extends Activity {
         Intent intent = getIntent();
         final int pos = intent.getExtras().getInt("position");
 
-        Button btn_sel_key = (Button)findViewById(R.id.btn_sel_key);
-        btn_sel_key.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(AddSelectActivity.this, AddFromKeyActivity.class);
-                startActivity(intent1);
-                overridePendingTransition(R.anim.fade_in, R.anim.hold);
-                AddSelectActivity.this.finish();
-            }
-        });
-
-        Button btn_sel_scan = (Button)findViewById(R.id.btn_sel_scan);
-        btn_sel_scan.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                ((MainActivity)MainActivity.context).setBarcodeScan(pos);
-                AddSelectActivity.this.finish();
-                overridePendingTransition(R.anim.fade_in, R.anim.hold);
-            }
-        });
-
         Button btn_sel_image = (Button)findViewById(R.id.btn_sel_image);
         btn_sel_image.setOnClickListener(new View.OnClickListener(){
             @Override

@@ -8,11 +8,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -32,11 +31,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import srjhlab.com.myownbarcode.CommonUi.AddBarcodeInfoDialog;
+import srjhlab.com.myownbarcode.CommonUi.AddFromImageDialog;
 import srjhlab.com.myownbarcode.CommonUi.AddFromKeyDialog;
 import srjhlab.com.myownbarcode.CommonUi.SelectDialog;
 import srjhlab.com.myownbarcode.Item.CommonBarcodeItem;
 import srjhlab.com.myownbarcode.Item.SelectDialogItem;
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct;
+import srjhlab.com.myownbarcode.Utils.CommonUtils;
 import srjhlab.com.myownbarcode.Utils.ConstVariables;
 
 public class MainActivity extends AppCompatActivity {
@@ -129,14 +130,11 @@ public class MainActivity extends AppCompatActivity {
         if (result.getFormatName().equals("CODE_39") || result.getFormatName().equals("CODE_93") || result.getFormatName().equals("CODE_128") || result.getFormatName().equals("EAN_8") ||
                 result.getFormatName().equals("EAN_13") || result.getFormatName().equals("PDF_417") || result.getFormatName().equals("UPC_A") || result.getFormatName().equals("UPC_E") ||
                 result.getFormatName().equals("CODABAR") || result.getFormatName().equals("ITF") || result.getFormatName().equals("QR_CODE") || result.getFormatName().equals("AZTEC")) {
-         /*   Bitmap bm = makeBarcode.MakeBarcode(result.getContents(), result.getFormatName());
-            Drawable drawable = new BitmapDrawable(bm);
-            Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
-            intent.putExtra("barcode", getByteArrayFromDrawable.getByteArrayFromDrawable(drawable));
-            intent.putExtra("type", result.getFormatName());
-            intent.putExtra("value", result.getContents());
-            startActivity(intent);
-            overridePendingTransition(R.anim.fade_in, R.anim.hold);*/
+
+            AddBarcodeInfoDialog addBarcodeInfoDialog = AddBarcodeInfoDialog.newInstance();
+            addBarcodeInfoDialog.setBarcodeItem(new CommonBarcodeItem(result.getContents(), CommonUtils.convertBarcodeType(MainActivity.this, result.getFormatName())));
+            addBarcodeInfoDialog.show(getFragmentManager(), addBarcodeInfoDialog.getClass().getSimpleName());
+
         } else {
             Toast.makeText(context, "지원하지 않는 포맷입니다", Toast.LENGTH_SHORT).show();
         }
@@ -162,24 +160,17 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(new RecyclerViewAdapter(getApplicationContext(), items, R.layout.activity_main));
     }
 
-    void setBarcodeScan(int position) {
+    void setBarcodeScan() {
         Log.d(TAG, "##### setBarcodeScan ######");
 
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
 
         if (permissionCheck == PackageManager.PERMISSION_DENIED) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-
-                // 이 권한을 필요한 이유를 설명해야하는가?
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST);
-                    // 다이어로그같은것을 띄워서 사용자에게 해당 권한이 필요한 이유에 대해 설명합니다
-                    // 해당 설명이 끝난뒤 requestPermissions()함수를 호출하여 권한허가를 요청해야 합니다
-
                 } else {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST);
-                    // 필요한 권한과 요청 코드를 넣어서 권한허가요청에 대한 결과를 받아야 합니다
-
                 }
             }
 
@@ -189,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
             integrator.addExtra("PROMPT_MESSAGE", "바코드를 사각형 안에 비춰주세요. \n"
                     + "스캔이 잘 안될 경우 주위 배경을 깔끔하게 해주세요. \n"
                     + "볼륨 UP/DOWN 버튼으로 플래시를 켜고 끌 수 있습니다. ");
+            integrator.setWide();
             integrator.initiateScan();
             //ew IntentIntegrator(MainActivity.this).initiateScan();
         }
@@ -224,40 +216,50 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(CommonEventbusObejct object) {
-        if (object.getType() == ConstVariables.EVENTBUS_ADD_NEW_BARCPDE){
-            Log.d(TAG, "##### EVENTBUS_ADD_NEW_BARCPDE #####");
-            List<SelectDialogItem> mItems = new ArrayList<>();
-            mItems.add(new SelectDialogItem(SelectDialogItem.INPUT_SELF));
-            mItems.add(new SelectDialogItem(SelectDialogItem.INPUT_SCAN));
-            mItems.add(new SelectDialogItem(SelectDialogItem.INPUT_IMAGE));
+        switch (object.getType()) {
+            case ConstVariables.EVENTBUS_ADD_NEW_BARCODE:
+                Log.d(TAG, "##### EVENTBUS_ADD_NEW_BARCODE #####");
+                List<SelectDialogItem> mItems = new ArrayList<>();
+                mItems.add(new SelectDialogItem(SelectDialogItem.INPUT_SELF));
+                mItems.add(new SelectDialogItem(SelectDialogItem.INPUT_SCAN));
+                mItems.add(new SelectDialogItem(SelectDialogItem.INPUT_IMAGE));
 
-            if(mItems != null) {
-                final SelectDialog selectDialog = SelectDialog.newInstance();
-                selectDialog.setItems(mItems);
-                selectDialog.show(getFragmentManager(), selectDialog.getClass().getSimpleName());
-            }
+                if (mItems != null) {
+                    final SelectDialog selectDialog = SelectDialog.newInstance();
+                    selectDialog.setItems(mItems);
+                    selectDialog.show(getFragmentManager(), selectDialog.getClass().getSimpleName());
+                }
+                break;
+            case ConstVariables.EVENTBUS_SHOW_BARCODE:
+                Log.d(TAG, "##### EVENTBUS_SHOW_BARCODE #####");
+                break;
+            case ConstVariables.EVENTBUS_MODIFY_BARCODE:
+                Log.d(TAG, "##### EVENTBUS_MODIFY_BARCODE #####");
+                break;
+            case ConstVariables.EVENTBUS_ADD_FROM_KEY:
+                Log.d(TAG, "##### EVENTBUS_ADD_FROM_KEY #####");
+                AddFromKeyDialog dialog = AddFromKeyDialog.newInstance();
+                dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
+                break;
+            case ConstVariables.EVENTBUS_ADD_FROM_CCAN:
+                Log.d(TAG, "##### EVENTBUS_ADD_FROM_CCAN #####");
+                setBarcodeScan();
+                break;
+            case ConstVariables.EVENTBUS_ADD_FROM_IMAGE:
+                Log.d(TAG, "##### EVENTBUS_ADD_FROM_IMAGE #####");
+                AddFromImageDialog addFromImageDialog  = AddFromImageDialog.newInstance();
+                addFromImageDialog.show(getFragmentManager(), addFromImageDialog.getClass().getSimpleName());
+                break;
+            case ConstVariables.EVENTBUS_ADD_BARCODE:
+                Log.d(TAG, "##### EVENTBUS_ADD_BARCODE #####");
+                AddBarcodeInfoDialog addBarcodeInfoDialog = AddBarcodeInfoDialog.newInstance();
+                addBarcodeInfoDialog.setBarcodeItem((CommonBarcodeItem) object.getVal());
+                addBarcodeInfoDialog.show(getFragmentManager(), addBarcodeInfoDialog.getClass().getSimpleName());
+                break;
 
-        }else if(object.getType() == ConstVariables.EVENTBUS_SHOW_BARCODE){
-            Log.d(TAG, "##### EVENTBUS_SHOW_BARCODE #####");
-        }else if(object.getType() == ConstVariables.EVENTBUS_MODIFY_BARCODE){
-            Log.d(TAG, "##### EVENTBUS_MODIFY_BARCODE #####");
-        }else if(object.getType() == ConstVariables.EVENTBUS_ADD_FROM_KEY){
-            Log.d(TAG, "##### EVENTBUS_ADD_FROM_KEY #####");
-            final AddFromKeyDialog dialog = AddFromKeyDialog.newInstance();
-            dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
-        }else if(object.getType() == ConstVariables.EVENTBUS_ADD_FROM_CCAN){
-            Log.d(TAG, "##### EVENTBUS_ADD_FROM_CCAN #####");
-        }else if(object.getType() == ConstVariables.EVENTBUS_ADD_FROM_IMAGE){
-            Log.d(TAG, "##### EVENTBUS_ADD_FROM_IMAGE #####");
-        }else if(object.getType() == ConstVariables.EVENTBUS_ADD_BARCODE){
-            Log.d(TAG, "##### EVENTBUS_ADD_BARCODE #####");
-            final AddBarcodeInfoDialog dialog = AddBarcodeInfoDialog.newInstance();
-            dialog.setBarcodeItem((CommonBarcodeItem)object.getVal());
-            dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
         }
     }
-
     /*
-    * END EVENTBUS RECEIVE
-    * */
+     * END EVENTBUS RECEIVE
+     * */
 }

@@ -1,7 +1,5 @@
 package srjhlab.com.myownbarcode;
 
-import android.graphics.Color;
-
 /**
  * Created by Administrator on 2017-05-17.
  */

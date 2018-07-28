@@ -2,12 +2,15 @@
     <string name="app_name">나만의멤버십</string>
     <string name="title_activity_show_messages">ShowMessages</string>
 
-    <!-- COmmon Ui-->
+    <!-- Common Strings -->
+    <string name="db_name">barcodeimg.db</string>
+
+    <!-- Common Ui-->
     <string name="string_ok">확인</string>
     <string name="string_cancel">취소</string>
 
     <!-- AddFromDialog -->
-    <string name="val_code_39">CODE_39</string>
+    <string name="var_code_39">CODE_39</string>
     <string name="var_code_93">CODE_93</string>
     <string name="var_code_128">CODE_128</string>
     <string name="var_ean_8">EAN_8</string>
@@ -18,5 +21,10 @@
     <string name="var_codabar">CODABAR</string>
     <string name="var_qr_code">QR_CODE</string>
     <string name="var_aztec">AZTEC</string>
+
+    <!-- Common Strings -->
+    <string name="string_request_pic_color">색상을 선택해 주세요</string>
+    <string name="string_request_write_name">이름을 입력해 주세요</string>
+    <string name="string_unhandled_exception">알 수 없는 오류</string>
 
 </resources>
