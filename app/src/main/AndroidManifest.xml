@@ -17,20 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".AddSelectActivity"
-            android:theme="@style/PopupTheme" />
-        <activity
-            android:name=".BarcodeModifiyActivity"
-            android:theme="@style/PopupTheme" />
-        <activity
-            android:name=".EditInfoActivity"
-            android:theme="@style/PopupTheme" />
-        <activity
-            android:name=".BarcodeFocusActivity"
-            android:theme="@style/PopupTheme" />
         <activity android:name=".LicenseActivity" />
-        <activity android:name=".AddFromImageActivity"></activity>
 
     </application>
 

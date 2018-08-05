@@ -1,4 +1,4 @@
-package srjhlab.com.myownbarcode;
+package srjhlab.com.myownbarcode.Utils;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+
+import srjhlab.com.myownbarcode.GetByteArrayFromDrawable;
 
 /**
  * Created by Administrator on 2016-10-21.
@@ -128,25 +130,6 @@ public class DbHelper extends SQLiteOpenHelper {
             }
             return id;
     }
-
-    /*
-    public byte[] getByteArrayFromDrawable(Drawable d) {
-        Bitmap bitmap = ((BitmapDrawable)d).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] data = stream.toByteArray();
-        Log.d("TAG" , "drawable 이미지를 byte로 변환 : " + data);
-        return data;
-    }
-    */
-
-    /*
-    public Bitmap convertImg(byte[] b){
-        Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
-        return bitmap;
-    }
-    */
-
     public void close() {
         mDB.close();
     }

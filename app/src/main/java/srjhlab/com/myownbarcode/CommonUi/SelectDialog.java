@@ -64,7 +64,7 @@ public class SelectDialog extends DialogFragment {
     }
 
     public void setItems(List<SelectDialogItem> items){
-        Log.d(TAG, "##### setItems ######");
+        Log.d(TAG, "##### setmItems ######");
         this.mItems = items;
     }
 

@@ -16,7 +16,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
 
-import srjhlab.com.myownbarcode.Item.CommonBarcodeItem;
+import srjhlab.com.myownbarcode.Item.BarcodeItem;
 import srjhlab.com.myownbarcode.R;
 import srjhlab.com.myownbarcode.ScanFromImage;
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct;
@@ -76,7 +76,7 @@ public class AddFromImageDialog extends DialogFragment {
                 if (mScanImage.getFormat() == null || mScanImage.getValue() == null) {
                     Toast.makeText(getActivity(), "바코드를 인식할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
-                    EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE, new CommonBarcodeItem(mScanImage.getValue(), CommonUtils.convertBarcodeType(getActivity(), mScanImage.getFormat()))));
+                    EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE, new BarcodeItem(mScanImage.getValue(), CommonUtils.convertBarcodeType(getActivity(), mScanImage.getFormat()))));
                 }
                 dismiss();
             } catch (Exception e) {

@@ -1,11 +1,7 @@
 package srjhlab.com.myownbarcode.Utils;
 
- public class ConstVariables {
-
-    /*
-    * Start EventBus message type
-    * */
-
+public class ConstVariables {
+    //EventBus mesage type
     public final static int EVENTBUS_ADD_NEW_BARCODE = 0;
     public final static int EVENTBUS_SHOW_BARCODE = 1;
     public final static int EVENTBUS_MODIFY_BARCODE = 2;
@@ -14,15 +10,10 @@ package srjhlab.com.myownbarcode.Utils;
     public final static int EVENTBUS_ADD_FROM_IMAGE = 5;
     public final static int EVENTBUS_ADD_BARCODE = 6;
     public final static int EVENTBUS_ADD_BARCODE_SUCCESS = 7;
+    public final static int EVENTBUS_EDIT_BARCODE = 8;
+    public final static int EVENTBUS_DELETE_BARCODE = 9;
 
-    /*
-    * End EventBus message type
-    * */
-
-    /*
-    * Start BarcodeType variables
-    * */
-
+    //Barcode type variables
     public final static int CODE_39 = 0;
     public final static int CODE_93 = 1;
     public final static int CODE_128 = 2;
@@ -36,7 +27,7 @@ package srjhlab.com.myownbarcode.Utils;
     public final static int MAXI_CODE = 10;
     public final static int AZTEC = 11;
 
-    /*
-    * End BarcodeType variables
-    * */
+    //Barcode Item variavles
+    public final static int ITEM_TYPE_EMPTY = 0;
+    public final static int ITEM_TYPE_BARCODE = 1;
 }

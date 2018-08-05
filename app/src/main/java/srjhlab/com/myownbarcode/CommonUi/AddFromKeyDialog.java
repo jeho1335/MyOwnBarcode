@@ -2,7 +2,7 @@ package srjhlab.com.myownbarcode.CommonUi;
 
 import android.app.DialogFragment;
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,16 +21,15 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import srjhlab.com.myownbarcode.GetByteArrayFromDrawable;
+import srjhlab.com.myownbarcode.Item.BarcodeItem;
 import srjhlab.com.myownbarcode.Item.BarcodePagerItem;
-import srjhlab.com.myownbarcode.Item.CommonBarcodeItem;
 import srjhlab.com.myownbarcode.Item.SelectDialogItem;
-import srjhlab.com.myownbarcode.MakeBarcode;
 import srjhlab.com.myownbarcode.R;
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct;
 import srjhlab.com.myownbarcode.Utils.CommonUtils;
 import srjhlab.com.myownbarcode.Utils.ConstVariables;
 import srjhlab.com.myownbarcode.Utils.ValidityCheck;
+import srjhlab.com.myownbarcode.databinding.FragmentAddfromkeyBinding;
 
 
 /**
@@ -40,14 +38,7 @@ import srjhlab.com.myownbarcode.Utils.ValidityCheck;
 
 public class AddFromKeyDialog extends DialogFragment implements View.OnClickListener {
     private final String TAG = AddFromKeyDialog.class.getSimpleName();
-
-    private ViewPager mViewPager;
-    private String mValue;
-    private Bitmap mBitmap;
-    private EditText mEditText;
-    private ImageView mOkImageview, mCancelImageview = null;
-    private MakeBarcode mMakeBarcode = new MakeBarcode();
-    private GetByteArrayFromDrawable mDrawableToByte = new GetByteArrayFromDrawable();
+    private FragmentAddfromkeyBinding mBinding;
 
     private int mSelectBarcodeType = -1;
 
@@ -60,22 +51,22 @@ public class AddFromKeyDialog extends DialogFragment implements View.OnClickList
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.layout_add_from_key_dialog, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_addfromkey, container, false);
         EventBus.getDefault().register(this);
 
         getDialog().getWindow().getAttributes().windowAnimations = R.style.SelectDialogAnimation;
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getDialog().setCanceledOnTouchOutside(true);
         initializeSampleBarcode();
-        initializeUi(v);
+        initializeUi();
 
-        return v;
+        return mBinding.getRoot();
     }
 
     @Override
     public void onDestroy() {
         Log.d(TAG, "##### onDestropy #####");
-        if(EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             Log.d(TAG, "##### onDestropy ##### unregister EventByus");
             EventBus.getDefault().unregister(this);
         }
@@ -108,24 +99,18 @@ public class AddFromKeyDialog extends DialogFragment implements View.OnClickList
         mItems.add(new BarcodePagerItem(ConstVariables.AZTEC));
     }
 
-    private void initializeUi(View v) {
-        mViewPager = v.findViewById(R.id.dialog_viewpager);
-        mViewPager.setAdapter(new BarcodePAgerAdapter(getActivity()));
-        mViewPager.addOnPageChangeListener(mPagerChangeListener);
-        mViewPager.setOffscreenPageLimit(1);
-        mViewPager.setClipChildren(true);
+    private void initializeUi() {
+        mBinding.dialogViewpager.setAdapter(new BarcodePAgerAdapter(getActivity()));
+        mBinding.dialogViewpager.addOnPageChangeListener(mPagerChangeListener);
+        mBinding.dialogViewpager.setOffscreenPageLimit(1);
+        mBinding.dialogViewpager.setClipChildren(true);
 
-        mEditText = v.findViewById(R.id.edittext_dialog);
-
-        mOkImageview = v.findViewById(R.id.imageview_dialog_ok);
-        mOkImageview.setOnClickListener(this);
-
-        mCancelImageview = v.findViewById(R.id.imageview_dialog_cancel);
-        mCancelImageview.setOnClickListener(this);
+        mBinding.imageviewDialogOk.setOnClickListener(this);
+        mBinding.imageviewDialogCancel.setOnClickListener(this);
     }
 
     public void setItems(List<SelectDialogItem> items) {
-        Log.d(TAG, "##### setItems ######");
+        Log.d(TAG, "##### setmItems ######");
     }
 
     private class BarcodePAgerAdapter extends android.support.v4.view.PagerAdapter {
@@ -215,32 +200,32 @@ public class AddFromKeyDialog extends DialogFragment implements View.OnClickList
         }
     }
 
-    private void onClickOk(){
+    private void onClickOk() {
         Log.d(TAG, "##### on ClickOk #####");
         String value = null;
-        if(mEditText != null){
-            value = mEditText.getText().toString();
+        if (mBinding.edittextDialog != null) {
+            value = mBinding.edittextDialog.getText().toString();
         }
 
-        if(ValidityCheck.getInstance(getActivity()).check(value, mSelectBarcodeType)){
-            EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE, new CommonBarcodeItem(value, mSelectBarcodeType)));
-        }else{
+        if (ValidityCheck.getInstance(getActivity()).check(value, mSelectBarcodeType)) {
+            EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE, new BarcodeItem(value, mSelectBarcodeType)));
+        } else {
             //do nothing
         }
     }
 
-    private void onClickCancel(){
-        Log.d(TAG,"##### onClickCancel #####");
+    private void onClickCancel() {
+        Log.d(TAG, "##### onClickCancel #####");
         dismiss();
     }
 
     /*
-    * Start EventBus
-    * */
+     * Start EventBus
+     * */
 
-    @Subscribe(threadMode =  ThreadMode.MAIN)
-    public void onEvent(CommonEventbusObejct obj){
-        switch (obj.getType()){
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(CommonEventbusObejct obj) {
+        switch (obj.getType()) {
             case ConstVariables.EVENTBUS_ADD_BARCODE_SUCCESS:
                 Log.d(TAG, "##### onEVent ##### EVENTBUS_ADD_BARCODE_SUCCESS");
                 dismiss();
@@ -249,6 +234,6 @@ public class AddFromKeyDialog extends DialogFragment implements View.OnClickList
     }
 
     /*
-    * End EvsutBus
-    * */
+     * End EvsutBus
+     * */
 }

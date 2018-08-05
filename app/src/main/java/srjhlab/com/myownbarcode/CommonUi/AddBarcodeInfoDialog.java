@@ -15,8 +15,8 @@ import android.view.WindowManager;
 
 import org.greenrobot.eventbus.EventBus;
 
-import srjhlab.com.myownbarcode.DbHelper;
-import srjhlab.com.myownbarcode.Item.CommonBarcodeItem;
+import srjhlab.com.myownbarcode.Item.BarcodeItem;
+import srjhlab.com.myownbarcode.Utils.DbHelper;
 import srjhlab.com.myownbarcode.MakeBarcode;
 import srjhlab.com.myownbarcode.R;
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct;
@@ -26,13 +26,16 @@ import srjhlab.com.myownbarcode.databinding.FragmentAddinfoBinding;
 
 public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClickListener {
     private final static String TAG = AddBarcodeInfoDialog.class.getSimpleName();
+    public final static int MODE_ADD_BARCODE = 0;
+    public final static int MODE_EDIT_BARCODE = 1;
 
     private FragmentAddinfoBinding mBinding;
-    private CommonBarcodeItem mItem = null;
+    private BarcodeItem mItem = null;
     private DbHelper mDbHelper = null;
 
     private int mPicColor = -1;
     private Drawable mDrawsable = null;
+    private int mCommandType;
 
     public static AddBarcodeInfoDialog newInstance() {
         return new AddBarcodeInfoDialog();
@@ -76,8 +79,15 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
         mBinding.colorPic11.setOnClickListener(this);
         mBinding.colorPic12.setOnClickListener(this);
 
-        if (mItem.getValue() != null) {
-            setOverviewBarcode(mItem.getType(), mItem.getValue());
+        if (mItem.getBarcodeValue() != null) {
+            setOverviewBarcode(mItem.getBarcodeType(), mItem.getBarcodeValue());
+        }
+
+        if (mCommandType == MODE_EDIT_BARCODE) {
+            if(mItem != null) {
+                mBinding.edittextDialogAddBarcode.setText(mItem.getBarcodeName());
+                setPreSelecColor(mItem.getBarcodeCardColor());
+            }
         }
     }
 
@@ -181,13 +191,61 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
             return;
         }
 
-        if(mDbHelper != null) {
-            mDbHelper.insert(mBinding.edittextDialogAddBarcode.getText().toString(), mPicColor, mItem.getValue(), mDrawsable);
-            EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE_SUCCESS));
+        if (mDbHelper != null) {
+            if(mCommandType == MODE_ADD_BARCODE) {
+                mDbHelper.insert(mBinding.edittextDialogAddBarcode.getText().toString(), mPicColor, mItem.getBarcodeValue(), mDrawsable);
+                EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE_SUCCESS));
+            }else if(mCommandType == MODE_EDIT_BARCODE){
+                mDbHelper.update(mItem.getBarcodeId(), mBinding.edittextDialogAddBarcode.getText().toString(), mPicColor);
+                EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE_SUCCESS));
+            }
             dismiss();
-        }else{
+        } else {
             ToastUtil.getInstance(getActivity()).showToast(getResources().getString(R.string.string_unhandled_exception));
             dismiss();
+        }
+    }
+
+    private void setPreSelecColor(int color) {
+        switch (color) {
+            case R.color.color_pic_1:
+                mBinding.colorPic1.setSelected(true);
+                break;
+            case R.color.color_pic_2:
+                mBinding.colorPic2.setSelected(true);
+                break;
+            case R.color.color_pic_3:
+                mBinding.colorPic3.setSelected(true);
+                break;
+            case R.color.color_pic_4:
+                mBinding.colorPic4.setSelected(true);
+                break;
+            case R.color.color_pic_5:
+                mBinding.colorPic5.setSelected(true);
+                break;
+            case R.color.color_pic_6:
+                mBinding.colorPic6.setSelected(true);
+                break;
+            case R.color.color_pic_7:
+                mBinding.colorPic7.setSelected(true);
+                break;
+            case R.color.color_pic_8:
+                mBinding.colorPic8.setSelected(true);
+                break;
+            case R.color.color_pic_9:
+                mBinding.colorPic9.setSelected(true);
+                break;
+            case R.color.color_pic_10:
+                mBinding.colorPic10.setSelected(true);
+                break;
+            case R.color.color_pic_11:
+                mBinding.colorPic11.setSelected(true);
+                break;
+            case R.color.color_pic_12:
+                mBinding.colorPic12.setSelected(true);
+                break;
+
+
         }
     }
 
@@ -208,9 +266,16 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
         mBinding.colorPic12.setSelected(false);
     }
 
-    public void setBarcodeItem(CommonBarcodeItem item) {
+    public AddBarcodeInfoDialog setCommandType(int type) {
+        Log.d(TAG, "##### setCommandType #####");
+        this.mCommandType = type;
+        return this;
+    }
+
+    public AddBarcodeInfoDialog setBarcodeItem(BarcodeItem item) {
         Log.d(TAG, "##### setBarcodeItem #####");
         this.mItem = item;
+        return this;
     }
 
     private void setOverviewBarcode(int type, String value) {
