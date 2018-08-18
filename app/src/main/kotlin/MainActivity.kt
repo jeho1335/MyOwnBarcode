@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -31,7 +30,7 @@ import srjhlab.com.myownbarcode.Utils.ConstVariables
 import srjhlab.com.myownbarcode.Utils.DbHelper
 
 //When create class in kotlin, not use extends, implements keyword
-class Main : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnClickListener {
+class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnClickListener {
     val TAG = this.javaClass.simpleName
     val MY_PERMISSIONS_REQUEST = 1
 
@@ -53,28 +52,18 @@ class Main : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnClickListen
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        var result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "##### onActivityResult ##### value : " + result.contents + " format : " + result.formatName)
-        if (result.formatName.equals("CODE_39")
-                || result.formatName.equals("CODE_93")
-                || result.formatName.equals("CODE_128")
-                || result.formatName.equals("EAN_8")
-                || result.formatName.equals("EAN_13")
-                || result.formatName.equals("PDF_417")
-                || result.formatName.equals("UPC_A")
-                || result.formatName.equals("UPC_E")
-                || result.formatName.equals("CODABAR")
-                || result.formatName.equals("ITF")
-                || result.formatName.equals("QR_CODE")
-                || result.formatName.equals("AZTEC")) {
-            AddBarcodeInfoDialog
-                    .newInstance()
-                    .setCommandType(AddBarcodeInfoDialog.MODE_ADD_BARCODE)
-                    .setBarcodeItem(BarcodeItem(result.contents, CommonUtils.convertBarcodeType(this, result.formatName)))
-                    .show(fragmentManager, this.javaClass.simpleName)
+        var result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
 
-        } else {
-            Toast.makeText(this, R.string.string_not_supported_format, Toast.LENGTH_SHORT).show()
+        Log.d(TAG, "##### onActivityResult ##### value : " + result.contents + " format : " + result.formatName)
+        when (result.formatName) {
+            null -> return
+            "CODE_39", "CODE_93", "CODE_128", "EAN_8", "EAN_13", "PDF_417", "UPC_A", "UPC_E", "CODABAR", "ITF", "QR_CODE", "AZTEC" ->
+                AddBarcodeInfoDialog
+                        .newInstance()
+                        .setCommandType(AddBarcodeInfoDialog.MODE_ADD_BARCODE)
+                        .setBarcodeItem(BarcodeItem(result.contents, CommonUtils.convertBarcodeType(this, result.formatName)))
+                        .show(fragmentManager, this.javaClass.simpleName)
+            else -> Toast.makeText(this, R.string.string_not_supported_format, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -113,7 +102,7 @@ class Main : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnClickListen
         }
     }
 
-    override fun onItemLongClick(item: BarcodeItem) {
+    override fun onItemLongCLick(item: BarcodeItem) {
         when (item.itemType) {
             ConstVariables.ITEM_TYPE_EMPTY -> Log.d(TAG, "##### onItemLongClick ##### ITEM_TYPE_EMPTY")
             ConstVariables.ITEM_TYPE_BARCODE -> {
@@ -137,11 +126,12 @@ class Main : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnClickListen
 
     }
 
-    fun initUi() {
+    private fun initUi() {
         Log.d(TAG, "##### initUi #####")
 
         mItems = ArrayList<BarcodeItem>()
         mAdapter = BarcodeRecyclerviewAdapter(this)
+
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = mAdapter
@@ -152,7 +142,7 @@ class Main : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnClickListen
         initListItem()
     }
 
-    fun initListItem() {
+    private fun initListItem() {
         Log.d(TAG, "##### initListItem #####")
         var count = 0
         var dbLength = mDbHelper.length
@@ -173,12 +163,12 @@ class Main : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnClickListen
         (recyclerView.adapter as BarcodeRecyclerviewAdapter).setItems(mItems)
     }
 
-    fun makeBarcodeFromDB(b: ByteArray): Bitmap {
+    private fun makeBarcodeFromDB(b: ByteArray): Bitmap {
         Log.d(TAG, "##### makeBarcodeFromDB")
         return BitmapFactory.decodeByteArray(b, 0, b.size)
     }
 
-    fun setBarcodeScan() {
+    private fun setBarcodeScan() {
         Log.d(TAG, "##### setBarcodeScan #####")
 
         var permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -196,7 +186,7 @@ class Main : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnClickListen
         }
     }
 
-    fun gotoScan() {
+    private fun gotoScan() {
         Log.d(TAG, "##### gotoScan #####")
         var integrator = IntentIntegrator(this)
         integrator.setOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
