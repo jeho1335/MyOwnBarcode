@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <!--Common Color-->
+    <color name="color_white">#FFFFFFFF</color>
+
     <!-- Color Picker -->
     <color name="color_pic_1">#FFEF9DA2</color>
     <color name="color_pic_2">#FF9787BE</color>
@@ -17,5 +20,9 @@
     <color name="color_pic_10">#FF9787BE</color>
     <color name="color_pic_11">#FFFEF499</color>
     <color name="color_pic_12">#FFF4B386</color>
+
+    <!-- Selector color -->
+    <color name="share_bg_normal">#FF3F51B5</color>
+    <color name="share_bg_pressed">#FF3F5584</color>
 
 </resources>

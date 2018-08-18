@@ -63,9 +63,10 @@ public class SelectDialog extends DialogFragment {
         mRecyclerView.setHasFixedSize(true);
     }
 
-    public void setItems(List<SelectDialogItem> items){
+    public SelectDialog setItems(List<SelectDialogItem> items){
         Log.d(TAG, "##### setmItems ######");
         this.mItems = items;
+        return this;
     }
 
     private SelectRecyclerviewAdapter.IClickListener mListener = new SelectRecyclerviewAdapter.IClickListener() {
@@ -74,16 +75,16 @@ public class SelectDialog extends DialogFragment {
             Log.d(TAG, "##### pnClick ##### id : " + id);
             switch (id) {
                 case SelectDialogItem.INPUT_SELF:
-                    Log.d(TAG, "##### onClick ##### INPUT_SELF");
+                    Log.d(TAG, "##### onItemClick ##### INPUT_SELF");
                     EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_FROM_KEY));
                     break;
                 case SelectDialogItem.INPUT_SCAN:
-                    Log.d(TAG, "##### onClick ##### INPUT_SCAN");
+                    Log.d(TAG, "##### onItemClick ##### INPUT_SCAN");
                     EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_FROM_CCAN));
                     dismiss();
                     break;
                 case SelectDialogItem.INPUT_IMAGE:
-                    Log.d(TAG, "##### onClick ##### INPUT_IMAGE");
+                    Log.d(TAG, "##### onItemClick ##### INPUT_IMAGE");
                     EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_FROM_IMAGE));
                     break;
             }

@@ -1,4 +1,4 @@
-package srjhlab.com.myownbarcode;
+package srjhlab.com.myownbarcode.Utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -20,8 +20,6 @@ import com.google.zxing.oned.UPCAWriter;
 import com.google.zxing.oned.UPCEWriter;
 import com.google.zxing.pdf417.PDF417Writer;
 import com.google.zxing.qrcode.QRCodeWriter;
-
-import srjhlab.com.myownbarcode.Utils.ConstVariables;
 
 /**
  * Created by Administrator on 2017-05-12.

@@ -54,15 +54,19 @@ public class BarcodeModifyDialog extends DialogFragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_edit:
-                Log.d(TAG, "##### onClick ##### btn_edit");
+                Log.d(TAG, "##### onItemClick ##### btn_edit");
                 EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_EDIT_BARCODE, mItem));
                 dismiss();
                 break;
             case R.id.btn_delete:
-                Log.d(TAG, "##### onClick ##### btn_delete");
+                Log.d(TAG, "##### onItemClick ##### btn_delete");
                 EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_DELETE_BARCODE, mItem));
                 dismiss();
                 break;
+            case R.id.btn_share:
+                Log.d(TAG, "##### onItemClick ##### btn_share");
+                EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_SHARE_BARCODE, mItem));
+                dismiss();
         }
     }
 
@@ -71,11 +75,14 @@ public class BarcodeModifyDialog extends DialogFragment implements View.OnClickL
 
         mBinding.btnEdit.setOnClickListener(this);
         mBinding.btnDelete.setOnClickListener(this);
+        mBinding.btnShare.setOnClickListener(this);
     }
 
-    public void setItem(BarcodeItem item) {
+    public BarcodeModifyDialog setItem(BarcodeItem item) {
         Log.d(TAG, "##### setItem ######");
 
         this.mItem = item;
+
+        return this;
     }
 }

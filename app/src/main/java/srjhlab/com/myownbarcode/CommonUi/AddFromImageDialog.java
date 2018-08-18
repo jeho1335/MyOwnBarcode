@@ -18,10 +18,10 @@ import java.io.ByteArrayOutputStream;
 
 import srjhlab.com.myownbarcode.Item.BarcodeItem;
 import srjhlab.com.myownbarcode.R;
-import srjhlab.com.myownbarcode.ScanFromImage;
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct;
 import srjhlab.com.myownbarcode.Utils.CommonUtils;
 import srjhlab.com.myownbarcode.Utils.ConstVariables;
+import srjhlab.com.myownbarcode.Utils.ScanFromImage;
 import srjhlab.com.myownbarcode.databinding.FragmentAddimageBinding;
 
 import static android.app.Activity.RESULT_CANCELED;

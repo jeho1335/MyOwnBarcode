@@ -63,15 +63,15 @@ public class SelectRecyclerviewAdapter extends RecyclerView.Adapter<SelectRecycl
         if (v instanceof CardView) {
             switch (v.getId()) {
                 case SelectDialogItem.INPUT_SELF:
-                    Log.d(TAG, "##### onClick ##### INPUT_SELF");
+                    Log.d(TAG, "##### onItemClick ##### INPUT_SELF");
                     mListener.onClcik(SelectDialogItem.INPUT_SELF);
                     break;
                 case SelectDialogItem.INPUT_SCAN:
-                    Log.d(TAG, "##### onClick ##### INPUT_SCAN");
+                    Log.d(TAG, "##### onItemClick ##### INPUT_SCAN");
                     mListener.onClcik(SelectDialogItem.INPUT_SCAN);
                     break;
                 case SelectDialogItem.INPUT_IMAGE:
-                    Log.d(TAG, "##### onClick ##### INPUT_IMAGE");
+                    Log.d(TAG, "##### onItemClick ##### INPUT_IMAGE");
                     mListener.onClcik(SelectDialogItem.INPUT_IMAGE);
                     break;
             }

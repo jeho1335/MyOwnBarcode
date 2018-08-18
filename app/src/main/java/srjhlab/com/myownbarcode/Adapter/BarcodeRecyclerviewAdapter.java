@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import srjhlab.com.myownbarcode.Item.BarcodeItem;
-import srjhlab.com.myownbarcode.GetByteArrayFromDrawable;
 import srjhlab.com.myownbarcode.R;
 
 /**
@@ -30,7 +29,6 @@ public class BarcodeRecyclerviewAdapter extends RecyclerView.Adapter<BarcodeRecy
     private final Context context;
     private IOnClick mListener;
     private List<BarcodeItem> mItems;
-    private GetByteArrayFromDrawable GetByteArrayFromDrawable = new GetByteArrayFromDrawable();
 
     public BarcodeRecyclerviewAdapter(Context context) {
         this.context = context;
@@ -39,8 +37,8 @@ public class BarcodeRecyclerviewAdapter extends RecyclerView.Adapter<BarcodeRecy
     }
 
     public interface IOnClick{
-        void onClick(BarcodeItem item);
-        void onLongCLick(BarcodeItem item);
+        void onItemClick(BarcodeItem item);
+        void onItemLongClick(BarcodeItem item);
     }
 
     @Override
@@ -58,39 +56,6 @@ public class BarcodeRecyclerviewAdapter extends RecyclerView.Adapter<BarcodeRecy
         holder.cardid.setText(item.getBarcodeName());
         holder.cardview.setTag(position);
         holder.linearLayout.setBackgroundColor(item.getBarcodeCardColor());
-        /*holder.cardview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mItems.get(position).getItemType() == ConstVariables.ITEM_TYPE_BARCODE) {
-                    Activity activity = (Activity) v.getContext();
-                    Intent intent = new Intent(activity, BarcodeFocusActivity.class);
-                    intent.putExtra("body", GetByteArrayFromDrawable.getByteArrayFromDrawable(drawable));
-                    intent.putExtra("value", item.getBarcodeValue());
-                    intent.putExtra("name", item.getBarcodeName());
-                    activity.startActivity(intent);
-                    activity.overridePendingTransition(R.anim.fade_in, R.anim.hold);
-                } else if(mItems.get(position).getItemType() == ConstVariables.ITEM_TYPE_EMPTY) {
-                    EventBus.getDefault().post(new CommonEventbusObejct(SelectDialogItem.INPUT_SELF));
-                }
-            }
-        });
-        holder.cardview.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (position < mItems.size()) {
-                    Activity activity = (Activity) v.getContext();
-                    Intent intent = new Intent(activity, BarcodeModifiyActivity.class);
-                    intent.putExtra("mid", item.getBarcodeId());
-                    intent.putExtra("id", item.getBarcodeName());
-                    intent.putExtra("body", GetByteArrayFromDrawable.getByteArrayFromDrawable(drawable));
-                    intent.putExtra("color", item.getBarcodeCardColor());
-                    intent.putExtra("value", item.getBarcodeValue());
-                    activity.startActivity(intent);
-                    activity.overridePendingTransition(R.anim.fade_in, R.anim.hold);
-                }
-                return false;
-            }
-        });*/
     }
 
     public void setItems(List<BarcodeItem> items) {
@@ -129,13 +94,13 @@ public class BarcodeRecyclerviewAdapter extends RecyclerView.Adapter<BarcodeRecy
         @Override
         public void onClick(View v) {
             Log.d(TAG, "##### onCLick ##### getAdapterPosition : " + getAdapterPosition());
-            mListener.onClick(mItems.get(getAdapterPosition()));
+            mListener.onItemClick(mItems.get(getAdapterPosition()));
         }
 
         @Override
         public boolean onLongClick(View v) {
             Log.d(TAG, "##### onLongClick ##### getAdapterPosition : " + getAdapterPosition());
-            mListener.onLongCLick(mItems.get(getAdapterPosition()));
+            mListener.onItemLongClick(mItems.get(getAdapterPosition()));
             return false;
         }
     }

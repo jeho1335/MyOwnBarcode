@@ -38,9 +38,17 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/dialog_viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="150dp"
                 android:layout_marginTop="5dp"
-                android:gravity="center_horizontal"></android.support.v4.view.ViewPager>
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/type_dialog_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/font_size_15"
+                tools:text="CODE_39" />
 
             <TextView
                 android:layout_width="wrap_content"

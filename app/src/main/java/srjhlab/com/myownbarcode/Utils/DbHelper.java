@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteStatement;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-import srjhlab.com.myownbarcode.GetByteArrayFromDrawable;
-
 /**
  * Created by Administrator on 2016-10-21.
  */
@@ -20,8 +18,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static SQLiteDatabase mDB;
     private DbHelper mDBHelper;
     private Context mCtx;
-    private int size;
-    GetByteArrayFromDrawable convert = new GetByteArrayFromDrawable();
+    public int size;
 
     public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -39,7 +36,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void insert(String name, int color, String value, Drawable img) {
-        byte[] barcode = convert.getByteArrayFromDrawable(img);
+        byte[] barcode = CommonUtils.getByteArrayFromDrawable(img);
         SQLiteDatabase db = getWritableDatabase();
         SQLiteStatement p = db.compileStatement("INSERT INTO barcode values(null, '" + name + "', " + color+ ", '" + value + "', ?);");
         p.bindBlob(1, barcode);

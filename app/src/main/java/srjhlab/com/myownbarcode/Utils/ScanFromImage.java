@@ -1,4 +1,4 @@
-package srjhlab.com.myownbarcode;
+package srjhlab.com.myownbarcode.Utils;
 
 import android.graphics.Bitmap;
 import android.util.Log;

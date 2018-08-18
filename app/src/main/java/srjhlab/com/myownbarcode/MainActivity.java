@@ -168,9 +168,7 @@ public class MainActivity extends AppCompatActivity implements BarcodeRecyclervi
                     + "볼륨 UP/DOWN 버튼으로 플래시를 켜고 끌 수 있습니다.");
             integrator.setWide();
             integrator.initiateScan();
-            //ew IntentIntegrator(MainActivity.this).initiateScan();
         }
-
     }
 
     public Bitmap makeBarcodeFromDB(byte[] b) {
@@ -181,10 +179,10 @@ public class MainActivity extends AppCompatActivity implements BarcodeRecyclervi
     }
 
     @Override
-    public void onClick(BarcodeItem item) {
+    public void onItemClick(BarcodeItem item) {
         switch (item.getItemType()) {
             case ConstVariables.ITEM_TYPE_EMPTY:
-                Log.d(TAG, "##### onClick ##### ITEM_TYPE_EMPTY");
+                Log.d(TAG, "##### onItemClick ##### ITEM_TYPE_EMPTY");
                 List<SelectDialogItem> mItems = new ArrayList<>();
                 mItems.add(new SelectDialogItem(SelectDialogItem.INPUT_SELF));
                 mItems.add(new SelectDialogItem(SelectDialogItem.INPUT_SCAN));
@@ -197,11 +195,13 @@ public class MainActivity extends AppCompatActivity implements BarcodeRecyclervi
                 }
                 break;
             case ConstVariables.ITEM_TYPE_BARCODE:
-                Log.d(TAG, "##### onClick ##### ITEM_TYPE_BARCODE");
+                Log.d(TAG, "##### onItemClick ##### ITEM_TYPE_BARCODE");
                 if (item != null) {
                     final BarcodeFocusDialog barcodeFocusDiaolg = BarcodeFocusDialog.newInstance();
-                    barcodeFocusDiaolg.setItem(item);
-                    barcodeFocusDiaolg.show(getFragmentManager(), barcodeFocusDiaolg.getClass().getSimpleName());
+                    barcodeFocusDiaolg
+                            .setItem(item)
+                            .setType(barcodeFocusDiaolg.VIEW_TYPE_FOCUS)
+                            .show(getFragmentManager(), barcodeFocusDiaolg.getClass().getSimpleName());
                 }
 
                 break;
@@ -209,13 +209,13 @@ public class MainActivity extends AppCompatActivity implements BarcodeRecyclervi
     }
 
     @Override
-    public void onLongCLick(BarcodeItem item) {
+    public void onItemLongClick(BarcodeItem item) {
         switch (item.getItemType()) {
             case ConstVariables.ITEM_TYPE_EMPTY:
-                Log.d(TAG, "##### onLongCLick ##### ITEM_TYPE_EMPTY");
+                Log.d(TAG, "##### onItemLongClick ##### ITEM_TYPE_EMPTY");
                 break;
             case ConstVariables.ITEM_TYPE_BARCODE:
-                Log.d(TAG, "##### onLongCLick ##### ITEM_TYPE_BARCODE");
+                Log.d(TAG, "##### onItemLongClick ##### ITEM_TYPE_BARCODE");
                 if (item != null) {
                     final BarcodeModifyDialog barcodeModifyDialog = BarcodeModifyDialog.newInstance();
                     barcodeModifyDialog.setItem(item);
@@ -304,7 +304,14 @@ public class MainActivity extends AppCompatActivity implements BarcodeRecyclervi
                 mDBHelper.delete(((BarcodeItem)object.getVal()).getBarcodeId());
                 initListItem();
                 break;
+            case ConstVariables.EVENTBUS_SHARE_BARCODE:
+                Log.d(TAG, "##### EVENTBUS_SHARE_BARCODE #####");
 
+                final BarcodeFocusDialog barcodeFocusDiaolg = BarcodeFocusDialog.newInstance();
+                barcodeFocusDiaolg
+                        .setItem(((BarcodeItem)object.getVal()))
+                        .setType(barcodeFocusDiaolg.VIEW_TYPE_SHARE)
+                        .show(getFragmentManager(), barcodeFocusDiaolg.getClass().getSimpleName());
         }
     }
     /*

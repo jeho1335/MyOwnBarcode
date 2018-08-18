@@ -13,14 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import org.apache.commons.lang.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import srjhlab.com.myownbarcode.Item.BarcodeItem;
-import srjhlab.com.myownbarcode.Utils.DbHelper;
-import srjhlab.com.myownbarcode.MakeBarcode;
 import srjhlab.com.myownbarcode.R;
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct;
+import srjhlab.com.myownbarcode.Utils.CommonUtils;
 import srjhlab.com.myownbarcode.Utils.ConstVariables;
+import srjhlab.com.myownbarcode.Utils.DbHelper;
+import srjhlab.com.myownbarcode.Utils.MakeBarcode;
 import srjhlab.com.myownbarcode.Utils.ToastUtil;
 import srjhlab.com.myownbarcode.databinding.FragmentAddinfoBinding;
 
@@ -52,7 +54,7 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getDialog().setCanceledOnTouchOutside(true);
 
-        initializeUi();
+        initializeUI();
         return mBinding.getRoot();
     }
 
@@ -62,8 +64,16 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
         super.dismiss();
     }
 
-    private void initializeUi() {
-        Log.d(TAG, "##### inititializeUi #####");
+    private void initializeUI() {
+        Log.d(TAG, "##### initializeUI #####");
+
+        if(mItem != null) {
+            mBinding.textviewTypeDialogAddBarcode.setText(CommonUtils.convertBarcodeType(getActivity(), mItem.getBarcodeType()));
+            String strArr[] = CommonUtils.splitStringEvery(mItem.getBarcodeValue(),4);
+            String str = StringUtils.join(strArr, " ");
+            mBinding.textviewValueDialogAddBarcode.setText(str);
+        }
+
         mBinding.imageviewOkDialogAddBarcode.setOnClickListener(this);
         mBinding.imageviewCancelDialogAddBarcode.setOnClickListener(this);
         mBinding.colorPic1.setOnClickListener(this);
@@ -273,7 +283,7 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
     }
 
     public AddBarcodeInfoDialog setBarcodeItem(BarcodeItem item) {
-        Log.d(TAG, "##### setBarcodeItem #####");
+        Log.d(TAG, "##### setBarcodeItem ##### type : " + item.getBarcodeType() + " value : " + item.getBarcodeValue());
         this.mItem = item;
         return this;
     }

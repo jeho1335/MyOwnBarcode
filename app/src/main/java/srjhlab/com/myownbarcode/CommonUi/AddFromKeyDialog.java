@@ -85,18 +85,18 @@ public class AddFromKeyDialog extends DialogFragment implements View.OnClickList
         } else {
             mItems = new ArrayList<>();
         }
-        mItems.add(new BarcodePagerItem(ConstVariables.CODE_39));
-        mItems.add(new BarcodePagerItem(ConstVariables.CODE_93));
-        mItems.add(new BarcodePagerItem(ConstVariables.CODE_128));
-        mItems.add(new BarcodePagerItem(ConstVariables.EAN_8));
-        mItems.add(new BarcodePagerItem(ConstVariables.EAN_13));
-        mItems.add(new BarcodePagerItem(ConstVariables.PDF_417));
-        mItems.add(new BarcodePagerItem(ConstVariables.UPC_A));
-        mItems.add(new BarcodePagerItem(ConstVariables.CODABAR));
-        mItems.add(new BarcodePagerItem(ConstVariables.ITF));
-        mItems.add(new BarcodePagerItem(ConstVariables.QR_CODE));
-        mItems.add(new BarcodePagerItem(ConstVariables.MAXI_CODE));
-        mItems.add(new BarcodePagerItem(ConstVariables.AZTEC));
+        mItems.add(new BarcodePagerItem(ConstVariables.CODE_39, getActivity().getResources().getString(R.string.var_code_39)));
+        mItems.add(new BarcodePagerItem(ConstVariables.CODE_93, getActivity().getResources().getString(R.string.var_code_93)));
+        mItems.add(new BarcodePagerItem(ConstVariables.CODE_128, getActivity().getResources().getString(R.string.var_code_128)));
+        mItems.add(new BarcodePagerItem(ConstVariables.EAN_8, getActivity().getResources().getString(R.string.var_ean_8)));
+        mItems.add(new BarcodePagerItem(ConstVariables.EAN_13, getActivity().getResources().getString(R.string.var_ean_13)));
+        mItems.add(new BarcodePagerItem(ConstVariables.PDF_417, getActivity().getResources().getString(R.string.var_pdf_417)));
+        mItems.add(new BarcodePagerItem(ConstVariables.UPC_A, getActivity().getResources().getString(R.string.var_upc_a)));
+        mItems.add(new BarcodePagerItem(ConstVariables.CODABAR, getActivity().getResources().getString(R.string.var_codabar)));
+        mItems.add(new BarcodePagerItem(ConstVariables.ITF, getActivity().getResources().getString(R.string.var_itf)));
+        mItems.add(new BarcodePagerItem(ConstVariables.QR_CODE, getActivity().getResources().getString(R.string.var_qr_code)));
+        mItems.add(new BarcodePagerItem(ConstVariables.MAXI_CODE, getActivity().getResources().getString(R.string.var_maxicode)));
+        mItems.add(new BarcodePagerItem(ConstVariables.AZTEC, getActivity().getResources().getString(R.string.var_aztec)));
     }
 
     private void initializeUi() {
@@ -104,6 +104,11 @@ public class AddFromKeyDialog extends DialogFragment implements View.OnClickList
         mBinding.dialogViewpager.addOnPageChangeListener(mPagerChangeListener);
         mBinding.dialogViewpager.setOffscreenPageLimit(1);
         mBinding.dialogViewpager.setClipChildren(true);
+
+        if(mItems != null) {
+            mBinding.typeDialogTextview.setText(mItems.get(0).getName());
+            mSelectBarcodeType = 0;
+        }
 
         mBinding.imageviewDialogOk.setOnClickListener(this);
         mBinding.imageviewDialogCancel.setOnClickListener(this);
@@ -177,8 +182,9 @@ public class AddFromKeyDialog extends DialogFragment implements View.OnClickList
 
         @Override
         public void onPageSelected(int position) {
-            Log.d(TAG, "##### onPagerSelected ##### position : " + position);
+            Log.d(TAG, "##### onPagerSelected ##### position : " + position + " barcodeName : " + mItems.get(position).getName());
             mSelectBarcodeType = position;
+            mBinding.typeDialogTextview.setText(mItems.get(mSelectBarcodeType).getName());
         }
 
         @Override
