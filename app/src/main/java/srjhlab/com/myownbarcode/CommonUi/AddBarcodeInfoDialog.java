@@ -21,7 +21,6 @@ import srjhlab.com.myownbarcode.R;
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct;
 import srjhlab.com.myownbarcode.Utils.CommonUtils;
 import srjhlab.com.myownbarcode.Utils.ConstVariables;
-import srjhlab.com.myownbarcode.Utils.DbHelper;
 import srjhlab.com.myownbarcode.Utils.MakeBarcode;
 import srjhlab.com.myownbarcode.Utils.ToastUtil;
 import srjhlab.com.myownbarcode.databinding.FragmentAddinfoBinding;
@@ -33,10 +32,10 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
 
     private FragmentAddinfoBinding mBinding;
     private BarcodeItem mItem = null;
-    private DbHelper mDbHelper = null;
 
     private int mPicColor = -1;
     private Drawable mDrawsable = null;
+    private Bitmap mBitmap = null;
     private int mCommandType;
 
     public static AddBarcodeInfoDialog newInstance() {
@@ -48,7 +47,6 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "##### onCreateVIew #####");
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_addinfo, container, false);
-        mDbHelper = new DbHelper(getActivity(), getResources().getString(R.string.db_name), null, 1);
 
         getDialog().getWindow().getAttributes().windowAnimations = R.style.SelectDialogAnimation;
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -67,9 +65,9 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
     private void initializeUI() {
         Log.d(TAG, "##### initializeUI #####");
 
-        if(mItem != null) {
+        if (mItem != null) {
             mBinding.textviewTypeDialogAddBarcode.setText(CommonUtils.convertBarcodeType(getActivity(), mItem.getBarcodeType()));
-            String strArr[] = CommonUtils.splitStringEvery(mItem.getBarcodeValue(),4);
+            String strArr[] = CommonUtils.splitStringEvery(mItem.getBarcodeValue(), 4);
             String str = StringUtils.join(strArr, " ");
             mBinding.textviewValueDialogAddBarcode.setText(str);
         }
@@ -94,7 +92,7 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
         }
 
         if (mCommandType == MODE_EDIT_BARCODE) {
-            if(mItem != null) {
+            if (mItem != null) {
                 mBinding.edittextDialogAddBarcode.setText(mItem.getBarcodeName());
                 setPreSelecColor(mItem.getBarcodeCardColor());
             }
@@ -201,19 +199,15 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
             return;
         }
 
-        if (mDbHelper != null) {
-            if(mCommandType == MODE_ADD_BARCODE) {
-                mDbHelper.insert(mBinding.edittextDialogAddBarcode.getText().toString(), mPicColor, mItem.getBarcodeValue(), mDrawsable);
-                EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE_SUCCESS));
-            }else if(mCommandType == MODE_EDIT_BARCODE){
-                mDbHelper.update(mItem.getBarcodeId(), mBinding.edittextDialogAddBarcode.getText().toString(), mPicColor);
-                EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE_SUCCESS));
-            }
-            dismiss();
-        } else {
-            ToastUtil.getInstance(getActivity()).showToast(getResources().getString(R.string.string_unhandled_exception));
-            dismiss();
+        //    public BarcodeItem(int type, int barcodeType, int barcodeId, String barcodeName, int barcodeColor, String barcodeValue, Bitmap barcodeBitmap) {
+        if (mCommandType == MODE_ADD_BARCODE) {
+            //mDbHelper.insert(mBinding.edittextDialogAddBarcode.getText().toString(), mPicColor, mItem.getBarcodeValue(), mDrawsable);
+            EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_NEW_BARCODE, new BarcodeItem(ConstVariables.ITEM_TYPE_BARCODE, mItem.getBarcodeType(), mItem.getBarcodeId(), mBinding.edittextDialogAddBarcode.getText().toString(), mPicColor, mItem.getBarcodeValue(), mBitmap)));
+        } else if (mCommandType == MODE_EDIT_BARCODE) {
+            //mDbHelper.update(mItem.getBarcodeId(), mBinding.edittextDialogAddBarcode.getText().toString(), mPicColor);
+            EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_MODIFY_BARCODE, new BarcodeItem(ConstVariables.ITEM_TYPE_BARCODE, mItem.getBarcodeType(), mItem.getBarcodeId(), mBinding.edittextDialogAddBarcode.getText().toString(), mPicColor, mItem.getBarcodeValue(), mItem.getBarcodeBitmap())));
         }
+        dismiss();
     }
 
     private void setPreSelecColor(int color) {
@@ -291,6 +285,7 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
     private void setOverviewBarcode(int type, String value) {
         Log.d(TAG, "##### setOverviewBarcode #####");
         Bitmap imageBitmap = MakeBarcode.getInstance().makeBarcode(type, value);
+        mBitmap = imageBitmap;
         mBinding.imageviewBarcodeDialogAddBarcode.setImageBitmap(imageBitmap);
         mDrawsable = new BitmapDrawable(imageBitmap);
     }

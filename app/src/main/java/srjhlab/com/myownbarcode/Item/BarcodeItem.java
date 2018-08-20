@@ -98,4 +98,6 @@ public class BarcodeItem {
         this.mBarcodeType = barcodeType;
         this.mBarcodeValue = barcodeValue;
     }
+
+    public BarcodeItem(){}
 }

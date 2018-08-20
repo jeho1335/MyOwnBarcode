@@ -12,6 +12,8 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.helper.ItemTouchHelper
+import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -21,30 +23,33 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import srjhlab.com.myownbarcode.Adapter.BarcodeRecyclerviewAdapter
+import srjhlab.com.myownbarcode.Adapter.RecyclerViewItemTouchHelper
 import srjhlab.com.myownbarcode.CommonUi.*
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.Item.SelectDialogItem
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.ConstVariables
-import srjhlab.com.myownbarcode.Utils.DbHelper
+import srjhlab.com.myownbarcode.Utils.PreferencesManager
 
 //When create class in kotlin, not use extends, implements keyword
 class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnClickListener {
     val TAG = this.javaClass.simpleName
-    val MY_PERMISSIONS_REQUEST = 1
+    private val PERMISSIONS_REQUEST = 1
 
-    lateinit var mItem: BarcodeItem // ?= means this variable can be nullable
-    lateinit var mItems: MutableList<BarcodeItem> //lateinit is using non nullable variable requires initialize after onCreate()
-    var mAdapter: BarcodeRecyclerviewAdapter? = null
-    lateinit var mDbHelper: DbHelper
-    var mDefaultImage: Bitmap? = null
+    private lateinit var mItem: BarcodeItem // ?= means this variable can be nullable
+    private lateinit var mItems: MutableList<BarcodeItem> //lateinit is using non nullable variable requires initialize after onCreate()
+    private lateinit var mAdapter: BarcodeRecyclerviewAdapter
+    private var mDefaultImage: Bitmap? = null
+    private var mLongClickPosition: Int = 0
+
+    private lateinit var mItemTouchHelper: ItemTouchHelper
+    private lateinit var mRecyclerViewItemTouchHelper: RecyclerViewItemTouchHelper
 
     //When override a method in kotlin, not use @annotation
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mDbHelper = DbHelper(applicationContext, "barcodeimg.db", null, 1)
         EventBus.getDefault().register(this)
         initUi()
     }
@@ -75,12 +80,12 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
         }
     }
 
-    override fun onClick(v: View?) {
-        val viewId: View? = v
+    override fun onClick(v: View) {
+        val viewId = v.id
 
         //when is like that Switch() in java
         when (viewId) {
-            textview_license -> Log.d(TAG, "##### onItemClick ##### textview_lisence")
+            textview_license.id -> Log.d(TAG, "##### onItemClick ##### textview_lisence")
             else -> Log.d(TAG, "##### onCLick ##### another")
         }
     }
@@ -89,7 +94,7 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
         when (item.itemType) {
             ConstVariables.ITEM_TYPE_EMPTY -> {
                 Log.d(TAG, "##### onItemClick ##### ITEM_TYPE_EMPTY")
-                var items: MutableList<SelectDialogItem> = ArrayList<SelectDialogItem>()
+                var items: MutableList<SelectDialogItem> = ArrayList()
                 items.add(SelectDialogItem(SelectDialogItem.INPUT_SELF))
                 items.add(SelectDialogItem(SelectDialogItem.INPUT_SCAN))
                 items.add(SelectDialogItem(SelectDialogItem.INPUT_IMAGE))
@@ -102,20 +107,26 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
         }
     }
 
-    override fun onItemLongCLick(item: BarcodeItem) {
+    override fun onItemLongCLick(item: BarcodeItem, position: Int) {
         when (item.itemType) {
             ConstVariables.ITEM_TYPE_EMPTY -> Log.d(TAG, "##### onItemLongClick ##### ITEM_TYPE_EMPTY")
             ConstVariables.ITEM_TYPE_BARCODE -> {
                 Log.d(TAG, "##### onItemLongClick #####")
+                mLongClickPosition = position
                 BarcodeModifyDialog.newInstance().setItem(item).show(fragmentManager, this.javaClass.simpleName)
             }
         }
     }
 
+    override fun onStartDrag(viewHolder: BarcodeRecyclerviewAdapter.ViewHolder) {
+        Log.d(TAG, "##### onStartDrag #####")
+        mItemTouchHelper.startDrag(viewHolder)
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>?, grantResults: IntArray) {
         Log.d(TAG, "##### onRequestPermissionRequest #####")
         when (requestCode) {
-            MY_PERMISSIONS_REQUEST -> {
+            PERMISSIONS_REQUEST -> {
                 if (grantResults.size > 0 && grantResults[0].equals(PackageManager.PERMISSION_GRANTED)) {
                     gotoScan()
                 } else {
@@ -132,10 +143,15 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
         mItems = ArrayList<BarcodeItem>()
         mAdapter = BarcodeRecyclerviewAdapter(this)
 
+        mRecyclerViewItemTouchHelper = RecyclerViewItemTouchHelper(mAdapter as RecyclerViewItemTouchHelper.IItemTouchHelperAdapter)
+        mItemTouchHelper = ItemTouchHelper(mRecyclerViewItemTouchHelper)
+        mItemTouchHelper.attachToRecyclerView(recyclerView)
+
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = mAdapter
-        //textview_license.setText(Html.fromHtml("<u>" + R.string.string_open_source_licensee + "</u>"))
+
+        textview_license.text = Html.fromHtml("<u>" + getString(R.string.string_open_source_licensee) + "</u>")
         textview_license.setOnClickListener(this)
         val bitmapDrawable = getDrawable(R.drawable.img_ref) as BitmapDrawable
         mDefaultImage = bitmapDrawable.bitmap
@@ -144,22 +160,7 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
 
     private fun initListItem() {
         Log.d(TAG, "##### initListItem #####")
-        var count = 0
-        var dbLength = mDbHelper.length
-
-        with(mItems) {
-            clear()
-        }
-
-        while (count <= dbLength) {
-            if (mDbHelper.barcode[count] != null) {
-                mItem = BarcodeItem(ConstVariables.ITEM_TYPE_BARCODE, mDbHelper.id[count], mDbHelper.name[count], mDbHelper.color[count], mDbHelper.value[count], makeBarcodeFromDB(mDbHelper.barcode[count]))
-            } else {
-                mItem = BarcodeItem(ConstVariables.ITEM_TYPE_EMPTY, 0, "새 바코드 추가", 0, " ", mDefaultImage)
-            }
-            mItems.add(mItem)
-            ++count
-        }
+        mItems = PreferencesManager.loadBarcodeItemList(this)
         (recyclerView.adapter as BarcodeRecyclerviewAdapter).setItems(mItems)
     }
 
@@ -176,9 +177,9 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
         if (permissionCheck == PackageManager.PERMISSION_DENIED) run {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), MY_PERMISSIONS_REQUEST)
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), PERMISSIONS_REQUEST)
                 } else {
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), MY_PERMISSIONS_REQUEST)
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), PERMISSIONS_REQUEST)
                 }
             }
         } else {
@@ -198,16 +199,32 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(busObject: CommonEventbusObejct) {
         when (busObject.type) {
-            ConstVariables.EVENTBUS_ADD_NEW_BARCODE -> Log.d(TAG, "##### EVENTBUS_ADD_NEW_BARCODE #####")
+            ConstVariables.EVENTBUS_ADD_NEW_BARCODE -> {
+                Log.d(TAG, "##### EVENTBUS_ADD_NEW_BARCODE #####")
+                val item = busObject.`val` as BarcodeItem
+                (recyclerView.adapter as BarcodeRecyclerviewAdapter).addItem(item)
+                PreferencesManager.saveBarcodeItemList(this, (recyclerView.adapter as BarcodeRecyclerviewAdapter).getItems())
+            }
+            ConstVariables.EVENTBUS_MODIFY_BARCODE -> {
+                Log.d(TAG, "##### EVENTBUS_MODIFY_BARCODE #####")
+                val item = busObject.`val` as BarcodeItem
+                (recyclerView.adapter as BarcodeRecyclerviewAdapter).updateItem(mLongClickPosition, item)
+                PreferencesManager.saveBarcodeItemList(this, (recyclerView.adapter as BarcodeRecyclerviewAdapter).getItems())
+            }
+            ConstVariables.EVENTBUS_DELETE_BARCODE -> {
+                Log.d(TAG, "##### EVENTBUS_DELETE_BARCODE #####")
+                val item = busObject.`val` as BarcodeItem
+                (recyclerView.adapter as BarcodeRecyclerviewAdapter).deleteItem(mLongClickPosition, item)
+                PreferencesManager.saveBarcodeItemList(this, (recyclerView.adapter as BarcodeRecyclerviewAdapter).getItems())
+            }
             ConstVariables.EVENTBUS_SHOW_BARCODE -> Log.d(TAG, "##### EVENTBUS_SHOW_BARCODE #####")
-            ConstVariables.EVENTBUS_MODIFY_BARCODE -> Log.d(TAG, "##### EVENTBUS_MODIFY_BARCODE #####")
             ConstVariables.EVENTBUS_ADD_FROM_KEY -> {
                 Log.d(TAG, "##### EVENTBUS_ADD_FROM_KEY #####")
                 val dialog = AddFromKeyDialog.newInstance()
                 dialog.show(fragmentManager, dialog.javaClass.simpleName)
             }
-            ConstVariables.EVENTBUS_ADD_FROM_CCAN -> {
-                Log.d(TAG, "##### EVENTBUS_ADD_FROM_CCAN #####")
+            ConstVariables.EVENTBUS_ADD_FROM_SCAN -> {
+                Log.d(TAG, "##### EVENTBUS_ADD_FROM_SCAN #####")
                 setBarcodeScan()
             }
             ConstVariables.EVENTBUS_ADD_FROM_IMAGE -> {
@@ -223,7 +240,7 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
                         .show(fragmentManager, AddBarcodeInfoDialog::class.java.simpleName)
             }
             ConstVariables.EVENTBUS_ADD_BARCODE_SUCCESS -> {
-                initListItem()
+                //initListItem()
                 Log.d(TAG, "##### EVENTBUS_ADD_BARCODE_SUCCESS #####")
             }
             ConstVariables.EVENTBUS_EDIT_BARCODE -> {
@@ -233,17 +250,16 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
                         .setCommandType(AddBarcodeInfoDialog.MODE_EDIT_BARCODE)
                         .show(fragmentManager, AddBarcodeInfoDialog::class.java.simpleName)
             }
-            ConstVariables.EVENTBUS_DELETE_BARCODE -> {
-                Log.d(TAG, "##### EVENTBUS_DELETE_BARCODE #####")
-                mDbHelper.delete((busObject.`val` as BarcodeItem).barcodeId)
-                initListItem()
-            }
             ConstVariables.EVENTBUS_SHARE_BARCODE -> {
                 Log.d(TAG, "##### EVENTBUS_SHARE_BARCODE #####")
                 BarcodeFocusDialog.newInstance()
                         .setItem(busObject.`val` as BarcodeItem)
                         .setType(BarcodeFocusDialog.VIEW_TYPE_SHARE)
                         .show(fragmentManager, this.javaClass.simpleName)
+            }
+            ConstVariables.EVENTBUS_ITEM_MOVE_FINISH -> {
+                Log.d(TAG, "#####  EVENTBUS_ITEM_MOVE_FINISH  #####")
+                PreferencesManager.saveBarcodeItemList(this, (recyclerView.adapter as BarcodeRecyclerviewAdapter).getItems())
             }
         }
     }

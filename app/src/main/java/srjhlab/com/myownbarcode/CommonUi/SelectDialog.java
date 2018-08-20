@@ -80,7 +80,7 @@ public class SelectDialog extends DialogFragment {
                     break;
                 case SelectDialogItem.INPUT_SCAN:
                     Log.d(TAG, "##### onItemClick ##### INPUT_SCAN");
-                    EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_FROM_CCAN));
+                    EventBus.getDefault().post(new CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_FROM_SCAN));
                     dismiss();
                     break;
                 case SelectDialogItem.INPUT_IMAGE:

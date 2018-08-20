@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import srjhlab.com.myownbarcode.Item.BarcodeItem;
 import srjhlab.com.myownbarcode.R;
 import srjhlab.com.myownbarcode.Utils.CommonUtils;
+import srjhlab.com.myownbarcode.Utils.MakeBarcode;
 import srjhlab.com.myownbarcode.databinding.FragmentBarcodefocusBinding;
 
 
@@ -64,7 +65,7 @@ public class BarcodeFocusDialog extends DialogFragment {
             String str = StringUtils.join(strArr, " ");
             mBinding.textValue.setText(str);
             mBinding.textValue.invalidate();
-            mBinding.imgBarcode.setImageBitmap(mItem.getBarcodeBitmap());
+            mBinding.imgBarcode.setImageBitmap((MakeBarcode.getInstance().makeBarcode(mItem.getBarcodeType(), mItem.getBarcodeValue())));
             if(mViewType == VIEW_TYPE_SHARE){
                 int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
                 if (permissionCheck == PackageManager.PERMISSION_DENIED) {
