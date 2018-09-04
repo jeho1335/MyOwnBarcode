@@ -211,45 +211,34 @@ public class AddBarcodeInfoDialog extends DialogFragment implements View.OnClick
     }
 
     private void setPreSelecColor(int color) {
-        switch (color) {
-            case R.color.color_pic_1:
-                mBinding.colorPic1.setSelected(true);
-                break;
-            case R.color.color_pic_2:
-                mBinding.colorPic2.setSelected(true);
-                break;
-            case R.color.color_pic_3:
-                mBinding.colorPic3.setSelected(true);
-                break;
-            case R.color.color_pic_4:
-                mBinding.colorPic4.setSelected(true);
-                break;
-            case R.color.color_pic_5:
-                mBinding.colorPic5.setSelected(true);
-                break;
-            case R.color.color_pic_6:
-                mBinding.colorPic6.setSelected(true);
-                break;
-            case R.color.color_pic_7:
-                mBinding.colorPic7.setSelected(true);
-                break;
-            case R.color.color_pic_8:
-                mBinding.colorPic8.setSelected(true);
-                break;
-            case R.color.color_pic_9:
-                mBinding.colorPic9.setSelected(true);
-                break;
-            case R.color.color_pic_10:
-                mBinding.colorPic10.setSelected(true);
-                break;
-            case R.color.color_pic_11:
-                mBinding.colorPic11.setSelected(true);
-                break;
-            case R.color.color_pic_12:
-                mBinding.colorPic12.setSelected(true);
-                break;
-
-
+        Log.d(TAG, "##### setPreSelectColor ##### color : " + color);
+        if(getActivity() == null){
+            return;
+        }
+        if(color == getActivity().getColor(R.color.color_pic_1)){
+            mBinding.colorPic1.setSelected(true);
+        }else if(color == getActivity().getColor(R.color.color_pic_2)){
+            mBinding.colorPic2.setSelected(true);
+        }else if(color == getActivity().getColor(R.color.color_pic_3)){
+            mBinding.colorPic3.setSelected(true);
+        }else if(color == getActivity().getColor(R.color.color_pic_4)){
+            mBinding.colorPic4.setSelected(true);
+        }else if(color == getActivity().getColor(R.color.color_pic_5)){
+            mBinding.colorPic5.setSelected(true);
+        }else if(color == getActivity().getColor(R.color.color_pic_6)){
+            mBinding.colorPic6.setSelected(true);
+        }else if(color == getActivity().getColor(R.color.color_pic_7)){
+            mBinding.colorPic7.setSelected(true);
+        }else if(color == getActivity().getColor(R.color.color_pic_8)){
+            mBinding.colorPic8.setSelected(true);
+        }else if(color == getActivity().getColor(R.color.color_pic_9)){
+            mBinding.colorPic9.setSelected(true);
+        }else if(color == getActivity().getColor(R.color.color_pic_10)){
+            mBinding.colorPic10.setSelected(true);
+        }else if(color == getActivity().getColor(R.color.color_pic_11)){
+            mBinding.colorPic11.setSelected(true);
+        }else if(color == getActivity().getColor(R.color.color_pic_12)){
+            mBinding.colorPic12.setSelected(true);
         }
     }
 

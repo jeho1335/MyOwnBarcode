@@ -8,6 +8,9 @@ public class SelectDialogItem {
     public final static int INPUT_SELF = 0;
     public final static int INPUT_SCAN = 1;
     public final static int INPUT_IMAGE = 2;
+    public final static int INPUT_MODIFTY = 3;
+    public final static int INPUT_DELETE = 4;
+    public final static int INPUT_SHARE = 5;
 
     private int mItemType;
 

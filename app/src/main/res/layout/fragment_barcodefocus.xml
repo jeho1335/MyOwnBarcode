@@ -5,41 +5,40 @@
     <RelativeLayout
         android:id="@+id/layout_barcode_focus"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:gravity="center"
+        android:layout_height="match_parent"
         android:background="@color/color_white">
 
         <TextView
             android:id="@+id/text_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
             android:textColor="#000000"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            tools:text="TestBarcode"/>
+            tools:text="TestBarcode" />
 
         <ImageView
             android:id="@+id/img_barcode"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="100dp"
             android:layout_below="@+id/text_name"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            tools:background="@color/share_bg_pressed"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            tools:background="@color/share_bg_pressed" />
 
         <TextView
             android:id="@+id/text_value"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/img_barcode"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
             android:textColor="#000000"
             android:textSize="20dp"
             android:textStyle="bold"
-            tools:text="0000 0000 0000 0000"/>
+            tools:text="0000 0000 0000 0000" />
     </RelativeLayout>
 </layout>

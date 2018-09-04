@@ -25,6 +25,9 @@ import org.greenrobot.eventbus.ThreadMode
 import srjhlab.com.myownbarcode.Adapter.BarcodeRecyclerviewAdapter
 import srjhlab.com.myownbarcode.Adapter.RecyclerViewItemTouchHelper
 import srjhlab.com.myownbarcode.CommonUi.*
+import srjhlab.com.myownbarcode.Dialog.FocusDialog
+import srjhlab.com.myownbarcode.Dialog.AddFromImageDialog
+import srjhlab.com.myownbarcode.Dialog.SelectDialog
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.Item.SelectDialogItem
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
@@ -98,11 +101,14 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
                 items.add(SelectDialogItem(SelectDialogItem.INPUT_SELF))
                 items.add(SelectDialogItem(SelectDialogItem.INPUT_SCAN))
                 items.add(SelectDialogItem(SelectDialogItem.INPUT_IMAGE))
-                SelectDialog.newInstance().setItems(items).show(fragmentManager, this.javaClass.simpleName)
+                SelectDialog()
+                        .setItems(items)
+                        .show(fragmentManager, this.javaClass.simpleName)
             }
             ConstVariables.ITEM_TYPE_BARCODE -> {
                 Log.d(TAG, "#### onItemCLick ##### ITEM_TYPE_BARCODE")
-                BarcodeFocusDialog.newInstance().setItem(item).setType(BarcodeFocusDialog.VIEW_TYPE_FOCUS).show(fragmentManager, this.javaClass.simpleName)
+                //BarcodeFocusDialog.newInstance().setItem(item).setType(BarcodeFocusDialog.VIEW_TYPE_FOCUS).show(fragmentManager, this.javaClass.simpleName)
+                FocusDialog().setItem(item).setType(FocusDialog.VIEW_TYPE_FOCUS).show(fragmentManager, this.javaClass.simpleName)
             }
         }
     }
@@ -112,8 +118,15 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
             ConstVariables.ITEM_TYPE_EMPTY -> Log.d(TAG, "##### onItemLongClick ##### ITEM_TYPE_EMPTY")
             ConstVariables.ITEM_TYPE_BARCODE -> {
                 Log.d(TAG, "##### onItemLongClick #####")
+                var items: MutableList<SelectDialogItem> = ArrayList()
+                items.add(SelectDialogItem(SelectDialogItem.INPUT_MODIFTY))
+                items.add(SelectDialogItem(SelectDialogItem.INPUT_DELETE))
+                items.add(SelectDialogItem(SelectDialogItem.INPUT_SHARE))
+                SelectDialog()
+                        .setItems(items)
+                        .setItem(item)
+                        .show(fragmentManager, this.javaClass.simpleName)
                 mLongClickPosition = position
-                BarcodeModifyDialog.newInstance().setItem(item).show(fragmentManager, this.javaClass.simpleName)
             }
         }
     }
@@ -229,8 +242,7 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
             }
             ConstVariables.EVENTBUS_ADD_FROM_IMAGE -> {
                 Log.d(TAG, "##### EVENTBUS_ADD_FROM_IMAGE #####")
-                val addFromImageDialog = AddFromImageDialog.newInstance()
-                addFromImageDialog.show(fragmentManager, addFromImageDialog.javaClass.simpleName)
+                AddFromImageDialog().show(fragmentManager, this.javaClass.simpleName)
             }
             ConstVariables.EVENTBUS_ADD_BARCODE -> {
                 Log.d(TAG, "##### EVENTBUS_ADD_BARCODE #####")
@@ -252,9 +264,9 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
             }
             ConstVariables.EVENTBUS_SHARE_BARCODE -> {
                 Log.d(TAG, "##### EVENTBUS_SHARE_BARCODE #####")
-                BarcodeFocusDialog.newInstance()
+                FocusDialog()
                         .setItem(busObject.`val` as BarcodeItem)
-                        .setType(BarcodeFocusDialog.VIEW_TYPE_SHARE)
+                        .setType(FocusDialog.VIEW_TYPE_SHARE)
                         .show(fragmentManager, this.javaClass.simpleName)
             }
             ConstVariables.EVENTBUS_ITEM_MOVE_FINISH -> {
