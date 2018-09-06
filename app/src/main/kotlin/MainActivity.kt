@@ -25,7 +25,7 @@ import org.greenrobot.eventbus.ThreadMode
 import srjhlab.com.myownbarcode.Adapter.BarcodeRecyclerviewAdapter
 import srjhlab.com.myownbarcode.Adapter.RecyclerViewItemTouchHelper
 import srjhlab.com.myownbarcode.CommonUi.*
-import srjhlab.com.myownbarcode.Dialog.AddBarcodeInfo
+import srjhlab.com.myownbarcode.Dialog.AddBarcodeInfoDialog
 import srjhlab.com.myownbarcode.Dialog.FocusDialog
 import srjhlab.com.myownbarcode.Dialog.AddFromImageDialog
 import srjhlab.com.myownbarcode.Dialog.SelectDialog
@@ -67,8 +67,8 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
         when (result.formatName) {
             null -> return
             "CODE_39", "CODE_93", "CODE_128", "EAN_8", "EAN_13", "PDF_417", "UPC_A", "UPC_E", "CODABAR", "ITF", "QR_CODE", "AZTEC" ->
-                AddBarcodeInfo()
-                        .setCommandType(AddBarcodeInfo.MODE_ADD_BARCODE)
+                AddBarcodeInfoDialog()
+                        .setCommandType(AddBarcodeInfoDialog.MODE_ADD_BARCODE)
                         .setBarcodeItem(BarcodeItem(result.contents, CommonUtils.convertBarcodeType(this, result.formatName)))
                         .show(fragmentManager, this.javaClass.simpleName)
             else -> Toast.makeText(this, R.string.string_not_supported_format, Toast.LENGTH_SHORT).show()
@@ -246,9 +246,9 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
             }
             ConstVariables.EVENTBUS_ADD_BARCODE -> {
                 Log.d(TAG, "##### EVENTBUS_ADD_BARCODE #####")
-                AddBarcodeInfo()
+                AddBarcodeInfoDialog()
                         .setBarcodeItem(busObject.`val` as BarcodeItem)
-                        .setCommandType(AddBarcodeInfo.MODE_ADD_BARCODE)
+                        .setCommandType(AddBarcodeInfoDialog.MODE_ADD_BARCODE)
                         .show(fragmentManager, this.javaClass.simpleName)
             }
             ConstVariables.EVENTBUS_ADD_BARCODE_SUCCESS -> {
@@ -257,9 +257,9 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
             }
             ConstVariables.EVENTBUS_EDIT_BARCODE -> {
                 Log.d(TAG, "##### EVENTBUS_EDIT_BARCODE #####")
-                AddBarcodeInfo()
+                AddBarcodeInfoDialog()
                         .setBarcodeItem(busObject.`val` as BarcodeItem)
-                        .setCommandType(AddBarcodeInfo.MODE_EDIT_BARCODE)
+                        .setCommandType(AddBarcodeInfoDialog.MODE_EDIT_BARCODE)
                         .show(fragmentManager, this.javaClass.simpleName)
             }
             ConstVariables.EVENTBUS_SHARE_BARCODE -> {

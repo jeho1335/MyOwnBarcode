@@ -20,7 +20,7 @@ import srjhlab.com.myownbarcode.Utils.*
 
 @Suppress("DEPRECATION")
 
-class AddBarcodeInfo : DialogFragment(), View.OnClickListener {
+class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
     private val TAG = this.javaClass.simpleName
 
     companion object {
@@ -124,13 +124,13 @@ class AddBarcodeInfo : DialogFragment(), View.OnClickListener {
     }
 
 
-    fun setCommandType(type: Int): AddBarcodeInfo {
+    fun setCommandType(type: Int): AddBarcodeInfoDialog {
         Log.d(TAG, "##### setCommandType #####")
         this.mCommandType = type
         return this
     }
 
-    fun setBarcodeItem(item: BarcodeItem): AddBarcodeInfo {
+    fun setBarcodeItem(item: BarcodeItem): AddBarcodeInfoDialog {
         Log.d(TAG, "##### setBarcodeItem #####")
         this.mItem = item
         return this
