@@ -16,19 +16,16 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.Html
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.jetbrains.anko.toast
 import srjhlab.com.myownbarcode.Adapter.BarcodeRecyclerviewAdapter
 import srjhlab.com.myownbarcode.Adapter.RecyclerViewItemTouchHelper
-import srjhlab.com.myownbarcode.CommonUi.*
-import srjhlab.com.myownbarcode.Dialog.AddBarcodeInfoDialog
-import srjhlab.com.myownbarcode.Dialog.FocusDialog
-import srjhlab.com.myownbarcode.Dialog.AddFromImageDialog
-import srjhlab.com.myownbarcode.Dialog.SelectDialog
+import srjhlab.com.myownbarcode.CommonUi.AddFromKeyDialog
+import srjhlab.com.myownbarcode.Dialog.*
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.Item.SelectDialogItem
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
@@ -71,7 +68,8 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
                         .setCommandType(AddBarcodeInfoDialog.MODE_ADD_BARCODE)
                         .setBarcodeItem(BarcodeItem(result.contents, CommonUtils.convertBarcodeType(this, result.formatName)))
                         .show(fragmentManager, this.javaClass.simpleName)
-            else -> Toast.makeText(this, R.string.string_not_supported_format, Toast.LENGTH_SHORT).show()
+//            else -> Toast.makeText(this, R.string.string_not_supported_format, Toast.LENGTH_SHORT).show()
+            else -> toast(R.string.string_not_supported_format)
         }
     }
 
@@ -143,7 +141,8 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
                 if (grantResults.size > 0 && grantResults[0].equals(PackageManager.PERMISSION_GRANTED)) {
                     gotoScan()
                 } else {
-                    Toast.makeText(this, R.string.string_require_camera_permission, Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, R.string.string_require_camera_permission, Toast.LENGTH_SHORT).show()
+                    toast(R.string.string_require_camera_permission)
                 }
             }
         }
@@ -233,8 +232,9 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
             ConstVariables.EVENTBUS_SHOW_BARCODE -> Log.d(TAG, "##### EVENTBUS_SHOW_BARCODE #####")
             ConstVariables.EVENTBUS_ADD_FROM_KEY -> {
                 Log.d(TAG, "##### EVENTBUS_ADD_FROM_KEY #####")
-                val dialog = AddFromKeyDialog.newInstance()
-                dialog.show(fragmentManager, dialog.javaClass.simpleName)
+               /* val dialog = AddFromKeyDialog.newInstance()
+                dialog.show(fragmentManager, dialog.javaClass.simpleName)*/
+                AddFromKeyDialog().show(fragmentManager, this.javaClass.simpleName)
             }
             ConstVariables.EVENTBUS_ADD_FROM_SCAN -> {
                 Log.d(TAG, "##### EVENTBUS_ADD_FROM_SCAN #####")

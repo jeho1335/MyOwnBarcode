@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_addimage.*
 import org.greenrobot.eventbus.EventBus
+import org.jetbrains.anko.toast
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
@@ -62,13 +63,15 @@ class AddFromImageDialog : DialogFragment() {
                 mScanImage.putImage(image)
                 Log.d(TAG, "##### format : ${mScanImage.format} value : ${mScanImage.value}")
                 if (mScanImage.format == null || mScanImage.value == null) {
-                    Toast.makeText(activity, "바코드를 인식할 수 없습니다.", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(activity, "바코드를 인식할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                    toast("바코드를 인식할 수 없습니다")
                 } else {
                     EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE, BarcodeItem(mScanImage.value, CommonUtils.convertBarcodeType(activity, mScanImage.format))))
                 }
                 dismiss()
             } catch (e: Exception) {
-                Toast.makeText(activity, "이미지 처리 과정에서 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(activity, "이미지 처리 과정에서 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                toast("이미지 처리 과정에서 오류가 발생했습니다")
                 dismiss()
             }
 
