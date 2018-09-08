@@ -5,13 +5,12 @@ import android.app.Activity.RESULT_OK
 import android.app.DialogFragment
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import kotlinx.android.synthetic.main.fragment_addimage.*
+import android.view.*
+import kotlinx.android.synthetic.main.layout_dialog_addimage.*
 import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.toast
 import srjhlab.com.myownbarcode.Item.BarcodeItem
@@ -36,8 +35,10 @@ class AddFromImageDialog : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Log.d(TAG, "##### onCreateView #####")
         dialog.window.attributes.windowAnimations = R.style.SelectDialogAnimation
+        dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setCanceledOnTouchOutside(true)
-        return inflater.inflate(R.layout.fragment_addimage, container, false)
+        return inflater.inflate(R.layout.layout_dialog_addimage, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -53,9 +54,9 @@ class AddFromImageDialog : DialogFragment() {
                 val image = data?.getParcelableExtra<Bitmap>("data")
                 val byteArrayOutputStream = ByteArrayOutputStream()
                 image?.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-                if(image == null){
+                if (image == null) {
                     Log.d(TAG, "##### image is null")
-                }else{
+                } else {
                     Log.d(TAG, "##### image is not null #####")
                 }
 
@@ -80,7 +81,7 @@ class AddFromImageDialog : DialogFragment() {
         }
     }
 
-    fun startTask(){
+    fun startTask() {
         Log.d(TAG, "##### startTask #####")
 
         var intent = Intent(Intent.ACTION_PICK)

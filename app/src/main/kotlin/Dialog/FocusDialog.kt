@@ -11,7 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import kotlinx.android.synthetic.main.fragment_barcodefocus.*
+import kotlinx.android.synthetic.main.layout_dialog_barcodefocus.*
 import org.apache.commons.lang.StringUtils
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
@@ -32,7 +32,7 @@ class FocusDialog : DialogFragment() {
         dialog.window.attributes.windowAnimations = R.style.SelectDialogAnimation
         dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         dialog.setCanceledOnTouchOutside(true)
-        return inflater.inflate(R.layout.fragment_barcodefocus, container, false)
+        return inflater.inflate(R.layout.layout_dialog_barcodefocus, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -1,14 +1,13 @@
 package srjhlab.com.myownbarcode.Dialog
 
 import android.app.DialogFragment
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
-import kotlinx.android.synthetic.main.layout_select_dialog.*
+import android.view.*
+import kotlinx.android.synthetic.main.layout_dialog.*
 import org.greenrobot.eventbus.EventBus
 import srjhlab.com.myownbarcode.Adapter.SelectRecyclerViewAdapter
 import srjhlab.com.myownbarcode.Item.BarcodeItem
@@ -28,9 +27,10 @@ class SelectDialog : DialogFragment(), SelectRecyclerViewAdapter.IClickListener 
         Log.d(TAG, "##### onCreateView #####")
         dialog.window.attributes.windowAnimations = R.style.SelectDialogAnimation
         dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setCanceledOnTouchOutside(true)
 
-        return inflater.inflate(R.layout.layout_select_dialog, container, false)
+        return inflater.inflate(R.layout.layout_dialog, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -41,9 +41,9 @@ class SelectDialog : DialogFragment(), SelectRecyclerViewAdapter.IClickListener 
     private fun initializeUi() {
         Log.d(TAG, "#####  initializeUi #####")
         mAdapter = SelectRecyclerViewAdapter(mItems, this)
-        recyclerview_select_dialog_body?.adapter = mAdapter
-        recyclerview_select_dialog_body?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        recyclerview_select_dialog_body?.setHasFixedSize(true)
+        recyclerview_select_dialog_body.adapter = mAdapter
+        recyclerview_select_dialog_body.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        recyclerview_select_dialog_body.setHasFixedSize(true)
     }
 
     fun setItems(items: MutableList<SelectDialogItem>): SelectDialog {

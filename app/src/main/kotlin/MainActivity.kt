@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.Html
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,7 +25,6 @@ import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.toast
 import srjhlab.com.myownbarcode.Adapter.BarcodeRecyclerviewAdapter
 import srjhlab.com.myownbarcode.Adapter.RecyclerViewItemTouchHelper
-import srjhlab.com.myownbarcode.CommonUi.AddFromKeyDialog
 import srjhlab.com.myownbarcode.Dialog.*
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.Item.SelectDialogItem
@@ -52,7 +52,7 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         EventBus.getDefault().register(this)
-        initUi()
+        initializeUi()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -83,15 +83,21 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
 
     override fun onClick(v: View) {
         val viewId = v.id
+        Log.d(TAG, "##### onClick ##### viewId : $viewId")
 
         //when is like that Switch() in java
         when (viewId) {
-            textview_license.id -> Log.d(TAG, "##### onItemClick ##### textview_lisence")
+            img_drawer_icon.id -> layout_drawer.openDrawer(Gravity.LEFT)
+            textview_drawer_settings.id -> Log.d(TAG, "##### onItemCLick #####")
+            textview_drawer_license.id -> Log.d(TAG, "##### onItemCLick #####")
             else -> Log.d(TAG, "##### onCLick ##### another")
         }
     }
 
     override fun onItemClick(item: BarcodeItem) {
+        if(layout_drawer.isDrawerOpen(Gravity.LEFT)){
+            return
+        }
         when (item.itemType) {
             ConstVariables.ITEM_TYPE_EMPTY -> {
                 Log.d(TAG, "##### onItemClick ##### ITEM_TYPE_EMPTY")
@@ -149,8 +155,8 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
 
     }
 
-    private fun initUi() {
-        Log.d(TAG, "##### initUi #####")
+    private fun initializeUi() {
+        Log.d(TAG, "##### initializeUi #####")
 
         mItems = ArrayList<BarcodeItem>()
         mAdapter = BarcodeRecyclerviewAdapter(this)
@@ -163,10 +169,14 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = mAdapter
 
-        textview_license.text = Html.fromHtml("<u>" + getString(R.string.string_open_source_licensee) + "</u>")
-        textview_license.setOnClickListener(this)
+        textview_drawer_settings.setOnClickListener(this)
+
+        textview_drawer_license.setOnClickListener(this)
         val bitmapDrawable = getDrawable(R.drawable.img_ref) as BitmapDrawable
         mDefaultImage = bitmapDrawable.bitmap
+
+        img_drawer_icon.setOnClickListener(this)
+
         initListItem()
     }
 
@@ -232,8 +242,8 @@ class MainActivity : Activity(), BarcodeRecyclerviewAdapter.IOnClick, View.OnCli
             ConstVariables.EVENTBUS_SHOW_BARCODE -> Log.d(TAG, "##### EVENTBUS_SHOW_BARCODE #####")
             ConstVariables.EVENTBUS_ADD_FROM_KEY -> {
                 Log.d(TAG, "##### EVENTBUS_ADD_FROM_KEY #####")
-               /* val dialog = AddFromKeyDialog.newInstance()
-                dialog.show(fragmentManager, dialog.javaClass.simpleName)*/
+                /* val dialog = AddFromKeyDialog.newInstance()
+                 dialog.show(fragmentManager, dialog.javaClass.simpleName)*/
                 AddFromKeyDialog().show(fragmentManager, this.javaClass.simpleName)
             }
             ConstVariables.EVENTBUS_ADD_FROM_SCAN -> {

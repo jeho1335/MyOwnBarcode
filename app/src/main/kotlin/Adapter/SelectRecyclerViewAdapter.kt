@@ -10,7 +10,7 @@ import srjhlab.com.myownbarcode.Item.SelectDialogItem
 import srjhlab.com.myownbarcode.R
 
 class SelectRecyclerViewAdapter(items: MutableList<SelectDialogItem>, listener: SelectRecyclerViewAdapter.IClickListener) : RecyclerView.Adapter<SelectRecyclerViewAdapter.ViewHolder>(), View.OnClickListener {
-   private val TAG = this.javaClass.simpleName
+    private val TAG = this.javaClass.simpleName
 
     private var mItems: MutableList<SelectDialogItem> = items
     private var mListener: IClickListener = listener
@@ -27,28 +27,28 @@ class SelectRecyclerViewAdapter(items: MutableList<SelectDialogItem>, listener: 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (mItems.get(position).itemType) {
             SelectDialogItem.INPUT_SELF -> {
-                holder.itemView.cardview_select_dialog.setBackgroundResource(R.drawable.btn_sel_key_event)
-                holder.itemView.cardview_select_dialog.id = SelectDialogItem.INPUT_SELF
+                holder.itemView.textview_select_dialog_item.setText(R.string.string_input_key)
+                holder.itemView.textview_select_dialog_item.id = SelectDialogItem.INPUT_SELF
             }
             SelectDialogItem.INPUT_SCAN -> {
-                holder.itemView.cardview_select_dialog.setBackgroundResource(R.drawable.btn_sel_scan_event)
-                holder.itemView.cardview_select_dialog.id = SelectDialogItem.INPUT_SCAN
+                holder.itemView.textview_select_dialog_item.setText(R.string.string_input_scan)
+                holder.itemView.textview_select_dialog_item.id = SelectDialogItem.INPUT_SCAN
             }
             SelectDialogItem.INPUT_IMAGE -> {
-                holder.itemView.cardview_select_dialog.setBackgroundResource(R.drawable.btn_sel_image_event)
-                holder.itemView.cardview_select_dialog.id = SelectDialogItem.INPUT_IMAGE
+                holder.itemView.textview_select_dialog_item.setText(R.string.string_input_image)
+                holder.itemView.textview_select_dialog_item.id = SelectDialogItem.INPUT_IMAGE
             }
             SelectDialogItem.INPUT_MODIFTY -> {
-                holder.itemView.cardview_select_dialog.setBackgroundResource(R.drawable.btn_edit_event)
-                holder.itemView.cardview_select_dialog.id = SelectDialogItem.INPUT_MODIFTY
+                holder.itemView.textview_select_dialog_item.setText(R.string.string_modify_barcode)
+                holder.itemView.textview_select_dialog_item.id = SelectDialogItem.INPUT_MODIFTY
             }
             SelectDialogItem.INPUT_DELETE -> {
-                holder.itemView.cardview_select_dialog.setBackgroundResource(R.drawable.btn_delete_event)
-                holder.itemView.cardview_select_dialog.id = SelectDialogItem.INPUT_DELETE
+                holder.itemView.textview_select_dialog_item.setText(R.string.string_delete_barcode)
+                holder.itemView.textview_select_dialog_item.id = SelectDialogItem.INPUT_DELETE
             }
             SelectDialogItem.INPUT_SHARE -> {
-                holder.itemView.cardview_select_dialog.setBackgroundResource(R.drawable.btn_share_event)
-                holder.itemView.cardview_select_dialog.id = SelectDialogItem.INPUT_SHARE
+                holder.itemView.textview_select_dialog_item.setText(R.string.string_share_barcode)
+                holder.itemView.textview_select_dialog_item.id = SelectDialogItem.INPUT_SHARE
             }
         }
     }
@@ -64,7 +64,7 @@ class SelectRecyclerViewAdapter(items: MutableList<SelectDialogItem>, listener: 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
-            itemView.cardview_select_dialog.setOnClickListener(this@SelectRecyclerViewAdapter)
+            itemView.textview_select_dialog_item.setOnClickListener(this@SelectRecyclerViewAdapter)
         }
 
     }

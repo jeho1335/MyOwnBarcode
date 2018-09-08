@@ -2,16 +2,15 @@ package srjhlab.com.myownbarcode.Dialog
 
 import android.app.DialogFragment
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.ImageView
-import kotlinx.android.synthetic.main.fragment_addfromkey.*
+import kotlinx.android.synthetic.main.layout_dialog_addfromkey.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -33,6 +32,7 @@ class AddFromKeyDialog : DialogFragment(), View.OnClickListener {
         Log.d(TAG, "##### onCreateView #####")
         dialog.window!!.attributes.windowAnimations = R.style.SelectDialogAnimation
         dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setCanceledOnTouchOutside(true)
         EventBus.getDefault().register(this)
         mPagerArr = arrayOf(
@@ -48,7 +48,7 @@ class AddFromKeyDialog : DialogFragment(), View.OnClickListener {
                 , BarcodePagerItem(ConstVariables.QR_CODE, resources.getString(R.string.var_qr_code))
                 , BarcodePagerItem(ConstVariables.MAXI_CODE, resources.getString(R.string.var_maxicode))
                 , BarcodePagerItem(ConstVariables.AZTEC, resources.getString(R.string.var_aztec)))
-        return inflater.inflate(R.layout.fragment_addfromkey, container, false)
+        return inflater.inflate(R.layout.layout_dialog_addfromkey, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -68,8 +68,8 @@ class AddFromKeyDialog : DialogFragment(), View.OnClickListener {
     override fun onClick(v: View) {
         Log.d(TAG, "##### onClick ##### v.id : ${v.id}")
         when (v.id) {
-            imageview_dialog_ok.id -> onClickOk()
-            imageview_dialog_cancel.id -> dismiss()
+            textview_dialog_ok.id -> onClickOk()
+            textview_dialog_cancel.id -> dismiss()
         }
     }
 
@@ -82,8 +82,8 @@ class AddFromKeyDialog : DialogFragment(), View.OnClickListener {
 
         type_dialog_textview.text = mPagerArr[0].name
         mSelectBarcodeType = 0
-        imageview_dialog_ok.setOnClickListener(this)
-        imageview_dialog_cancel.setOnClickListener(this)
+        textview_dialog_ok.setOnClickListener(this)
+        textview_dialog_cancel.setOnClickListener(this)
 
     }
 
@@ -116,7 +116,7 @@ class AddFromKeyDialog : DialogFragment(), View.OnClickListener {
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
             Log.d(TAG, "##### InstantiateItem #####")
-            val pagerLayout = mLayoutInflater.inflate(R.layout.layout_viewpager_item, container, false)
+            val pagerLayout = mLayoutInflater.inflate(R.layout.item_viewpager, container, false)
             val imageView = pagerLayout.findViewById<ImageView>(R.id.imageview_pager)
             imageView.background = CommonUtils.getSampleBarcode(activity, position)
             pagerLayout.tag = position

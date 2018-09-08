@@ -2,21 +2,24 @@ package srjhlab.com.myownbarcode.Dialog
 
 import android.app.DialogFragment
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.ImageView
-import kotlinx.android.synthetic.main.fragment_addinfo.*
+import kotlinx.android.synthetic.main.layout_dialog_addinfo.*
 import org.apache.commons.lang.StringUtils
 import org.greenrobot.eventbus.EventBus
+import org.jetbrains.anko.toast
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
-import srjhlab.com.myownbarcode.Utils.*
+import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
+import srjhlab.com.myownbarcode.Utils.CommonUtils
+import srjhlab.com.myownbarcode.Utils.ConstVariables
+import srjhlab.com.myownbarcode.Utils.MakeBarcode
 
 @Suppress("DEPRECATION")
 
@@ -40,7 +43,9 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
         Log.d(TAG, "##### onCreateView #####")
         dialog.window.attributes.windowAnimations = R.style.SelectDialogAnimation
         dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setCanceledOnTouchOutside(true)
+
         mColorArr = arrayOf(
                 activity.getColor(R.color.color_pic_1)
                 , activity.getColor(R.color.color_pic_2)
@@ -55,7 +60,7 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
                 , activity.getColor(R.color.color_pic_11)
                 , activity.getColor(R.color.color_pic_12)
         )
-        return inflater.inflate(R.layout.fragment_addinfo, container, false)
+        return inflater.inflate(R.layout.layout_dialog_addinfo, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -67,12 +72,13 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
     override fun onClick(v: View) {
         Log.d(TAG, "##### onClick ##### v.id : ${v.id}")
         when (v.id) {
-            imageview_ok_dialog_add_barcode.id -> {
+            textview_dialog_ok.id -> {
                 saveBarcode()
                 dismiss()
                 return
             }
-            imageview_cancel_dialog_add_barcode.id -> {
+            textview_dialog_cancel.id -> {
+                dismiss()
                 return
             }
         }
@@ -88,8 +94,8 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
 
     fun initializeUI() {
         Log.d(TAG, "##### initializeUI #####")
-        imageview_ok_dialog_add_barcode.setOnClickListener(this)
-        imageview_cancel_dialog_add_barcode.setOnClickListener(this)
+        textview_dialog_ok.setOnClickListener(this)
+        textview_dialog_cancel.setOnClickListener(this)
 
         mColorPickerArr = arrayOf(
                 color_pic_1
@@ -117,9 +123,14 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
             setOverviewBarcode(mItem.barcodeType, mItem.barcodeValue)
         }
 
+        if (mItem.barcodeType != null) {
+            textview_type_dialog_add_barcode.text = CommonUtils.convertBarcodeType(activity, mItem.barcodeType)
+        }
+
         if (mCommandType == MODE_EDIT_BARCODE) {
             edittext_dialog_add_barcode.setText(mItem.barcodeName)
             setPreSelectedColor(mItem.barcodeCardColor)
+            mPicColor = mItem.barcodeCardColor
         }
     }
 
@@ -139,12 +150,14 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
     private fun saveBarcode() {
         Log.d(TAG, "##### saveBarcode #####")
         if (mPicColor == -1) {
-            ToastUtil.getInstance(activity).showToast(resources.getString(R.string.string_request_pic_color))
+//            ToastUtil.getInstance(activity).showToast(resources.getString(R.string.string_request_pic_color))
+            toast(resources.getString(R.string.string_request_pic_color))
             return
         }
 
         if (edittext_dialog_add_barcode.text.toString() == "") {
-            ToastUtil.getInstance(activity).showToast(resources.getString(R.string.string_request_write_name))
+//            ToastUtil.getInstance(activity).showToast(resources.getString(R.string.string_request_write_name))
+            toast(resources.getString(R.string.string_request_write_name))
             return
         }
 
