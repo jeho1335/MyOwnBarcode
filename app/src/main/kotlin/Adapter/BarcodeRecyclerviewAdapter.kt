@@ -16,22 +16,16 @@ import srjhlab.com.myownbarcode.Utils.ConstVariables
 import srjhlab.com.myownbarcode.Utils.MakeBarcode
 import java.util.*
 
-class BarcodeRecyclerviewAdapter(context: Context) : RecyclerView.Adapter<BarcodeRecyclerviewAdapter.ViewHolder>(), RecyclerViewItemTouchHelper.IItemTouchHelperAdapter {
+class BarcodeRecyclerviewAdapter(listener: IOnClick) : RecyclerView.Adapter<BarcodeRecyclerviewAdapter.ViewHolder>(), RecyclerViewItemTouchHelper.IItemTouchHelperAdapter {
     private val TAG = this.javaClass.simpleName
 
-    private var mContext: Context = context
-    private var mListener: IOnClick
-    private var mItems: MutableList<BarcodeItem>
+    private var mListener: IOnClick = listener
+    private var mItems: MutableList<BarcodeItem> = ArrayList()
 
     interface IOnClick {
         fun onItemClick(item: BarcodeItem)
         fun onItemLongCLick(item: BarcodeItem, position: Int)
         fun onStartDrag(viewHolder: BarcodeRecyclerviewAdapter.ViewHolder)
-    }
-
-    init {
-        this.mListener = context as BarcodeRecyclerviewAdapter.IOnClick
-        this.mItems = ArrayList()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
