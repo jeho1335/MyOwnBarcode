@@ -8,7 +8,10 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.layout_dialog_addinfo.*
 import org.apache.commons.lang.StringUtils

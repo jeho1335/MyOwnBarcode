@@ -8,7 +8,10 @@ import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.layout_dialog_addfromkey.*
 import org.greenrobot.eventbus.EventBus
@@ -57,12 +60,12 @@ class AddFromKeyDialog : DialogFragment(), View.OnClickListener {
         super.onActivityCreated(savedInstanceState)
     }
 
-    override fun onDestroyOptionsMenu() {
-        Log.d(TAG, "##### OnDestroyOptionsMenu #####")
+    override fun onDestroy() {
+        Log.d(TAG, "##### onDestroy #####")
+        super.onDestroy()
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
-        super.onDestroyOptionsMenu()
     }
 
     override fun onClick(v: View) {

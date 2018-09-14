@@ -62,14 +62,14 @@ class FocusDialog : DialogFragment() {
         }
     }
 
-    fun setItem(item: BarcodeItem): FocusDialog {
-        Log.d(TAG, "##### setItem #####")
+    fun setBarcodeItem(item: BarcodeItem): FocusDialog {
+        Log.d(TAG, "##### setBarcodeItem #####")
         this.mItem = item
         return this
     }
 
-    fun setType(type: Int): FocusDialog {
-        Log.d(TAG, "##### setType ##### type : $type")
+    fun setCommandType(type: Int): FocusDialog {
+        Log.d(TAG, "##### setCommandType ##### type : $type")
         this.mViewType = type
         return this
     }

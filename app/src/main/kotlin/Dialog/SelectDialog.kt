@@ -6,7 +6,10 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import kotlinx.android.synthetic.main.layout_dialog.*
 import org.greenrobot.eventbus.EventBus
 import srjhlab.com.myownbarcode.Adapter.SelectRecyclerViewAdapter
@@ -53,7 +56,7 @@ class SelectDialog : DialogFragment(), SelectRecyclerViewAdapter.IClickListener 
     }
 
     fun setItem(item: BarcodeItem): SelectDialog {
-        Log.d(TAG, "##### setItem #####")
+        Log.d(TAG, "##### setBarcodeItem #####")
         this.mItem = item
         return this
     }

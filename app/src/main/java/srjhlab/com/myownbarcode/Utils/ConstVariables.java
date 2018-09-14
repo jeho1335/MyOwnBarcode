@@ -14,6 +14,8 @@ public class ConstVariables {
     public final static int EVENTBUS_DELETE_BARCODE = 9;
     public final static int EVENTBUS_SHARE_BARCODE = 10;
     public final static int EVENTBUS_ITEM_MOVE_FINISH = 11;
+    public final static int EVENTBUS_CLICK_BARCODELIST = 12;
+    public final static int EVENTBUS_LONGCLICK_BARCODELIST = 13;
 
     //Barcode type variables
     public final static int CODE_39 = 0;
