@@ -1,0 +1,58 @@
+{
+  "project_info": {
+    "project_number": "687505231144",
+    "firebase_url": "https://myownbarcode.firebaseio.com",
+    "project_id": "myownbarcode",
+    "storage_bucket": "myownbarcode.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687505231144:android:f8d0b211132b23ac",
+        "android_client_info": {
+          "package_name": "srjhlab.com.myownbarcode"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "687505231144-it1rofqvho0fj8cphb35f8em0vojj42j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "srjhlab.com.myownbarcode",
+            "certificate_hash": "c46cdf1c53e63f1bb451dd875a863512a466d863"
+          }
+        },
+        {
+          "client_id": "687505231144-ebmfooo856j10gn1mabr35mgop1lh80u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCWToJTspYOvz1NhLIGlExfi5O1wQOGHY"
+        },
+        {
+          "current_key": "AIzaSyBCWToJTspYOvz1NhLIGlExfi5O1wQOGHY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "687505231144-ebmfooo856j10gn1mabr35mgop1lh80u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import com.google.firebase.auth.FirebaseAuth
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
@@ -23,7 +24,8 @@ import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.ConstVariables
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
-    val TAG = this.javaClass.simpleName!!
+    val TAG = this.javaClass.simpleName
+    private lateinit var mAuth : FirebaseAuth
     private val PERMISSIONS_REQUEST = 1
     private val FRAGMENT_STATE_BARCODE_LIST = 1
     private val FRAGMENT_STATE_SETTINGS = 2
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mAuth = FirebaseAuth.getInstance()
         EventBus.getDefault().register(this)
         mPresenter = MainPresenter(this)
         mMyBArcodeFragment = MyBarcodeFragment()
@@ -43,6 +46,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         hanleFragment(FRAGMENT_STATE_BARCODE_LIST)
     }
 
+    override fun onStart() {
+        super.onStart()
+        val currentUser = mAuth.currentUser
+    }
 
     override fun onDestroy() {
         Log.d(TAG, "##### onDestroy ####")
