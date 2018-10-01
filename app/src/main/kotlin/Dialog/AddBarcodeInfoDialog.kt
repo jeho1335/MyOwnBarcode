@@ -166,7 +166,7 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
 
         when (mCommandType) {
             MODE_ADD_BARCODE -> EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_NEW_BARCODE, BarcodeItem(ConstVariables.ITEM_TYPE_BARCODE, mItem.barcodeType, mItem.barcodeId, edittext_dialog_add_barcode.text.toString(), mPicColor, mItem.barcodeValue, mBitmap)))
-            MODE_EDIT_BARCODE -> EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_MODIFY_BARCODE, BarcodeItem(ConstVariables.ITEM_TYPE_BARCODE, mItem.barcodeType, mItem.barcodeId, edittext_dialog_add_barcode.text.toString(), mPicColor, mItem.barcodeValue, mItem.barcodeBitmap)))
+            MODE_EDIT_BARCODE -> EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_MODIFY_BARCODE, BarcodeItem(ConstVariables.ITEM_TYPE_BARCODE, mItem.barcodeType, mItem.barcodeId, edittext_dialog_add_barcode.text.toString(), mPicColor, mItem.barcodeValue, null)))
         }
         dismiss()
 

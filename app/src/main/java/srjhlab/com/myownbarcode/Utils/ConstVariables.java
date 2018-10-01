@@ -16,6 +16,7 @@ public class ConstVariables {
     public final static int EVENTBUS_ITEM_MOVE_FINISH = 11;
     public final static int EVENTBUS_CLICK_BARCODELIST = 12;
     public final static int EVENTBUS_LONGCLICK_BARCODELIST = 13;
+    public final static int EVENTBUS_ON_ACTIBITY_RESULT = 14;
 
     //Barcode type variables
     public final static int CODE_39 = 0;
@@ -38,4 +39,8 @@ public class ConstVariables {
     //Preferences Key
     public final static String PREF_BARCODE_ITEM = "barcode.item.list";
     public final static String PREF_SPLIT = ";";
+
+    //Google sign in
+    public final static int RC_SIGN_IN = 700;
+    public final static String DEFAULT_REQUEST_ID = "687505231144-ebmfooo856j10gn1mabr35mgop1lh80u.apps.googleusercontent.com";
 }

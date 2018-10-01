@@ -13,7 +13,7 @@ import kotlin.collections.ArrayList
 object PreferencesManager {
     val TAG = this.javaClass.simpleName
 
-    fun saveBarcodeItemList(context : Context, items : MutableList<BarcodeItem>) {
+    fun saveBarcodeItemList(context: Context, items: MutableList<BarcodeItem>) {
         Log.d(TAG, "##### saveBarcodeItemList #####")
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -24,7 +24,7 @@ object PreferencesManager {
         var cnt = 10000
 
         iterator.forEach {
-            Log.d(TAG, "#####saveBarcodeITemList ##### type : " + it.barcodeType + " value : " + it.barcodeValue)
+            Log.d(TAG, "##### saveBarcodeItemList ${it.barcodeName}#####")
             val gsotString = cnt++.toString() + ";" + gson.toJson(it)
             saveList.add(gsotString)
         }
@@ -34,28 +34,28 @@ object PreferencesManager {
         editor.apply()
     }
 
-    fun loadBarcodeItemList(context : Context)  : MutableList<BarcodeItem>{
+    fun loadBarcodeItemList(context: Context): MutableList<BarcodeItem> {
         Log.d(TAG, "##### loadBarcodeItemList #####")
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val gson = GsonBuilder().create()
-        val barcodeItemList : MutableList<BarcodeItem> = ArrayList()
-        val set : MutableSet<String> ?= sharedPreferences.getStringSet(ConstVariables.PREF_BARCODE_ITEM, null)
-        if(set == null){
+        val barcodeItemList: MutableList<BarcodeItem> = ArrayList()
+        val set: MutableSet<String>? = sharedPreferences.getStringSet(ConstVariables.PREF_BARCODE_ITEM, null)
+        if (set == null) {
             val bitmapDrawable = context.getDrawable(R.drawable.img_ref) as BitmapDrawable
             barcodeItemList.add(BarcodeItem(ConstVariables.ITEM_TYPE_EMPTY, 0, "새 바코드 추가", 0, " ", bitmapDrawable.bitmap))
             return barcodeItemList
         }
 
-        val list : MutableList<String> = ArrayList(set)
+        val list: MutableList<String> = ArrayList(set)
         Collections.sort(list, cmpAsc)
         val iterator = list.iterator()
 
         iterator.forEach {
-            val temp : List<String> = it.split(ConstVariables.PREF_SPLIT)
-            val item : BarcodeItem = gson.fromJson(temp.get(1), BarcodeItem().javaClass)
+            val temp: List<String> = it.split(ConstVariables.PREF_SPLIT)
+            val item: BarcodeItem = gson.fromJson(temp.get(1), BarcodeItem().javaClass)
             barcodeItemList.add(item)
-            Log.d(TAG, "##### loadBarcodeITemList ##### item.barcodeName : " + item.barcodeType + " bitmap : " + item.barcodeValue)
+            Log.d(TAG, "##### loadBarcodeITemList ##### item.barcodeName : " + item.barcodeName + " bitmap : " + item.barcodeValue)
         }
 
         return barcodeItemList

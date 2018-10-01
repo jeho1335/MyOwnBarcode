@@ -1,5 +1,7 @@
 package srjhlab.com.myownbarcode
 
+import Model.ActivityResultEvent
+import Module.Main.Main
 import Module.Main.MainPresenter
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,6 +10,8 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,9 +50,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         hanleFragment(FRAGMENT_STATE_BARCODE_LIST)
     }
 
+    private fun initializeUI() {
+        Log.d(TAG, "##### initializeUI #####")
+        mContentView = layout_content as View
+        img_drawer_icon.setOnClickListener(this)
+        textview_drawer_home.setOnClickListener(this)
+        textview_drawer_settings.setOnClickListener(this)
+        textview_drawer_license.setOnClickListener(this)
+    }
+
     override fun onStart() {
+        Log.d(TAG, "##### onStart #####")
         super.onStart()
         val currentUser = mAuth.currentUser
+        if(currentUser != null) {
+            Log.d(TAG, "##### onStart currentUserId : ${currentUser.email}#####")
+        }
     }
 
     override fun onDestroy() {
@@ -91,8 +108,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.d(TAG, "##### onActivityResult #####")
         super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == ConstVariables.RC_SIGN_IN){
+            EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ON_ACTIBITY_RESULT, ActivityResultEvent(requestCode, resultCode, data)))
+            return
+        }
 
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         Log.d(TAG, "##### onActivityResult ##### value : " + result.contents + " format : " + result.formatName)
@@ -107,15 +132,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun initializeUI() {
-        Log.d(TAG, "##### initializeUI #####")
-        mContentView = layout_content as View
-        img_drawer_icon.setOnClickListener(this)
-        textview_drawer_home.setOnClickListener(this)
-        textview_drawer_settings.setOnClickListener(this)
-        textview_drawer_license.setOnClickListener(this)
-    }
-
     private fun hanleFragment(state: Int) {
         Log.d(TAG, "##### hanleFragment ##### state : $state")
         val fm = fragmentManager
@@ -123,7 +139,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
         when (state) {
             FRAGMENT_STATE_BARCODE_LIST -> {
-                ft.replace(mContentView.id, mMyBArcodeFragment, mMyBArcodeFragment.TAG)
+                ft.replace(mContentView.id, mMyBArcodeFragment, mMyBArcodeFragment.javaClass.simpleName)
             }
 
             FRAGMENT_STATE_SETTINGS -> {
@@ -132,7 +148,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     ft.show(mSettingsFragment)
                 } else {
                     Log.d(TAG, "##### isNotAdded #####")
-                    ft.add(mContentView.id, mSettingsFragment, mSettingsFragment.TAG)
+                    ft.add(mContentView.id, mSettingsFragment, mSettingsFragment.javaClass.simpleName)
                 }
             }
         }

@@ -9,6 +9,12 @@
     <string name="string_ok">확인</string>
     <string name="string_cancel">취소</string>
 
+    <!-- Alert Dialog -->
+    <string name="string_alert_setdata_from_google">서버에 백업중인 멤버십 리스트가 초기화되고 새로 생성됩니다. 계속 하시겠습니까?</string>
+    <string name="string_alert_getdata_from_google">현재 멤버십 리스트가 초기화되고 새로 생성됩니다. 계속 하시겠습니까?</string>
+    <string name="string_alert_select_setdata">데이터 백업</string>
+    <string name="string_alert_select_getdata">데이터 가져오기</string>
+
     <!-- Select Dialog -->
     <string name="string_modify_barcode">바코드 수정</string>
     <string name="string_delete_barcode">바코드 삭제</string>
@@ -42,5 +48,11 @@
     <string name="string_not_supported_format">지원하지 않는 바코드 포맷입니다.</string>
     <string name="string_scan_guide">바코드를 사각형 안에 비춰주세요. \n스캔이 잘 안될 경우 주위 배경을 깔끔하게 해주세요. \n볼륨 UP/DOWN 버튼으로 플래시를 켜고 끌 수 있습니다.</string>
     <string name="string_require_camera_permission">바코드 스캔을 위해 카메라 사용 권한을 허용해야 합니다.</string>
+    <string name="string_sign_in_google">구글 계정 %s 로 로그인 하였습니다.</string>
+    <string name="string_cannot_sign_in_google">로그인에 실패했습니다.</string>
+    <string name="string_success_set_backup_google">백업 완료</string>
+    <string name="string_failed_set_backup_google">백업 실패</string>
+    <string name="string_success_get_backup_google">불러오기 완료</string>
+    <string name="string_failed_get_backup_google">불러오기 실패</string>
 
 </resources>

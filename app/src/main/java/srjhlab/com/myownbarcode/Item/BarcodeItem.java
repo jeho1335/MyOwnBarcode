@@ -3,24 +3,35 @@ package srjhlab.com.myownbarcode.Item;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017-02-08.
  */
 
-public class BarcodeItem {
+public class BarcodeItem implements Serializable {
     private final static String TAG = BarcodeItem.class.getSimpleName();
 
     private int mItemType;
     private int mBarcodeType;
     private int mBarcodeCardColor;
     private int mBarcodeId;
-    private Bitmap mBarcodeBitmap;
     private String mBarcodeName;
     private String mBarcodeValue;
+
+    public void setItemType(int type) {
+        Log.d(TAG, "##### getItemType #####");
+        this.mItemType = type;
+    }
 
     public int getItemType() {
         Log.d(TAG, "##### getItemType #####");
         return this.mItemType;
+    }
+
+    public void setBarcodeType(int type) {
+        Log.d(TAG, "##### getItemType #####");
+        this.mBarcodeType = type;
     }
 
     public int getBarcodeType(){
@@ -28,9 +39,9 @@ public class BarcodeItem {
         return this.mBarcodeType;
     }
 
-    public Bitmap getBarcodeBitmap() {
-        Log.d(TAG, "##### getBarcodeBitmap #####");
-        return this.mBarcodeBitmap;
+    public void setBarcodeName(String name) {
+        Log.d(TAG, "##### getItemType #####");
+        this.mBarcodeName = name;
     }
 
     public String getBarcodeName() {
@@ -38,9 +49,17 @@ public class BarcodeItem {
         return this.mBarcodeName;
     }
 
+    public void setBarcodeValue(String value){
+        this.mBarcodeValue = value;
+    }
+
     public String getBarcodeValue() {
         Log.d(TAG, "##### getBarcodeValue #####");
         return this.mBarcodeValue;
+    }
+
+    public void setBarcodeCardColor(int color){
+        this.mBarcodeCardColor = color;
     }
 
     public int getBarcodeCardColor() {
@@ -48,6 +67,9 @@ public class BarcodeItem {
         return this.mBarcodeCardColor;
     }
 
+    public void setBarcodeId(int id){
+        this.mBarcodeId = id;
+    }
     public int getBarcodeId() {
         Log.d(TAG, "##### getBarcodeId #####");
         return this.mBarcodeId;
@@ -69,7 +91,7 @@ public class BarcodeItem {
         this.mBarcodeName = barcodeName;
         this.mBarcodeCardColor = barcodeColor;
         this.mBarcodeValue = barcodeValue;
-        this.mBarcodeBitmap = barcodeBitmap;
+        //this.mBarcodeBitmap = barcodeBitmap;
     }
 
     public BarcodeItem(int type, int barcodeId, String barcodeName, int barcodeColor, String barcodeValue, Bitmap barcodeBitmap) {
@@ -86,7 +108,7 @@ public class BarcodeItem {
         this.mBarcodeName = barcodeName;
         this.mBarcodeCardColor = barcodeColor;
         this.mBarcodeValue = barcodeValue;
-        this.mBarcodeBitmap = barcodeBitmap;
+        //this.mBarcodeBitmap = barcodeBitmap;
     }
 
     public BarcodeItem(String barcodeValue, int barcodeType) {

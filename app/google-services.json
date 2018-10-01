@@ -23,14 +23,19 @@
           }
         },
         {
+          "client_id": "687505231144-59snrui3ar726fsqee7pdqpl8in6mbah.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "srjhlab.com.myownbarcode",
+            "certificate_hash": "d66b8c5693c46c88c2c8ef9e799b1be2807e3124"
+          }
+        },
+        {
           "client_id": "687505231144-ebmfooo856j10gn1mabr35mgop1lh80u.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
-        {
-          "current_key": "AIzaSyBCWToJTspYOvz1NhLIGlExfi5O1wQOGHY"
-        },
         {
           "current_key": "AIzaSyBCWToJTspYOvz1NhLIGlExfi5O1wQOGHY"
         }
