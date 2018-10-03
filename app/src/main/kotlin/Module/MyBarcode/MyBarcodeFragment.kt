@@ -1,7 +1,9 @@
 package srjhlab.com.myownbarcode.Module.MyBarcode
 
-import android.app.Fragment
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
@@ -18,7 +20,6 @@ import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.ConstVariables
-import srjhlab.com.myownbarcode.Utils.PreferencesManager
 
 class MyBarcodeFragment : Fragment(), MyBarcode.view {
     val TAG = this.javaClass.simpleName
@@ -35,7 +36,7 @@ class MyBarcodeFragment : Fragment(), MyBarcode.view {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "##### onCreate #####")
-        mPresenter = MyBarcodePresenter(context, this)
+        mPresenter = MyBarcodePresenter(activity as Context, this)
         super.onCreate(savedInstanceState)
     }
 
@@ -58,10 +59,8 @@ class MyBarcodeFragment : Fragment(), MyBarcode.view {
         }
     }
 
-    override fun onResultBarcodeList(items: MutableList<BarcodeItem>) {
+    override fun onResultBarcodeList(result: Boolean, msg: Int) {
         Log.d(TAG, "##### onResultBarcodeList #####")
-        mItems = PreferencesManager.loadBarcodeItemList(activity)
-        (recyclerView.adapter as BarcodeRecyclerviewAdapter).setItems(mItems)
     }
 
     private val mIOnCLickListener: BarcodeRecyclerviewAdapter.IOnClick = object : BarcodeRecyclerviewAdapter.IOnClick {
@@ -90,13 +89,17 @@ class MyBarcodeFragment : Fragment(), MyBarcode.view {
         mRecyclerViewItemTouchHelper = RecyclerViewItemTouchHelper(mAdapter as RecyclerViewItemTouchHelper.IItemTouchHelperAdapter)
         mItemTouchHelper = ItemTouchHelper(mRecyclerViewItemTouchHelper)
         mItemTouchHelper.attachToRecyclerView(recyclerView)
+//        val layoutAnimation = AnimationUtils.loadLayoutAnimation(activity, R.anim.layout_animation_fall_down)
 
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = mAdapter
+//        recyclerView.layoutAnimation = layoutAnimation
 
-        mPresenter.requestBarcodeList()
-
+        val handler = Handler()
+        handler.postDelayed({
+            mPresenter.requestBarcodeList(recyclerView, recyclerView.adapter as BarcodeRecyclerviewAdapter)
+        }, 500)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

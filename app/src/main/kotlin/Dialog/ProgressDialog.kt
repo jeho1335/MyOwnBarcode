@@ -1,11 +1,7 @@
 package srjhlab.com.myownbarcode.Dialog
 
-import android.Manifest
 import android.app.DialogFragment
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +14,7 @@ import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.MakeBarcode
 
-class FocusDialog : DialogFragment() {
+class ProgressDialog : DialogFragment() {
     private val TAG = this.javaClass.simpleName
     private var mViewType = VIEW_TYPE_FOCUS
     private lateinit var mItem: BarcodeItem
@@ -31,13 +27,13 @@ class FocusDialog : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         dialog.window.attributes.windowAnimations = R.style.SelectDialogAnimation
         dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-        dialog.setCanceledOnTouchOutside(true)
-        return inflater.inflate(R.layout.layout_dialog_barcodefocus, container, false)
+        dialog.setCanceledOnTouchOutside(false)
+        return inflater.inflate(R.layout.layout_dialog_progress, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        initializeUi()
+        //initializeUi()
     }
 
     override fun onResume() {
@@ -45,30 +41,15 @@ class FocusDialog : DialogFragment() {
         var params = dialog.window.attributes
         params.width = ViewGroup.LayoutParams.MATCH_PARENT
         dialog.window.attributes = params as android.view.WindowManager.LayoutParams
-
-        var layoutParams = layout_barcode_focus.layoutParams
-        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-
-        if (mViewType.equals(VIEW_TYPE_SHARE)) {
-            val permissionCheck = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            if (permissionCheck == PackageManager.PERMISSION_DENIED) {
-                if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-                }
-            } else {
-                CommonUtils.shareBitmapToApps(activity, CommonUtils.viewToBitmap(activity, layout_barcode_focus))
-                dismiss()
-            }
-        }
     }
 
-    fun setBarcodeItem(item: BarcodeItem): FocusDialog {
+    fun setBarcodeItem(item: BarcodeItem): ProgressDialog {
         Log.d(TAG, "##### setBarcodeItem #####")
         this.mItem = item
         return this
     }
 
-    fun setCommandType(type: Int): FocusDialog {
+    fun setCommandType(type: Int): ProgressDialog {
         Log.d(TAG, "##### setCommandType ##### type : $type")
         this.mViewType = type
         return this

@@ -94,7 +94,7 @@ class AddFromKeyDialog : DialogFragment(), View.OnClickListener {
         Log.d(TAG, "##### onCLickOk #####")
         val value = edittext_dialog.text.toString()
         if (ValidityCheck.getInstance(activity).check(value, mSelectBarcodeType)) {
-            EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE, BarcodeItem(value, mSelectBarcodeType)))
+            EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE, BarcodeItem(value, mSelectBarcodeType.toLong())))
         }
         dismiss()
     }

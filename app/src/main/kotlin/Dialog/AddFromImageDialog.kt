@@ -70,7 +70,7 @@ class AddFromImageDialog : DialogFragment() {
 //                    Toast.makeText(activity, "바코드를 인식할 수 없습니다.", Toast.LENGTH_SHORT).show()
                     toast("바코드를 인식할 수 없습니다")
                 } else {
-                    EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE, BarcodeItem(mScanImage.value, CommonUtils.convertBarcodeType(activity, mScanImage.format))))
+                    EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE, BarcodeItem(mScanImage.value, CommonUtils.convertBarcodeType(activity, mScanImage.format).toLong())))
                 }
                 dismiss()
             } catch (e: Exception) {

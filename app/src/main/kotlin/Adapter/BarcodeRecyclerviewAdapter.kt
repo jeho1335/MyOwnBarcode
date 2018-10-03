@@ -43,10 +43,10 @@ class BarcodeRecyclerviewAdapter(listener: IOnClick) : RecyclerView.Adapter<Barc
                 holder.itemView.img_body.visibility = View.VISIBLE
                 holder.itemView.cardview_layout.visibility = View.VISIBLE
                 holder.itemView.textview_empty_body.visibility = View.GONE
-                holder.itemView.img_body.setImageBitmap(MakeBarcode.getInstance().makeBarcode(item.barcodeType, item.barcodeValue))
+                holder.itemView.img_body.setImageBitmap(MakeBarcode.getInstance().makeBarcode(item.barcodeType.toInt(), item.barcodeValue))
                 holder.itemView.txt_id.text = item.barcodeName
                 holder.itemView.cardview.tag = position
-                holder.itemView.cardview_layout.setBackgroundColor(item.barcodeCardColor)
+                holder.itemView.cardview_layout.setBackgroundColor(item.barcodeCardColor.toInt())
                 holder.itemView.imageview_move.setOnTouchListener { v, event ->
                     Log.d(TAG, "##### onTouch ##### action : ${event.action}")
                     when (event.action) {
@@ -62,15 +62,14 @@ class BarcodeRecyclerviewAdapter(listener: IOnClick) : RecyclerView.Adapter<Barc
                 holder.itemView.textview_empty_body.setText(R.string.string_request_add_new_barcode)
 //                holder.itemView.txt_id.text = item.barcodeName
                 holder.itemView.cardview.tag = position
-                holder.itemView.cardview_layout.setBackgroundColor(item.barcodeCardColor)
+                holder.itemView.cardview_layout.setBackgroundColor(item.barcodeCardColor.toInt())
                 holder.itemView.imageview_move.visibility = View.GONE
             }
         }
     }
 
     override fun getItemCount(): Int {
-        Log.d(TAG, "##### getItemCount ##### size : " + this.mItems.size)
-
+        Log.d(TAG, "##### getItemCount #####")
         return this.mItems.size
     }
 
@@ -89,7 +88,7 @@ class BarcodeRecyclerviewAdapter(listener: IOnClick) : RecyclerView.Adapter<Barc
         Log.d(TAG, "##### setItems #####")
         this.mItems.clear()
         this.mItems.addAll(items)
-        notifyDataSetChanged()
+//        notifyDataSetChanged()
     }
 
     fun addItem(item: BarcodeItem) {

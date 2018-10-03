@@ -6,35 +6,37 @@ import Module.Main.MainPresenter
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.jetbrains.anko.selector
 import org.jetbrains.anko.toast
-import srjhlab.com.myownbarcode.Dialog.*
+import srjhlab.com.myownbarcode.Dialog.AddBarcodeInfoDialog
+import srjhlab.com.myownbarcode.Dialog.AddFromImageDialog
+import srjhlab.com.myownbarcode.Dialog.AddFromKeyDialog
+import srjhlab.com.myownbarcode.Dialog.FocusDialog
 import srjhlab.com.myownbarcode.Item.BarcodeItem
-import srjhlab.com.myownbarcode.Item.SelectDialogItem
 import srjhlab.com.myownbarcode.Module.MyBarcode.MyBarcodeFragment
 import srjhlab.com.myownbarcode.Module.Settings.SettingsFragment
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.ConstVariables
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
     val TAG = this.javaClass.simpleName
-    private lateinit var mAuth : FirebaseAuth
+    private lateinit var mAuth: FirebaseAuth
     private val PERMISSIONS_REQUEST = 1
     private val FRAGMENT_STATE_BARCODE_LIST = 1
     private val FRAGMENT_STATE_SETTINGS = 2
     private lateinit var mPresenter: MainPresenter
-    private lateinit var mMyBArcodeFragment: MyBarcodeFragment
+    private lateinit var mMyBarcodeFragment: MyBarcodeFragment
     private lateinit var mSettingsFragment: SettingsFragment
     private lateinit var mContentView: View
 
@@ -44,7 +46,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mAuth = FirebaseAuth.getInstance()
         EventBus.getDefault().register(this)
         mPresenter = MainPresenter(this)
-        mMyBArcodeFragment = MyBarcodeFragment()
+        mMyBarcodeFragment = MyBarcodeFragment()
         mSettingsFragment = SettingsFragment()
         initializeUI()
         hanleFragment(FRAGMENT_STATE_BARCODE_LIST)
@@ -63,7 +65,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         Log.d(TAG, "##### onStart #####")
         super.onStart()
         val currentUser = mAuth.currentUser
-        if(currentUser != null) {
+        if (currentUser != null) {
             Log.d(TAG, "##### onStart currentUserId : ${currentUser.email}#####")
         }
     }
@@ -109,12 +111,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         Log.d(TAG, "##### onActivityResult #####")
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == ConstVariables.RC_SIGN_IN){
+        if (requestCode == ConstVariables.RC_SIGN_IN) {
             EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ON_ACTIBITY_RESULT, ActivityResultEvent(requestCode, resultCode, data)))
             return
         }
@@ -126,34 +127,52 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             "CODE_39", "CODE_93", "CODE_128", "EAN_8", "EAN_13", "PDF_417", "UPC_A", "UPC_E", "CODABAR", "ITF", "QR_CODE", "AZTEC" ->
                 AddBarcodeInfoDialog()
                         .setCommandType(AddBarcodeInfoDialog.MODE_ADD_BARCODE)
-                        .setBarcodeItem(BarcodeItem(result.contents, CommonUtils.convertBarcodeType(this, result.formatName)))
+                        .setBarcodeItem(BarcodeItem(result.contents, CommonUtils.convertBarcodeType(this, result.formatName).toLong()))
                         .show(fragmentManager, this.javaClass.simpleName)
             else -> toast(R.string.string_not_supported_format)
         }
     }
 
+    override fun onResultBackPressed(result: Boolean, msg: Int) {
+        Log.d(TAG, "##### onResultBackPressed #####")
+        if (result) {
+            this.finish()
+        } else {
+            toast(resources.getString(msg))
+        }
+    }
+
     private fun hanleFragment(state: Int) {
         Log.d(TAG, "##### hanleFragment ##### state : $state")
-        val fm = fragmentManager
+        val fm = supportFragmentManager
         val ft = fm.beginTransaction()
+        var fr = Fragment()
         ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+
         when (state) {
             FRAGMENT_STATE_BARCODE_LIST -> {
-                ft.replace(mContentView.id, mMyBArcodeFragment, mMyBArcodeFragment.javaClass.simpleName)
+                fr = MyBarcodeFragment()
             }
 
             FRAGMENT_STATE_SETTINGS -> {
-                if (mSettingsFragment.isAdded) {
-                    Log.d(TAG, "##### isAdded #####")
-                    ft.show(mSettingsFragment)
-                } else {
-                    Log.d(TAG, "##### isNotAdded #####")
-                    ft.add(mContentView.id, mSettingsFragment, mSettingsFragment.javaClass.simpleName)
-                }
+                fr = SettingsFragment()
             }
         }
-        Log.d(TAG, "##### commit #####")
+        fm.popBackStack()
+        if (fr.isAdded) {
+            ft.show(fr)
+        } else {
+            ft.add(mContentView.id, fr, fr.javaClass.simpleName)
+        }
+        ft.addToBackStack(null)
+
+
         ft.commit()
+    }
+
+    override fun onBackPressed() {
+        Log.d(TAG, "##### onBackPressed #####")
+        mPresenter.requestBackPressed()
     }
 
     @Subscribe
@@ -202,13 +221,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val item = busObject.`val` as BarcodeItem
                 when (item.itemType) {
                     ConstVariables.ITEM_TYPE_EMPTY -> {
-                        var items: MutableList<SelectDialogItem> = ArrayList()
-                        items.add(SelectDialogItem(SelectDialogItem.INPUT_SELF))
-                        items.add(SelectDialogItem(SelectDialogItem.INPUT_SCAN))
-                        items.add(SelectDialogItem(SelectDialogItem.INPUT_IMAGE))
-                        SelectDialog()
-                                .setItems(items)
-                                .show(fragmentManager, this.javaClass.simpleName)
+                        val menuList = listOf(getString(R.string.string_input_key), getString(R.string.string_input_scan), getString(R.string.string_input_image))
+                        selector("", menuList) { dialogInterface, i ->
+                            when (i) {
+                                0 -> {
+                                    AddFromKeyDialog().show(fragmentManager, this.javaClass.simpleName)
+                                }
+                                1 -> {
+                                    mPresenter.requestBarcodeScan()
+                                }
+                                2 -> {
+                                    AddFromImageDialog().show(fragmentManager, this.javaClass.simpleName)
+                                }
+                            }
+                        }
                     }
                     ConstVariables.ITEM_TYPE_BARCODE -> {
                         FocusDialog().setBarcodeItem(item).setCommandType(FocusDialog.VIEW_TYPE_FOCUS).show(fragmentManager, this.javaClass.simpleName)
@@ -222,14 +248,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     ConstVariables.ITEM_TYPE_EMPTY -> Log.d(TAG, "##### onItemLongClick ##### ITEM_TYPE_EMPTY")
                     ConstVariables.ITEM_TYPE_BARCODE -> {
                         Log.d(TAG, "##### onItemLongClick #####")
-                        var items: MutableList<SelectDialogItem> = ArrayList()
-                        items.add(SelectDialogItem(SelectDialogItem.INPUT_MODIFTY))
-                        items.add(SelectDialogItem(SelectDialogItem.INPUT_DELETE))
-                        items.add(SelectDialogItem(SelectDialogItem.INPUT_SHARE))
-                        SelectDialog()
-                                .setItems(items)
-                                .setItem(item)
-                                .show(fragmentManager, this.javaClass.simpleName)
+                        val menuList = listOf(getString(R.string.string_modify_barcode), getString(R.string.string_delete_barcode), getString(R.string.string_share_barcode))
+                        selector("", menuList) { dialogInterface, i ->
+                            when (i) {
+                                0 -> {
+                                    AddBarcodeInfoDialog()
+                                            .setBarcodeItem(busObject.`val` as BarcodeItem)
+                                            .setCommandType(AddBarcodeInfoDialog.MODE_EDIT_BARCODE)
+                                            .show(fragmentManager, this.javaClass.simpleName)
+                                }
+                                1 -> {
+                                    EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_DELETE_BARCODE, busObject.`val` as BarcodeItem))
+                                }
+                                2 -> {
+                                    FocusDialog()
+                                            .setBarcodeItem(busObject.`val` as BarcodeItem)
+                                            .setCommandType(FocusDialog.VIEW_TYPE_SHARE)
+                                            .show(fragmentManager, this.javaClass.simpleName)
+                                }
+                            }
+                        }
                     }
                 }
 

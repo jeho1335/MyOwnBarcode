@@ -56,6 +56,7 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'org.mod4j.org.apache.commons:lang:2.1.0'
     implementation 'org.jetbrains.anko:anko-commons:0.10.6'
+    implementation 'org.jetbrains.anko:anko-design:0.10.6'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 }

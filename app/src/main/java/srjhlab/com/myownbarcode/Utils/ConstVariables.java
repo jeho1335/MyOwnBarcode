@@ -33,8 +33,8 @@ public class ConstVariables {
     public final static int AZTEC = 11;
 
     //Barcode Item variavles
-    public final static int ITEM_TYPE_EMPTY = 0;
-    public final static int ITEM_TYPE_BARCODE = 1;
+    public final static Long ITEM_TYPE_EMPTY = 0L;
+    public final static Long ITEM_TYPE_BARCODE = 1L;
 
     //Preferences Key
     public final static String PREF_BARCODE_ITEM = "barcode.item.list";

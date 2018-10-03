@@ -3,9 +3,10 @@ package srjhlab.com.myownbarcode.Module.Settings
 import Model.ActivityResultEvent
 import Module.Settings.Settings
 import Module.Settings.SettingsPresenter
-import android.app.Fragment
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,8 @@ import kotlinx.android.synthetic.main.layout_fragment_settings.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.*
+import org.jetbrains.anko.design.snackbar
+import srjhlab.com.myownbarcode.Dialog.ProgressDialog
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.ConstVariables
@@ -23,6 +26,7 @@ import srjhlab.com.myownbarcode.Utils.ConstVariables
 class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
     private val TAG = this.javaClass.simpleName
     private lateinit var mPresenter: SettingsPresenter
+    private val mProgress = ProgressDialog()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.d(TAG, "##### onCreateView #####")
@@ -37,9 +41,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
         initializeUi()
     }
 
-    override fun onDestroy() {
-        Log.d(TAG, "##### onActivityCreated #####")
-        super.onDestroy()
+    override fun onDestroyView() {
+        Log.d(TAG, "##### onDestroyView #####")
+        super.onDestroyView()
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
@@ -53,7 +57,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
     override fun onClick(v: View) {
         when (v.id) {
             btn_google_signin.id -> {
-                mPresenter.requestGoogleSignInClient(activity)
+                mPresenter.requestGoogleSignInClient(activity as Activity)
             }
         }
     }
@@ -65,46 +69,48 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
 
     override fun onResultGoogleSignInClient(result: Boolean, msg: Int, client: GoogleSignInClient?) {
         Log.d(TAG, "##### onResultGoogleSignInClient ##### result : $result")
+        mProgress.show(activity!!.fragmentManager, this.javaClass.simpleName)
         if (result) {
-            mPresenter.requestSignInIntent(activity, client)
+            mPresenter.requestSignInIntent(activity as Activity, client)
         } else {
-            activity.toast(resources.getString(msg))
+            activity!!.toast(resources.getString(msg))
         }
     }
 
     override fun onResultGoogleSignIn(result: Boolean, msg: Int, auth: FirebaseAuth) {
         Log.d(TAG, "##### onResultGoogleSignIn #####")
+        mProgress.dismiss()
         if (result) {
             val menuList = listOf(getString(R.string.string_alert_select_setdata), getString(R.string.string_alert_select_getdata))
-            activity.selector("", menuList) { dialogInterface, i ->
+            activity!!.selector("", menuList) { dialogInterface, i ->
                 when (i) {
                     0 -> {
-                        activity.alert(getString(R.string.string_alert_setdata_from_google)) {
-                            yesButton { mPresenter.requestSetDataBackup(activity, auth) }
+                        activity!!.alert(getString(R.string.string_alert_setdata_from_google)) {
+                            yesButton { mPresenter.requestSetDataBackup(activity as Activity, auth) }
                             noButton { }
                         }.show()
                     }
                     1 -> {
-                        activity.alert(getString(R.string.string_alert_getdata_from_google)) {
-                            yesButton { mPresenter.requestGetDataBackup(activity, auth) }
+                        activity!!.alert(getString(R.string.string_alert_getdata_from_google)) {
+                            yesButton { mPresenter.requestGetDataBackup(activity as Activity, auth) }
                             noButton { }
                         }.show()
                     }
                 }
             }
         } else {
-            activity.toast(getString(msg))
+            activity!!.toast(getString(msg))
         }
     }
 
     override fun onResultSetDataBackup(result: Boolean, msg: Int) {
         Log.d(TAG, "##### onResultSetDataBackup #####")
-        activity.toast(getString(msg))
+        activity!!.toast(getString(msg))
     }
 
     override fun onResultGetDataBackup(result: Boolean, msg: Int) {
         Log.d(TAG, "##### onResultGetDataBackup #####")
-        activity.toast(getString(msg))
+        activity!!.toast(getString(msg))
     }
 
     @Subscribe
@@ -114,7 +120,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
             ConstVariables.EVENTBUS_ON_ACTIBITY_RESULT -> {
                 val resultIntent = obj.`val` as ActivityResultEvent
                 if (resultIntent.requestCode == ConstVariables.RC_SIGN_IN) {
-                    mPresenter.requestGoogleSignIn(activity, resultIntent.data)
+                    mPresenter.requestGoogleSignIn(activity as Activity, resultIntent.data)
                 }
             }
 

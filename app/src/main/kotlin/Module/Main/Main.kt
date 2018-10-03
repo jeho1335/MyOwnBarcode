@@ -1,10 +1,11 @@
 package Module.Main
 
-import android.content.Intent
-import com.google.firebase.auth.FirebaseAuth
-
 interface Main {
+    interface view{
+        fun onResultBackPressed(result : Boolean, msg : Int)
+    }
     interface presenter{
         fun requestBarcodeScan()
+        fun requestBackPressed()
     }
 }

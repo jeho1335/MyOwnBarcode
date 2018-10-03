@@ -40,7 +40,7 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
     private lateinit var mDrawable: Drawable
     private lateinit var mColorArr: Array<Int>
     private lateinit var mColorPickerArr: Array<ImageView>
-    private var mPicColor: Int = -1
+    private var mPicColor: Long = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Log.d(TAG, "##### onCreateView #####")
@@ -88,7 +88,7 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
         for ((index, i) in mColorArr.withIndex()) {
             if (mColorPickerArr[index].id.equals(v.id)) {
                 clearSelectedColor()
-                this.mPicColor = mColorArr[index]
+                this.mPicColor = mColorArr[index].toLong()
                 mColorPickerArr[index].isSelected = true
                 return
             }
@@ -123,16 +123,16 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
         textview_value_dialog_add_barcode.text = str
 
         if (mItem.barcodeValue != null) {
-            setOverviewBarcode(mItem.barcodeType, mItem.barcodeValue)
+            setOverviewBarcode(mItem.barcodeType.toInt(), mItem.barcodeValue)
         }
 
         if (mItem.barcodeType != null) {
-            textview_type_dialog_add_barcode.text = CommonUtils.convertBarcodeType(activity, mItem.barcodeType)
+            textview_type_dialog_add_barcode.text = CommonUtils.convertBarcodeType(activity, mItem.barcodeType.toInt())
         }
 
         if (mCommandType == MODE_EDIT_BARCODE) {
             edittext_dialog_add_barcode.setText(mItem.barcodeName)
-            setPreSelectedColor(mItem.barcodeCardColor)
+            setPreSelectedColor(mItem.barcodeCardColor.toInt())
             mPicColor = mItem.barcodeCardColor
         }
     }
@@ -152,7 +152,7 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
 
     private fun saveBarcode() {
         Log.d(TAG, "##### saveBarcode #####")
-        if (mPicColor == -1) {
+        if (mPicColor == -1L) {
 //            ToastUtil.getInstance(activity).showToast(resources.getString(R.string.string_request_pic_color))
             toast(resources.getString(R.string.string_request_pic_color))
             return
@@ -165,8 +165,8 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
         }
 
         when (mCommandType) {
-            MODE_ADD_BARCODE -> EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_NEW_BARCODE, BarcodeItem(ConstVariables.ITEM_TYPE_BARCODE, mItem.barcodeType, mItem.barcodeId, edittext_dialog_add_barcode.text.toString(), mPicColor, mItem.barcodeValue, mBitmap)))
-            MODE_EDIT_BARCODE -> EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_MODIFY_BARCODE, BarcodeItem(ConstVariables.ITEM_TYPE_BARCODE, mItem.barcodeType, mItem.barcodeId, edittext_dialog_add_barcode.text.toString(), mPicColor, mItem.barcodeValue, null)))
+            MODE_ADD_BARCODE -> EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_NEW_BARCODE, BarcodeItem(ConstVariables.ITEM_TYPE_BARCODE, mItem.barcodeType, mItem.barcodeId, edittext_dialog_add_barcode.text.toString(), mPicColor, mItem.barcodeValue)))
+            MODE_EDIT_BARCODE -> EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_MODIFY_BARCODE, BarcodeItem(ConstVariables.ITEM_TYPE_BARCODE, mItem.barcodeType, mItem.barcodeId, edittext_dialog_add_barcode.text.toString(), mPicColor, mItem.barcodeValue)))
         }
         dismiss()
 

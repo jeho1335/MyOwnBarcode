@@ -43,7 +43,7 @@ object PreferencesManager {
         val set: MutableSet<String>? = sharedPreferences.getStringSet(ConstVariables.PREF_BARCODE_ITEM, null)
         if (set == null) {
             val bitmapDrawable = context.getDrawable(R.drawable.img_ref) as BitmapDrawable
-            barcodeItemList.add(BarcodeItem(ConstVariables.ITEM_TYPE_EMPTY, 0, "새 바코드 추가", 0, " ", bitmapDrawable.bitmap))
+            barcodeItemList.add(BarcodeItem(ConstVariables.ITEM_TYPE_EMPTY, 0L, "새 바코드 추가", 0L, " "))
             return barcodeItemList
         }
 

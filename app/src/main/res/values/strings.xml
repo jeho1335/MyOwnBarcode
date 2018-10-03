@@ -54,5 +54,9 @@
     <string name="string_failed_set_backup_google">백업 실패</string>
     <string name="string_success_get_backup_google">불러오기 완료</string>
     <string name="string_failed_get_backup_google">불러오기 실패</string>
+    <string name="string_request_backkey">한번 더 누르면 종료합니다.</string>
+
+    <!-- Progress Dialog -->
+    <string name="string_wait_signin">계정 연결중..</string>
 
 </resources>

@@ -98,7 +98,7 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
                 val currentBarcodeItems = PreferencesManager.loadBarcodeItemList(activity)
                 for (value in currentBarcodeItems.withIndex()) {
                     Log.d(TAG, "##### requestSetDataBackup onDataChange id : ${value.value.barcodeId}#####")
-                    if (value.value.itemType != 0) {
+                    if (value.value.itemType != 0L) {
                         FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).child(value.value.barcodeName.toString()).child("mItemType").setValue(value.value.itemType)
                         FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).child(value.value.barcodeName.toString()).child("mBarcodeType").setValue(value.value.barcodeType)
                         FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).child(value.value.barcodeName.toString()).child("mBarcodeCardColor").setValue(value.value.barcodeCardColor)
@@ -138,9 +138,24 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
                 val resultList: MutableList<BarcodeItem> = ArrayList()
                 val child = dataSnapshot.child(currentUserEmail).children.toMutableList()
                 for (value in child.withIndex()) {
-                    Log.d(TAG, "##### requestGetDataBackup onDataChange value : ${value.value.value.toString()} #####")
-                    resultList.add(value.value.getValue(BarcodeItem().javaClass)!!)
+                    Log.d(TAG, "##### requestGetDataBackup onDataChange value : ${value.value.child("mItemType")} #####")
+                   /* resultList.add(BarcodeItem(
+                            value.value.child("mItemType").value as Long
+                            , value.value.child("mBarcodeType").value as Long
+                            , value.value.child("mBarcodeId").value as Long
+                            , value.value.child("mBarcodeName").value as String
+                            , value.value.child("mBarcodeCardColor").value as Long
+                            , value.value.child("mBarcodeValue").value as String))*/
+                     resultList.add(BarcodeItem(
+                            value.value.child("mItemType").value as Long
+                            , value.value.child("mBarcodeType").value as Long
+                            , 0L
+                            , value.value.child("mBarcodeName").value as String
+                            , value.value.child("mBarcodeCardColor").value as Long
+                            , value.value.child("mBarcodeValue").value as String))
+
                 }
+                resultList.add(BarcodeItem(ConstVariables.ITEM_TYPE_EMPTY, 0L, "새 바코드 추가", 0L, " "))
 
                 PreferencesManager.saveBarcodeItemList(activity, resultList)
                 FirebaseDatabaseReference.mUserBarcodesDatabase.removeEventListener(this)
