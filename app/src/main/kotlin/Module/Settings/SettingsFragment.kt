@@ -4,6 +4,7 @@ import Model.ActivityResultEvent
 import Module.Settings.Settings
 import Module.Settings.SettingsPresenter
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -17,9 +18,9 @@ import kotlinx.android.synthetic.main.layout_fragment_settings.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.*
-import org.jetbrains.anko.design.snackbar
 import srjhlab.com.myownbarcode.Dialog.ProgressDialog
 import srjhlab.com.myownbarcode.R
+import srjhlab.com.myownbarcode.R.id.*
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.ConstVariables
 
@@ -51,13 +52,22 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
 
     private fun initializeUi() {
         Log.d(TAG, "##### initializeUi #####")
-        btn_google_signin.setOnClickListener(this)
+        txt_backup_signin.setOnClickListener(this)
+        txt_privacy_settings.setOnClickListener(this)
+        txt_liscense_settings.setOnClickListener(this)
+        layout_func_bright.setOnClickListener(this)
+        mPresenter.requestGetCurrentAppVersion(activity as Activity)
+        mPresenter.requestGetAutobright(activity as Activity)
     }
 
     override fun onClick(v: View) {
+        Log.d(TAG, "##### onClick #####")
         when (v.id) {
-            btn_google_signin.id -> {
+            txt_backup_signin.id -> {
                 mPresenter.requestGoogleSignInClient(activity as Activity)
+            }
+            layout_func_bright.id -> {
+                mPresenter.requestSetAutobright(activity as Activity)
             }
         }
     }
@@ -69,7 +79,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
 
     override fun onResultGoogleSignInClient(result: Boolean, msg: Int, client: GoogleSignInClient?) {
         Log.d(TAG, "##### onResultGoogleSignInClient ##### result : $result")
-        mProgress.show(activity!!.fragmentManager, this.javaClass.simpleName)
+        mProgress.setTitle(getString(R.string.string_wait_signin)).show(activity!!.fragmentManager, this.javaClass.simpleName)
         if (result) {
             mPresenter.requestSignInIntent(activity as Activity, client)
         } else {
@@ -79,20 +89,28 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
 
     override fun onResultGoogleSignIn(result: Boolean, msg: Int, auth: FirebaseAuth) {
         Log.d(TAG, "##### onResultGoogleSignIn #####")
-        mProgress.dismiss()
+        if (mProgress.showsDialog) {
+            mProgress.dismiss()
+        }
         if (result) {
             val menuList = listOf(getString(R.string.string_alert_select_setdata), getString(R.string.string_alert_select_getdata))
             activity!!.selector("", menuList) { dialogInterface, i ->
                 when (i) {
                     0 -> {
                         activity!!.alert(getString(R.string.string_alert_setdata_from_google)) {
-                            yesButton { mPresenter.requestSetDataBackup(activity as Activity, auth) }
+                            yesButton {
+                                mPresenter.requestSetDataBackup(activity as Activity, auth)
+                                mProgress.setTitle(getString(R.string.string_wait_export)).show(activity!!.fragmentManager, this.javaClass.simpleName)
+                            }
                             noButton { }
                         }.show()
                     }
                     1 -> {
                         activity!!.alert(getString(R.string.string_alert_getdata_from_google)) {
-                            yesButton { mPresenter.requestGetDataBackup(activity as Activity, auth) }
+                            yesButton {
+                                mPresenter.requestGetDataBackup(activity as Activity, auth)
+                                mProgress.setTitle(getString(R.string.string_wait_import)).show(activity!!.fragmentManager, this.javaClass.simpleName)
+                            }
                             noButton { }
                         }.show()
                     }
@@ -105,12 +123,39 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
 
     override fun onResultSetDataBackup(result: Boolean, msg: Int) {
         Log.d(TAG, "##### onResultSetDataBackup #####")
+        if (mProgress.showsDialog) {
+            mProgress.dismiss()
+        }
         activity!!.toast(getString(msg))
     }
 
     override fun onResultGetDataBackup(result: Boolean, msg: Int) {
         Log.d(TAG, "##### onResultGetDataBackup #####")
+        if (mProgress.showsDialog) {
+            mProgress.dismiss()
+        }
         activity!!.toast(getString(msg))
+    }
+
+    override fun onResultGetAutoBright(result: Boolean, msg: Int) {
+        Log.d(TAG, "##### onResultGetAutoBright ##### result : $result")
+        if (msg != -1) {
+            activity!!.toast(getString(msg))
+        }
+        if (result) {
+            txt_bright_on.isSelected = true
+            txt_bright_off.isSelected = false
+        } else {
+            txt_bright_on.isSelected = false
+            txt_bright_off.isSelected = true
+        }
+    }
+
+    override fun onResultGetCurrentAppVersion(result : Boolean, version: String) {
+        Log.d(TAG, "##### onResultGetCurrentAppVersion #####")
+        if(result) {
+            txt_version.text = version
+        }
     }
 
     @Subscribe

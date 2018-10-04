@@ -61,5 +61,22 @@ object PreferencesManager {
         return barcodeItemList
     }
 
+    fun saveAutoBrightState(context: Context, state : Boolean) {
+        Log.d(TAG, "##### saveAutoBrightState #####")
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(ConstVariables.PREF_AUTO_BRIGHT_MAX, state)
+        editor.apply()
+    }
+
+    fun loadAutoBrightState(context: Context) : Boolean {
+        Log.d(TAG, "##### loadAutoBrightState #####")
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return sharedPreferences.getBoolean(ConstVariables.PREF_AUTO_BRIGHT_MAX, false)
+    }
+
+
     private val cmpAsc: java.util.Comparator<String> = java.util.Comparator { o1, o2 -> o1.compareTo(o2) }
 }

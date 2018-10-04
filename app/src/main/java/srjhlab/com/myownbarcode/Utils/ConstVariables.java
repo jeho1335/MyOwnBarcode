@@ -39,6 +39,7 @@ public class ConstVariables {
     //Preferences Key
     public final static String PREF_BARCODE_ITEM = "barcode.item.list";
     public final static String PREF_SPLIT = ";";
+    public final static String PREF_AUTO_BRIGHT_MAX = "setting.auto.bright";
 
     //Google sign in
     public final static int RC_SIGN_IN = 700;

@@ -9,11 +9,10 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.Gravity
 import android.view.View
-import com.google.firebase.auth.FirebaseAuth
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.selector
@@ -21,7 +20,7 @@ import org.jetbrains.anko.toast
 import srjhlab.com.myownbarcode.Dialog.AddBarcodeInfoDialog
 import srjhlab.com.myownbarcode.Dialog.AddFromImageDialog
 import srjhlab.com.myownbarcode.Dialog.AddFromKeyDialog
-import srjhlab.com.myownbarcode.Dialog.FocusDialog
+import srjhlab.com.myownbarcode.Dialog.BarcodeFocusDialog
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.Module.MyBarcode.MyBarcodeFragment
 import srjhlab.com.myownbarcode.Module.Settings.SettingsFragment
@@ -31,7 +30,6 @@ import srjhlab.com.myownbarcode.Utils.ConstVariables
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
     val TAG = this.javaClass.simpleName
-    private lateinit var mAuth: FirebaseAuth
     private val PERMISSIONS_REQUEST = 1
     private val FRAGMENT_STATE_BARCODE_LIST = 1
     private val FRAGMENT_STATE_SETTINGS = 2
@@ -43,31 +41,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mAuth = FirebaseAuth.getInstance()
         EventBus.getDefault().register(this)
         mPresenter = MainPresenter(this)
         mMyBarcodeFragment = MyBarcodeFragment()
         mSettingsFragment = SettingsFragment()
         initializeUI()
-        hanleFragment(FRAGMENT_STATE_BARCODE_LIST)
+        handleFragment(FRAGMENT_STATE_BARCODE_LIST)
     }
 
     private fun initializeUI() {
         Log.d(TAG, "##### initializeUI #####")
         mContentView = layout_content as View
-        img_drawer_icon.setOnClickListener(this)
-        textview_drawer_home.setOnClickListener(this)
-        textview_drawer_settings.setOnClickListener(this)
-        textview_drawer_license.setOnClickListener(this)
-    }
-
-    override fun onStart() {
-        Log.d(TAG, "##### onStart #####")
-        super.onStart()
-        val currentUser = mAuth.currentUser
-        if (currentUser != null) {
-            Log.d(TAG, "##### onStart currentUserId : ${currentUser.email}#####")
-        }
+        img_list_toolbar.setOnClickListener(this)
+        img_settings_toolbar.setOnClickListener(this)
     }
 
     override fun onDestroy() {
@@ -83,16 +69,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
         val viewId = v.id
 
         when (viewId) {
-            img_drawer_icon.id -> layout_drawer.openDrawer(Gravity.LEFT)
-            textview_drawer_home.id -> {
-                hanleFragment(FRAGMENT_STATE_BARCODE_LIST)
-                layout_drawer.closeDrawer(Gravity.LEFT)
+            img_list_toolbar.id -> {
+                handleFragment(FRAGMENT_STATE_BARCODE_LIST)
             }
-            textview_drawer_settings.id -> {
-                hanleFragment(FRAGMENT_STATE_SETTINGS)
-                layout_drawer.closeDrawer(Gravity.LEFT)
+            img_settings_toolbar.id -> {
+                handleFragment(FRAGMENT_STATE_SETTINGS)
             }
-            textview_drawer_license.id -> Log.d(TAG, "##### onItemCLick #####")
             else -> return
         }
     }
@@ -142,8 +124,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
         }
     }
 
-    private fun hanleFragment(state: Int) {
-        Log.d(TAG, "##### hanleFragment ##### state : $state")
+    private fun handleFragment(state: Int) {
+        Log.d(TAG, "##### handleFragment ##### state : $state")
         val fm = supportFragmentManager
         val ft = fm.beginTransaction()
         var fr = Fragment()
@@ -151,10 +133,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
 
         when (state) {
             FRAGMENT_STATE_BARCODE_LIST -> {
+                txt_title_toolbar.text = getString(R.string.string_menu_home)
+//                SimpleViewFadeAnimation().startAnimation(img_list_toolbar, img_settings_toolbar)
+                img_list_toolbar.visibility = View.GONE
+                img_settings_toolbar.visibility = View.VISIBLE
                 fr = MyBarcodeFragment()
             }
 
             FRAGMENT_STATE_SETTINGS -> {
+                txt_title_toolbar.text = getString(R.string.string_menu_settings)
+                img_settings_toolbar.visibility = View.GONE
+                img_list_toolbar.visibility = View.VISIBLE
+//                SimpleViewFadeAnimation().startAnimation(img_settings_toolbar, img_list_toolbar)
                 fr = SettingsFragment()
             }
         }
@@ -208,16 +198,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
             }
             ConstVariables.EVENTBUS_SHARE_BARCODE -> {
                 Log.d(TAG, "##### EVENTBUS_SHARE_BARCODE #####")
-                FocusDialog()
+                BarcodeFocusDialog()
                         .setBarcodeItem(busObject.`val` as BarcodeItem)
-                        .setCommandType(FocusDialog.VIEW_TYPE_SHARE)
+                        .setCommandType(BarcodeFocusDialog.VIEW_TYPE_SHARE)
                         .show(fragmentManager, this.javaClass.simpleName)
             }
             ConstVariables.EVENTBUS_CLICK_BARCODELIST -> {
                 Log.d(TAG, "##### EVENTBUS_CLICK_BARCODELIST #####")
-                if (layout_drawer.isDrawerOpen(Gravity.LEFT)) {
-                    return
-                }
                 val item = busObject.`val` as BarcodeItem
                 when (item.itemType) {
                     ConstVariables.ITEM_TYPE_EMPTY -> {
@@ -237,7 +224,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
                         }
                     }
                     ConstVariables.ITEM_TYPE_BARCODE -> {
-                        FocusDialog().setBarcodeItem(item).setCommandType(FocusDialog.VIEW_TYPE_FOCUS).show(fragmentManager, this.javaClass.simpleName)
+                        BarcodeFocusDialog().setBarcodeItem(item).setCommandType(BarcodeFocusDialog.VIEW_TYPE_FOCUS).show(fragmentManager, this.javaClass.simpleName)
                     }
                 }
             }
@@ -261,9 +248,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
                                     EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_DELETE_BARCODE, busObject.`val` as BarcodeItem))
                                 }
                                 2 -> {
-                                    FocusDialog()
+                                    BarcodeFocusDialog()
                                             .setBarcodeItem(busObject.`val` as BarcodeItem)
-                                            .setCommandType(FocusDialog.VIEW_TYPE_SHARE)
+                                            .setCommandType(BarcodeFocusDialog.VIEW_TYPE_SHARE)
                                             .show(fragmentManager, this.javaClass.simpleName)
                                 }
                             }

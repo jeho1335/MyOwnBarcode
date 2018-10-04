@@ -9,67 +9,19 @@
     tools:context="srjhlab.com.myownbarcode.MainActivity"
     tools:ignore="ExtraText">
 
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/layout_drawer"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <include
+            android:id="@+id/layout_toolbar"
+            layout="@layout/layout_toolbar" />
+
+        <FrameLayout
+            android:id="@+id/layout_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/img_drawer_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/btn_menu_selector" />
-            </RelativeLayout>
-
-            <FrameLayout
-                android:id="@+id/layout_content"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:background="@drawable/dialog_radius_bg"
-            android:orientation="vertical"
-            android:paddingLeft="30dp"
-            android:paddingTop="100dp">
-
-            <TextView
-                android:id="@+id/textview_drawer_home"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="홈"
-                android:textSize="19sp" />
-
-            <TextView
-                android:id="@+id/textview_drawer_settings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="설정"
-                android:textSize="19sp" />
-
-            <TextView
-                android:id="@+id/textview_drawer_license"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="오픈소스 라이센스"
-                android:textSize="19sp" />
-        </LinearLayout>
-    </android.support.v4.widget.DrawerLayout>
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
 </LinearLayout>

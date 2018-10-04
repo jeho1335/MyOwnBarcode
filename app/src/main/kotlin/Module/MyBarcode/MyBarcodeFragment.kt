@@ -98,8 +98,10 @@ class MyBarcodeFragment : Fragment(), MyBarcode.view {
 
         val handler = Handler()
         handler.postDelayed({
-            mPresenter.requestBarcodeList(recyclerView, recyclerView.adapter as BarcodeRecyclerviewAdapter)
-        }, 500)
+            if(recyclerView != null) {
+                mPresenter.requestBarcodeList(recyclerView, recyclerView.adapter as BarcodeRecyclerviewAdapter)
+            }
+        }, 800)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

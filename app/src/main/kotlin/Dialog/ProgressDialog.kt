@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import kotlinx.android.synthetic.main.layout_dialog_barcodefocus.*
+import kotlinx.android.synthetic.main.layout_dialog_progress.*
 import org.apache.commons.lang.StringUtils
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
@@ -16,15 +17,10 @@ import srjhlab.com.myownbarcode.Utils.MakeBarcode
 
 class ProgressDialog : DialogFragment() {
     private val TAG = this.javaClass.simpleName
-    private var mViewType = VIEW_TYPE_FOCUS
-    private lateinit var mItem: BarcodeItem
-
-    companion object {
-        const val VIEW_TYPE_FOCUS = 1
-        const val VIEW_TYPE_SHARE = 2
-    }
+    private var mProgressTitle = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        Log.d(TAG, "##### onCreateView #####")
         dialog.window.attributes.windowAnimations = R.style.SelectDialogAnimation
         dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         dialog.setCanceledOnTouchOutside(false)
@@ -32,36 +28,29 @@ class ProgressDialog : DialogFragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        Log.d(TAG, "##### onActivityCreated #####")
         super.onActivityCreated(savedInstanceState)
-        //initializeUi()
+        initializeUi()
     }
 
     override fun onResume() {
+        Log.d(TAG, "##### onResume #####")
         super.onResume()
         var params = dialog.window.attributes
         params.width = ViewGroup.LayoutParams.MATCH_PARENT
         dialog.window.attributes = params as android.view.WindowManager.LayoutParams
     }
 
-    fun setBarcodeItem(item: BarcodeItem): ProgressDialog {
-        Log.d(TAG, "##### setBarcodeItem #####")
-        this.mItem = item
-        return this
-    }
-
-    fun setCommandType(type: Int): ProgressDialog {
-        Log.d(TAG, "##### setCommandType ##### type : $type")
-        this.mViewType = type
-        return this
-    }
 
     private fun initializeUi() {
-        text_name.text = mItem.barcodeName
-        var strArr = CommonUtils.splitStringEvery(mItem.barcodeValue, 4);
-        var str = StringUtils.join(strArr, " ")
-        text_value.text = str
-        text_value.invalidate()
-        img_barcode.setImageBitmap((MakeBarcode.getInstance().makeBarcode(mItem.barcodeType.toInt(), mItem.barcodeValue)))
+        Log.d(TAG, "##### initializeUi #####")
+        txt_title_progress.text = mProgressTitle
+    }
+
+    fun setTitle(title : String) : ProgressDialog{
+        Log.d(TAG, "##### setTitle #####")
+        mProgressTitle = title
+        return this
     }
 
 }

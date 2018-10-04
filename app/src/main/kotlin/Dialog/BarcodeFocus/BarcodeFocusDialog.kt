@@ -1,5 +1,6 @@
 package srjhlab.com.myownbarcode.Dialog
 
+import Dialog.BarcodeFocus.BarcodeFocusPresenter
 import android.Manifest
 import android.app.DialogFragment
 import android.content.pm.PackageManager
@@ -18,9 +19,10 @@ import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.MakeBarcode
 
-class FocusDialog : DialogFragment() {
+class BarcodeFocusDialog : DialogFragment() {
     private val TAG = this.javaClass.simpleName
     private var mViewType = VIEW_TYPE_FOCUS
+    private lateinit var mPresenter: BarcodeFocusPresenter
     private lateinit var mItem: BarcodeItem
 
     companion object {
@@ -28,7 +30,9 @@ class FocusDialog : DialogFragment() {
         const val VIEW_TYPE_SHARE = 2
     }
 
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        Log.d(TAG, "##### onCreateView #####")
         dialog.window.attributes.windowAnimations = R.style.SelectDialogAnimation
         dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         dialog.setCanceledOnTouchOutside(true)
@@ -36,11 +40,15 @@ class FocusDialog : DialogFragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        Log.d(TAG, "##### onActivityCreated #####")
         super.onActivityCreated(savedInstanceState)
+        mPresenter = BarcodeFocusPresenter()
         initializeUi()
     }
 
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     override fun onResume() {
+        Log.d(TAG, "##### onResume #####")
         super.onResume()
         var params = dialog.window.attributes
         params.width = ViewGroup.LayoutParams.MATCH_PARENT
@@ -59,16 +67,18 @@ class FocusDialog : DialogFragment() {
                 CommonUtils.shareBitmapToApps(activity, CommonUtils.viewToBitmap(activity, layout_barcode_focus))
                 dismiss()
             }
+        } else {
+            mPresenter.requestScreenBrightMax(activity, dialog.window)
         }
     }
 
-    fun setBarcodeItem(item: BarcodeItem): FocusDialog {
+    fun setBarcodeItem(item: BarcodeItem): BarcodeFocusDialog {
         Log.d(TAG, "##### setBarcodeItem #####")
         this.mItem = item
         return this
     }
 
-    fun setCommandType(type: Int): FocusDialog {
+    fun setCommandType(type: Int): BarcodeFocusDialog {
         Log.d(TAG, "##### setCommandType ##### type : $type")
         this.mViewType = type
         return this

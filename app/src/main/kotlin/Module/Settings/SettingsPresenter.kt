@@ -1,9 +1,11 @@
 package Module.Settings
 
 import Model.FirebaseDatabaseReference
+import Utils.AES256Chiper
 import android.app.Activity
 import android.content.Intent
 import android.util.Log
+import android.view.View
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -70,12 +72,13 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
 
         try {
             currentUserEmail = auth.currentUser?.email!!
-            currentUserEmail = currentUserEmail.substring(0, currentUserEmail.lastIndexOf("@"))
+//            currentUserEmail = currentUserEmail.substring(0, currentUserEmail.lastIndexOf("@"))
+            currentUserEmail = AES256Chiper().AES_Encode(currentUserEmail.substring(0, currentUserEmail.lastIndexOf("@")))
         } catch (e: Exception) {
+            e.printStackTrace()
             mView.onResultSetDataBackup(false, R.string.string_failed_set_backup_google)
             return
         }
-
         FirebaseDatabaseReference.mUserBarcodesDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.d(TAG, "##### requestSetDataBackup onCancelled ${databaseError.message}#####")
@@ -90,15 +93,16 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
                 val child = dataSnapshot.children.iterator()
                 while (child.hasNext()) {
                     if (child.next().value == currentUserEmail) {
-                        Log.d(TAG, "##### requestSetDataBackup onDataChange sscurrentUserEmail : $currentUserEmail#####")
+                        Log.d(TAG, "##### requestSetDataBackup onDataChange currentUserEmail : $currentUserEmail#####")
                         FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).ref.removeValue(null)
                     }
                 }
 
                 val currentBarcodeItems = PreferencesManager.loadBarcodeItemList(activity)
                 for (value in currentBarcodeItems.withIndex()) {
-                    Log.d(TAG, "##### requestSetDataBackup onDataChange id : ${value.value.barcodeId}#####")
+                    Log.d(TAG, "##### requestSetDataBackup onDataChange id : ${value.value.itemType}#####")
                     if (value.value.itemType != 0L) {
+                        Log.d(TAG, "##### requestSetDataBackup onDataChange email : $currentUserEmail id : ${value.value.barcodeName}#####")
                         FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).child(value.value.barcodeName.toString()).child("mItemType").setValue(value.value.itemType)
                         FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).child(value.value.barcodeName.toString()).child("mBarcodeType").setValue(value.value.barcodeType)
                         FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).child(value.value.barcodeName.toString()).child("mBarcodeCardColor").setValue(value.value.barcodeCardColor)
@@ -121,6 +125,7 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
         try {
             currentUserEmail = auth.currentUser?.email!!
             currentUserEmail = currentUserEmail.substring(0, currentUserEmail.lastIndexOf("@"))
+//            currentUserEmail = AES256Chiper.AES_Decode(currentUserEmail)
         } catch (e: Exception) {
             mView.onResultGetDataBackup(false, R.string.string_success_set_backup_google)
             return
@@ -139,14 +144,14 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
                 val child = dataSnapshot.child(currentUserEmail).children.toMutableList()
                 for (value in child.withIndex()) {
                     Log.d(TAG, "##### requestGetDataBackup onDataChange value : ${value.value.child("mItemType")} #####")
-                   /* resultList.add(BarcodeItem(
-                            value.value.child("mItemType").value as Long
-                            , value.value.child("mBarcodeType").value as Long
-                            , value.value.child("mBarcodeId").value as Long
-                            , value.value.child("mBarcodeName").value as String
-                            , value.value.child("mBarcodeCardColor").value as Long
-                            , value.value.child("mBarcodeValue").value as String))*/
-                     resultList.add(BarcodeItem(
+                    /* resultList.add(BarcodeItem(
+                             value.value.child("mItemType").value as Long
+                             , value.value.child("mBarcodeType").value as Long
+                             , value.value.child("mBarcodeId").value as Long
+                             , value.value.child("mBarcodeName").value as String
+                             , value.value.child("mBarcodeCardColor").value as Long
+                             , value.value.child("mBarcodeValue").value as String))*/
+                    resultList.add(BarcodeItem(
                             value.value.child("mItemType").value as Long
                             , value.value.child("mBarcodeType").value as Long
                             , 0L
@@ -162,5 +167,47 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
                 mView.onResultGetDataBackup(true, R.string.string_success_get_backup_google)
             }
         })
+    }
+
+    override fun requestSetAutobright(activity: Activity) {
+        Log.d(TAG, "##### requestSetAutobright #####")
+        var currentState = PreferencesManager.loadAutoBrightState(activity)
+        if (currentState) {
+            PreferencesManager.saveAutoBrightState(activity, false)
+        } else {
+            PreferencesManager.saveAutoBrightState(activity, true)
+        }
+
+        currentState = PreferencesManager.loadAutoBrightState(activity)
+        val msg = if (currentState) {
+            R.string.string_autobright_on
+        } else {
+            R.string.string_autobright_off
+        }
+        mView.onResultGetAutoBright(PreferencesManager.loadAutoBrightState(activity), msg)
+    }
+
+    override fun requestGetAutobright(activity: Activity) {
+        Log.d(TAG, "##### requestGetAutobright #####")
+        val currentState = PreferencesManager.loadAutoBrightState(activity)
+        val msg = if (currentState) {
+            R.string.string_autobright_on
+        } else {
+            R.string.string_autobright_off
+        }
+
+        mView.onResultGetAutoBright(PreferencesManager.loadAutoBrightState(activity), -1)
+    }
+
+    override fun requestGetCurrentAppVersion(activity: Activity) {
+        Log.d(TAG, "##### requestGetCurrentAppVersion #####")
+        try{
+            val packageInfo = activity.packageManager.getPackageInfo(activity.packageName, 0)
+            val version = packageInfo.versionName
+            mView.onResultGetCurrentAppVersion(true, version)
+        }catch (e : Exception){
+            e.printStackTrace()
+            mView.onResultGetCurrentAppVersion(false, "")
+        }
     }
 }

@@ -2,6 +2,7 @@ package Module.Settings
 
 import android.app.Activity
 import android.content.Intent
+import android.view.View
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 
@@ -11,6 +12,8 @@ interface Settings {
         fun onResultGoogleSignIn(result : Boolean, msg : Int, auth : FirebaseAuth)
         fun onResultSetDataBackup(result : Boolean, msg : Int)
         fun onResultGetDataBackup(result : Boolean, msg : Int)
+        fun onResultGetAutoBright(result : Boolean, msg : Int)
+        fun onResultGetCurrentAppVersion(result : Boolean, version : String)
     }
     interface presenter{
         fun requestGoogleSignInClient(activity : Activity)
@@ -18,5 +21,8 @@ interface Settings {
         fun requestGoogleSignIn(activity : Activity, data : Intent?)
         fun requestSetDataBackup(activity: Activity, auth : FirebaseAuth)
         fun requestGetDataBackup(activity: Activity, auth : FirebaseAuth)
+        fun requestSetAutobright(activity: Activity)
+        fun requestGetAutobright(activity: Activity)
+        fun requestGetCurrentAppVersion(activity : Activity)
     }
 }

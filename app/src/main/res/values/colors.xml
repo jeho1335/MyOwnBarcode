@@ -11,6 +11,11 @@
     <color name="color_txt_p">#23000000</color>
     <color name="color_text_bg_p">#23000000</color>
     <color name="color_transparent">#00000000</color>
+    <color name="color_line">#FFBCBCBC</color>
+    <color name="color_settings_title">#FF000000</color>
+    <color name="color_settings_subtitle">#FF636363</color>
+    <color name="color_settings_n">#FF636363</color>
+    <color name="color_settings_p">#FF949494</color>
 
     <!-- Color Picker -->
     <color name="color_pic_1">#FFEF9DA2</color>
