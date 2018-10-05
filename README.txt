@@ -1,3 +1,4 @@
 *******
-TEST
+MyOwnBarcode
+나만의
 *******
