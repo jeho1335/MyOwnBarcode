@@ -69,12 +69,13 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
             layout_func_bright.id -> {
                 mPresenter.requestSetAutobright(activity as Activity)
             }
-        }
-    }
+            txt_privacy_settings.id -> {
+                mPresenter.requestClickPrivacyPolicy(activity as Activity)
+            }
+            txt_liscense_settings.id -> {
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.d(TAG, "##### onActivityResult #####")
-        super.onActivityResult(requestCode, resultCode, data)
+            }
+        }
     }
 
     override fun onResultGoogleSignInClient(result: Boolean, msg: Int, client: GoogleSignInClient?) {
@@ -84,6 +85,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
             mPresenter.requestSignInIntent(activity as Activity, client)
         } else {
             activity!!.toast(resources.getString(msg))
+            if (mProgress.showsDialog) {
+                mProgress.dismiss()
+            }
         }
     }
 
@@ -93,7 +97,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
             mProgress.dismiss()
         }
         if (result) {
-            val menuList = listOf(getString(R.string.string_alert_select_setdata), getString(R.string.string_alert_select_getdata))
+            val menuList = listOf(getString(R.string.string_alert_select_setdata), getString(R.string.string_alert_select_getdata), getString(R.string.string_alert_select_deletedata))
             activity!!.selector("", menuList) { dialogInterface, i ->
                 when (i) {
                     0 -> {
@@ -106,10 +110,19 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
                         }.show()
                     }
                     1 -> {
-                        activity!!.alert(getString(R.string.string_alert_getdata_from_google)) {
+                        activity!!.alert(getString(R.string.string_alert_deletedata_from_google)) {
                             yesButton {
                                 mPresenter.requestGetDataBackup(activity as Activity, auth)
                                 mProgress.setTitle(getString(R.string.string_wait_import)).show(activity!!.fragmentManager, this.javaClass.simpleName)
+                            }
+                            noButton { }
+                        }.show()
+                    }
+                    2 -> {
+                        activity!!.alert(getString(R.string.string_alert_deletedata_from_google)) {
+                            yesButton {
+                                mPresenter.requestDeleteDataBackup(activity as Activity, auth)
+                                mProgress.setTitle(getString(R.string.string_wait_delete)).show(activity!!.fragmentManager, this.javaClass.simpleName)
                             }
                             noButton { }
                         }.show()
@@ -137,6 +150,14 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
         activity!!.toast(getString(msg))
     }
 
+    override fun onResultDeleteDataBackup(result: Boolean, msg: Int) {
+        Log.d(TAG, "##### onResultGetDataBackup #####")
+        if (mProgress.showsDialog) {
+            mProgress.dismiss()
+        }
+        activity!!.toast(getString(msg))
+    }
+
     override fun onResultGetAutoBright(result: Boolean, msg: Int) {
         Log.d(TAG, "##### onResultGetAutoBright ##### result : $result")
         if (msg != -1) {
@@ -151,9 +172,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
         }
     }
 
-    override fun onResultGetCurrentAppVersion(result : Boolean, version: String) {
+    override fun onResultGetCurrentAppVersion(result: Boolean, version: String) {
         Log.d(TAG, "##### onResultGetCurrentAppVersion #####")
-        if(result) {
+        if (result) {
             txt_version.text = version
         }
     }

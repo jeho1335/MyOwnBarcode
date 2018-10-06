@@ -43,5 +43,4 @@ public class ConstVariables {
 
     //Google sign in
     public final static int RC_SIGN_IN = 700;
-    public final static String DEFAULT_REQUEST_ID = "687505231144-ebmfooo856j10gn1mabr35mgop1lh80u.apps.googleusercontent.com";
 }

@@ -12,8 +12,10 @@
     <!-- Alert Dialog -->
     <string name="string_alert_setdata_from_google">서버에 백업중인 멤버십 리스트가 초기화되고 새로 생성됩니다. 계속 하시겠습니까?</string>
     <string name="string_alert_getdata_from_google">현재 멤버십 리스트가 초기화되고 새로 생성됩니다. 계속 하시겠습니까?</string>
+    <string name="string_alert_deletedata_from_google">서버에 백업중인 멤버십 리스트 및 계정 정보를 삭제합니다. 계속 하시겠습니까?</string>
     <string name="string_alert_select_setdata">데이터 백업</string>
     <string name="string_alert_select_getdata">데이터 가져오기</string>
+    <string name="string_alert_select_deletedata">데이터 삭제</string>
 
     <!-- Select Dialog -->
     <string name="string_modify_barcode">바코드 수정</string>
@@ -41,6 +43,7 @@
 
     <!-- Common Strings -->
     <string name="string_request_add_new_barcode">이곳을 눌러서 새 바코드를 입력해 주세요</string>
+    <string name="string_failed_make_barcode">바코드 값 오류입니다. 삭제 후 다시 생성해 주세요</string>
     <string name="string_request_pic_color">색상을 선택해 주세요</string>
     <string name="string_request_write_name">이름을 입력해 주세요</string>
     <string name="string_unhandled_exception">알 수 없는 오류</string>
@@ -52,6 +55,8 @@
     <string name="string_cannot_sign_in_google">로그인에 실패했습니다.</string>
     <string name="string_success_set_backup_google">백업 완료</string>
     <string name="string_failed_set_backup_google">백업 실패</string>
+    <string name="string_success_delete_backup_google">삭제 완료</string>
+    <string name="string_failed_delete_backup_google">삭제 실패</string>
     <string name="string_success_get_backup_google">불러오기 완료</string>
     <string name="string_failed_get_backup_google">불러오기 실패</string>
     <string name="string_request_backkey">한번 더 누르면 종료합니다.</string>
@@ -62,6 +67,7 @@
     <string name="string_wait_signin">계정 연결중..</string>
     <string name="string_wait_export">데이터를 내보내는 중..</string>
     <string name="string_wait_import">데이터를 가져오는 중..</string>
+    <string name="string_wait_delete">데이터를 지우는 중..</string>
 
     <!-- GNB / Toolbar -->
     <string name="string_menu_home">멤버십 리스트</string>
@@ -71,7 +77,7 @@
 
     <!-- Settings -->
     <string name="string_title_version_settings">버전</string>
-    <string name="string_title_backup_settings">데이터 백업</string>
+    <string name="string_title_backup_settings">데이터 내보내기</string>
     <string name="string_subtitle_backup_settings">Google 계정을 이용해서 멤버십 데이터를 관리할 수 있습니다.</string>
     <string name="string_backup_settings">가져오기 / 내보내기</string>
     <string name="string_title_bright_settings">화면 밝기 자동 조정</string>

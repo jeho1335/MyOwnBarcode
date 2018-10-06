@@ -15,10 +15,9 @@ class AES256Chiper {
         System.loadLibrary("keys")
 
     }
-    external fun getNativeKey1(): String
-    external fun getNativeKey2(): String
+    external fun getAes256Key(): String
 
-    val secretKey = getNativeKey1()
+    val secretKey = getAes256Key()
 
     val ivBytes: ByteArray = byteArrayOf(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
     fun AES_Encode(str: String): String {
@@ -28,8 +27,12 @@ class AES256Chiper {
         val newKey = SecretKeySpec(secretKey.toByteArray(Charsets.UTF_8), "AES")
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         cipher.init(Cipher.ENCRYPT_MODE, newKey, ivSpec)
-
-        return Base64.encodeToString(cipher.doFinal(textBytes), 0)
+        var result = Base64.encodeToString(cipher.doFinal(textBytes), 0)
+        result = result.substring(0, result.length - 1)
+//        Log.d(TAG, "##### test before $result ")
+//        result = result.replace("/", "")
+//        Log.d(TAG, "##### test atter $result ")
+        return result
 
     }
 
@@ -38,8 +41,8 @@ class AES256Chiper {
         val ivSpec = IvParameterSpec(ivBytes)
         val newKey = SecretKeySpec(secretKey.toByteArray(Charsets.UTF_8), "AES")
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
-        cipher.init(Cipher.DECRYPT_MODE, newKey)
+        cipher.init(Cipher.DECRYPT_MODE, newKey, ivSpec)
 
-        return cipher.doFinal(textBytes) as String
+        return String(cipher.doFinal(textBytes), Charsets.UTF_8)
     }
 }

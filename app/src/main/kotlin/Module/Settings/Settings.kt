@@ -12,6 +12,7 @@ interface Settings {
         fun onResultGoogleSignIn(result : Boolean, msg : Int, auth : FirebaseAuth)
         fun onResultSetDataBackup(result : Boolean, msg : Int)
         fun onResultGetDataBackup(result : Boolean, msg : Int)
+        fun onResultDeleteDataBackup(result : Boolean, msg : Int)
         fun onResultGetAutoBright(result : Boolean, msg : Int)
         fun onResultGetCurrentAppVersion(result : Boolean, version : String)
     }
@@ -21,8 +22,11 @@ interface Settings {
         fun requestGoogleSignIn(activity : Activity, data : Intent?)
         fun requestSetDataBackup(activity: Activity, auth : FirebaseAuth)
         fun requestGetDataBackup(activity: Activity, auth : FirebaseAuth)
+        fun requestDeleteDataBackup(activity: Activity, auth : FirebaseAuth)
         fun requestSetAutobright(activity: Activity)
         fun requestGetAutobright(activity: Activity)
         fun requestGetCurrentAppVersion(activity : Activity)
+        fun requestClickPrivacyPolicy(activity: Activity)
+        fun requestClickOpenSourceLiscense(activity: Activity)
     }
 }

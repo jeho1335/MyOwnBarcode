@@ -63,7 +63,7 @@ class MyBarcodeFragment : Fragment(), MyBarcode.view {
         Log.d(TAG, "##### onResultBarcodeList #####")
     }
 
-    private val mIOnCLickListener: BarcodeRecyclerviewAdapter.IOnClick = object : BarcodeRecyclerviewAdapter.IOnClick {
+    private val mIOnItemCLickListener: BarcodeRecyclerviewAdapter.IOnItemClick = object : BarcodeRecyclerviewAdapter.IOnItemClick {
         override fun onItemClick(item: BarcodeItem) {
             Log.d(TAG, "##### onItemClick #####")
             EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_CLICK_BARCODELIST, item))
@@ -85,7 +85,7 @@ class MyBarcodeFragment : Fragment(), MyBarcode.view {
         Log.d(TAG, "##### initializeUi #####")
 
         mItems = ArrayList<BarcodeItem>()
-        mAdapter = BarcodeRecyclerviewAdapter(mIOnCLickListener)
+        mAdapter = BarcodeRecyclerviewAdapter(mIOnItemCLickListener)
         mRecyclerViewItemTouchHelper = RecyclerViewItemTouchHelper(mAdapter as RecyclerViewItemTouchHelper.IItemTouchHelperAdapter)
         mItemTouchHelper = ItemTouchHelper(mRecyclerViewItemTouchHelper)
         mItemTouchHelper.attachToRecyclerView(recyclerView)

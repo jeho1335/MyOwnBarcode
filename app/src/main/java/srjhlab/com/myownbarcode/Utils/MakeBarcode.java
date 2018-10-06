@@ -63,7 +63,7 @@ public class MakeBarcode {
                 break;
             case ConstVariables.EAN_13:
                 Log.d(TAG, "##### makeBarcode ##### EAN_13");
-                bmp = makeeEAN13(value);
+                bmp = makeEAN13(value);
                 break;
             case ConstVariables.PDF_417:
                 Log.d(TAG, "##### makeBarcode ##### PDF_417");
@@ -113,8 +113,9 @@ public class MakeBarcode {
                     bmp.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
-        }catch (WriterException e){
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
 
         return bmp;
@@ -135,8 +136,9 @@ public class MakeBarcode {
                     bmp.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
-        }catch (WriterException e){
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
 
         return bmp;
@@ -157,8 +159,9 @@ public class MakeBarcode {
                     bmp.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
-        }catch (WriterException e){
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
 
         return bmp;
@@ -179,14 +182,15 @@ public class MakeBarcode {
                     bmp.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
-        }catch (WriterException e){
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
 
         return bmp;
     }
 
-    private Bitmap makeeEAN13(String value){
+    private Bitmap makeEAN13(String value){
         Log.d(TAG, "##### makeEAN13 #####");
         Bitmap bmp = null;
 
@@ -201,8 +205,9 @@ public class MakeBarcode {
                     bmp.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
-        }catch (WriterException e){
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
 
         return bmp;
@@ -223,8 +228,9 @@ public class MakeBarcode {
                     bmp.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
-        }catch (WriterException e){
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
 
         return bmp;
@@ -245,8 +251,9 @@ public class MakeBarcode {
                     bmp.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
-        }catch (WriterException e){
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
 
         return bmp;
@@ -267,8 +274,9 @@ public class MakeBarcode {
                     bmp.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
-        }catch (WriterException e){
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
 
         return bmp;
@@ -289,8 +297,9 @@ public class MakeBarcode {
                     bmp.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
-        }catch (WriterException e){
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
 
         return bmp;
@@ -311,8 +320,9 @@ public class MakeBarcode {
                     bmp.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
-        }catch (WriterException e){
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
 
         return bmp;
@@ -333,8 +343,9 @@ public class MakeBarcode {
                     bmp.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
-        }catch (WriterException e){
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
 
         return bmp;
@@ -355,8 +366,9 @@ public class MakeBarcode {
                     bmp.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
-        }catch (WriterException e){
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
 
         return bmp;
@@ -377,8 +389,9 @@ public class MakeBarcode {
                     bmp.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
-        }catch (WriterException e){
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
 
         return bmp;

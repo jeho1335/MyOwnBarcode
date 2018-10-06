@@ -15,13 +15,13 @@ import srjhlab.com.myownbarcode.Utils.ConstVariables
 import srjhlab.com.myownbarcode.Utils.MakeBarcode
 import java.util.*
 
-class BarcodeRecyclerviewAdapter(listener: IOnClick) : RecyclerView.Adapter<BarcodeRecyclerviewAdapter.ViewHolder>(), RecyclerViewItemTouchHelper.IItemTouchHelperAdapter {
+class BarcodeRecyclerviewAdapter(listener: IOnItemClick) : RecyclerView.Adapter<BarcodeRecyclerviewAdapter.ViewHolder>(), RecyclerViewItemTouchHelper.IItemTouchHelperAdapter {
     private val TAG = this.javaClass.simpleName
 
-    private var mListener: IOnClick = listener
+    private var mListener: IOnItemClick = listener
     private var mItems: MutableList<BarcodeItem> = ArrayList()
 
-    interface IOnClick {
+    interface IOnItemClick {
         fun onItemClick(item: BarcodeItem)
         fun onItemLongCLick(item: BarcodeItem, position: Int)
         fun onStartDrag(viewHolder: BarcodeRecyclerviewAdapter.ViewHolder)
@@ -43,7 +43,13 @@ class BarcodeRecyclerviewAdapter(listener: IOnClick) : RecyclerView.Adapter<Barc
                 holder.itemView.img_body.visibility = View.VISIBLE
                 holder.itemView.cardview_layout.visibility = View.VISIBLE
                 holder.itemView.textview_empty_body.visibility = View.GONE
-                holder.itemView.img_body.setImageBitmap(MakeBarcode.getInstance().makeBarcode(item.barcodeType.toInt(), item.barcodeValue))
+                val bmp = MakeBarcode.getInstance().makeBarcode(item.barcodeType.toInt(), item.barcodeValue)
+                if(bmp != null) {
+                    holder.itemView.img_body.setImageBitmap(bmp)
+                    holder.itemView.txt_load_failed.visibility = View.GONE
+                }else{
+                    holder.itemView.txt_load_failed.visibility = View.VISIBLE
+                }
                 holder.itemView.txt_id.text = item.barcodeName
                 holder.itemView.cardview.tag = position
                 holder.itemView.cardview_layout.setBackgroundColor(item.barcodeCardColor.toInt())
@@ -60,7 +66,6 @@ class BarcodeRecyclerviewAdapter(listener: IOnClick) : RecyclerView.Adapter<Barc
                 holder.itemView.cardview_layout.visibility = View.GONE
                 holder.itemView.textview_empty_body.visibility = View.VISIBLE
                 holder.itemView.textview_empty_body.setText(R.string.string_request_add_new_barcode)
-//                holder.itemView.txt_id.text = item.barcodeName
                 holder.itemView.cardview.tag = position
                 holder.itemView.cardview_layout.setBackgroundColor(item.barcodeCardColor.toInt())
                 holder.itemView.imageview_move.visibility = View.GONE
