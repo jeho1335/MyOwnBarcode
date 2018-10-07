@@ -2,7 +2,6 @@ package Module.Settings
 
 import android.app.Activity
 import android.content.Intent
-import android.view.View
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 
@@ -27,6 +26,6 @@ interface Settings {
         fun requestGetAutobright(activity: Activity)
         fun requestGetCurrentAppVersion(activity : Activity)
         fun requestClickPrivacyPolicy(activity: Activity)
-        fun requestClickOpenSourceLiscense(activity: Activity)
+        fun requestClickOpenSourceLiscense()
     }
 }

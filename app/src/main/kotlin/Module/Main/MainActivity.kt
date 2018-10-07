@@ -22,6 +22,7 @@ import srjhlab.com.myownbarcode.Dialog.AddFromImageDialog
 import srjhlab.com.myownbarcode.Dialog.AddFromKeyDialog
 import srjhlab.com.myownbarcode.Dialog.BarcodeFocusDialog
 import srjhlab.com.myownbarcode.Item.BarcodeItem
+import srjhlab.com.myownbarcode.Module.License.LicenseFragment
 import srjhlab.com.myownbarcode.Module.MyBarcode.MyBarcodeFragment
 import srjhlab.com.myownbarcode.Module.Settings.SettingsFragment
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
@@ -31,8 +32,6 @@ import srjhlab.com.myownbarcode.Utils.ConstVariables
 class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
     val TAG = this.javaClass.simpleName
     private val PERMISSIONS_REQUEST = 1
-    private val FRAGMENT_STATE_BARCODE_LIST = 1
-    private val FRAGMENT_STATE_SETTINGS = 2
     private lateinit var mPresenter: MainPresenter
     private lateinit var mMyBarcodeFragment: MyBarcodeFragment
     private lateinit var mSettingsFragment: SettingsFragment
@@ -46,7 +45,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
         mMyBarcodeFragment = MyBarcodeFragment()
         mSettingsFragment = SettingsFragment()
         initializeUI()
-        handleFragment(FRAGMENT_STATE_BARCODE_LIST)
+        handleFragment(ConstVariables.FRAGMENT_STATE_BARCODE_LIST)
     }
 
     private fun initializeUI() {
@@ -54,6 +53,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
         mContentView = layout_content as View
         img_list_toolbar.setOnClickListener(this)
         img_settings_toolbar.setOnClickListener(this)
+        img_back_toolbar.setOnClickListener(this)
     }
 
     override fun onDestroy() {
@@ -70,10 +70,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
 
         when (viewId) {
             img_list_toolbar.id -> {
-                handleFragment(FRAGMENT_STATE_BARCODE_LIST)
+                handleFragment(ConstVariables.FRAGMENT_STATE_BARCODE_LIST)
             }
             img_settings_toolbar.id -> {
-                handleFragment(FRAGMENT_STATE_SETTINGS)
+                handleFragment(ConstVariables.FRAGMENT_STATE_SETTINGS)
+            }
+            img_back_toolbar.id -> {
+                handleFragment(ConstVariables.GOTO_BACKSTACK)
             }
             else -> return
         }
@@ -132,31 +135,45 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
         ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
 
         when (state) {
-            FRAGMENT_STATE_BARCODE_LIST -> {
+            ConstVariables.GOTO_BACKSTACK -> {
+                txt_title_toolbar.text = getString(R.string.string_menu_settings)
+                img_list_toolbar.visibility = View.VISIBLE
+                img_settings_toolbar.visibility = View.GONE
+                img_back_toolbar.visibility = View.GONE
+                fm.popBackStack()
+                return
+            }
+            ConstVariables.FRAGMENT_STATE_BARCODE_LIST -> {
                 txt_title_toolbar.text = getString(R.string.string_menu_home)
-//                SimpleViewFadeAnimation().startAnimation(img_list_toolbar, img_settings_toolbar)
-                img_list_toolbar.visibility = View.GONE
                 img_settings_toolbar.visibility = View.VISIBLE
+                img_list_toolbar.visibility = View.GONE
+                img_back_toolbar.visibility = View.GONE
                 fr = MyBarcodeFragment()
             }
 
-            FRAGMENT_STATE_SETTINGS -> {
+            ConstVariables.FRAGMENT_STATE_SETTINGS -> {
                 txt_title_toolbar.text = getString(R.string.string_menu_settings)
-                img_settings_toolbar.visibility = View.GONE
                 img_list_toolbar.visibility = View.VISIBLE
-//                SimpleViewFadeAnimation().startAnimation(img_settings_toolbar, img_list_toolbar)
+                img_settings_toolbar.visibility = View.GONE
+                img_back_toolbar.visibility = View.GONE
                 fr = SettingsFragment()
             }
+
+            ConstVariables.FRAGMENT_STATE_LICENSE ->{
+                txt_title_toolbar.text = getString(R.string.string_open_source_licensee)
+                img_back_toolbar.visibility = View.VISIBLE
+                img_settings_toolbar.visibility = View.GONE
+                img_list_toolbar.visibility = View.GONE
+                fr = LicenseFragment()
+            }
         }
-        fm.popBackStack()
+//        fm.popBackStack()
         if (fr.isAdded) {
             ft.show(fr)
         } else {
             ft.add(mContentView.id, fr, fr.javaClass.simpleName)
         }
         ft.addToBackStack(null)
-
-
         ft.commit()
     }
 
@@ -257,7 +274,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
                         }
                     }
                 }
-
+            }
+            ConstVariables.EVENTBUS_GO_TO_LICENSE -> {
+                Log.d(TAG, "##### EVENTBUS_GO_TO_LICENSE #####")
+                handleFragment(ConstVariables.FRAGMENT_STATE_LICENSE)
             }
         }
     }

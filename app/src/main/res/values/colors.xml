@@ -6,7 +6,7 @@
 
     <!--Common Color-->
     <color name="color_white">#FFFFFFFF</color>
-    <color name="color_app_Theme">#FFF1F0EC</color>
+    <color name="color_app_Theme">#FFECECEC</color>
     <color name="color_txt_n">#FF000000</color>
     <color name="color_txt_p">#23000000</color>
     <color name="color_text_bg_p">#23000000</color>

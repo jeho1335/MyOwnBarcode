@@ -4,8 +4,6 @@ import Model.ActivityResultEvent
 import Module.Settings.Settings
 import Module.Settings.SettingsPresenter
 import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -20,7 +18,6 @@ import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.*
 import srjhlab.com.myownbarcode.Dialog.ProgressDialog
 import srjhlab.com.myownbarcode.R
-import srjhlab.com.myownbarcode.R.id.*
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.ConstVariables
 
@@ -73,7 +70,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
                 mPresenter.requestClickPrivacyPolicy(activity as Activity)
             }
             txt_liscense_settings.id -> {
-
+                mPresenter.requestClickOpenSourceLiscense()
             }
         }
     }

@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.util.Log;
 
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
 import com.google.zxing.aztec.AztecWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.datamatrix.DataMatrixWriter;

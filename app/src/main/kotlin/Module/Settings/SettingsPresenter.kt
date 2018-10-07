@@ -15,8 +15,10 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import org.greenrobot.eventbus.EventBus
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
+import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.ConstVariables
 import srjhlab.com.myownbarcode.Utils.PreferencesManager
 
@@ -256,7 +258,8 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
         activity.startActivity(intent)
     }
 
-    override fun requestClickOpenSourceLiscense(activity: Activity) {
+    override fun requestClickOpenSourceLiscense() {
         Log.d(TAG, "##### requestClickOpenSourceLiscense #####")
+        EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_GO_TO_LICENSE))
     }
 }

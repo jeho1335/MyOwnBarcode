@@ -73,16 +73,26 @@
     <string name="string_menu_home">멤버십 리스트</string>
     <string name="string_menu_settings">설정</string>
     <string name="string_menu_privacy">개인정보처리방침</string>
-    <string name="string_mebu_liscense">오픈소스 라이센스</string>
+    <string name="string_menu_liscense">오픈소스 라이센스</string>
 
     <!-- Settings -->
     <string name="string_title_version_settings">버전</string>
-    <string name="string_title_backup_settings">데이터 내보내기</string>
+    <string name="string_title_backup_settings">데이터 관리</string>
     <string name="string_subtitle_backup_settings">Google 계정을 이용해서 멤버십 데이터를 관리할 수 있습니다.</string>
     <string name="string_backup_settings">가져오기 / 내보내기</string>
     <string name="string_title_bright_settings">화면 밝기 자동 조정</string>
     <string name="string_subtitle_bright_settings">멤버십 바코드 확대시 화면 밝기를 최대치로 설정합니다.</string>
     <string name="string_bright_on_settings">ON</string>
     <string name="string_bright_off_settings">OFF</string>
+
+    <!-- License -->
+    <string name="string_title_liscense">Android용 나만의멤버십 앱은
+        \n오픈 소스 소프트웨어를
+        \n사용하여 만들어졌습니다.
+        \n\ncom.google.zxing
+        \ncom.google.code.gson
+        \norg.greenrobot:eventbus
+        \norg.mod4j.org.apache.commons
+        \norg.jetbrains.anko:anko</string>
 
 </resources>

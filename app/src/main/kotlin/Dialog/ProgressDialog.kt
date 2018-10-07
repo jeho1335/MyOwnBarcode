@@ -7,13 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import kotlinx.android.synthetic.main.layout_dialog_barcodefocus.*
 import kotlinx.android.synthetic.main.layout_dialog_progress.*
-import org.apache.commons.lang.StringUtils
-import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
-import srjhlab.com.myownbarcode.Utils.CommonUtils
-import srjhlab.com.myownbarcode.Utils.MakeBarcode
 
 class ProgressDialog : DialogFragment() {
     private val TAG = this.javaClass.simpleName

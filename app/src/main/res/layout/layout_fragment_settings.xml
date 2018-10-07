@@ -169,7 +169,7 @@
         android:layout_below="@+id/txt_privacy_settings"
         android:layout_gravity="center_vertical"
         android:layout_marginTop="40dp"
-        android:text="@string/string_mebu_liscense"
+        android:text="@string/string_menu_liscense"
         android:textColor="@drawable/txt_settings_selector_2"
         android:textSize="26sp"
         android:textStyle="bold" />
