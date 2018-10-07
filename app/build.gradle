@@ -10,8 +10,8 @@ android {
         applicationId "srjhlab.com.myownbarcode"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 4
-        versionName "2.0"
+        versionCode 6
+        versionName "2.02"
         multiDexEnabled true
     }
     dataBinding {
@@ -21,9 +21,15 @@ android {
         javaMaxHeapSize = "4g"
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFile 'proguard-rules.pro'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFile 'proguard-rules.pro'
         }
     }
     sourceSets {

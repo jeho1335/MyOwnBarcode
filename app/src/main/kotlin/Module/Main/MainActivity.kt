@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
         if (fr.isAdded) {
             ft.show(fr)
         } else {
-            ft.add(mContentView.id, fr, fr.javaClass.simpleName)
+            ft.replace(mContentView.id, fr, fr.javaClass.simpleName)
         }
         ft.addToBackStack(null)
         ft.commit()

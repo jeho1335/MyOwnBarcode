@@ -42,7 +42,7 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
                     .requestEmail()
                     .build()
             val googleSignInClient = GoogleSignIn.getClient(activity, googleSignInOptions)
-            googleSignInClient.signOut()
+            //googleSignInClient.signOut()
             mView.onResultGoogleSignInClient(true, -1, googleSignInClient)
         } catch (e: Exception) {
             e.printStackTrace()
