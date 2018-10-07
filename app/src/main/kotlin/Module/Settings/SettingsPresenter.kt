@@ -28,10 +28,9 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
 
     init {
         System.loadLibrary("keys")
-
     }
 
-    external fun getGoogleAuthApiKey(): String
+    private external fun getGoogleAuthApiKey(): String
 
     override fun requestGoogleSignInClient(activity: Activity) {
         Log.d(TAG, "##### requestGoogleSIgnInClient #####")

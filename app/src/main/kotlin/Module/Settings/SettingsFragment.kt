@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.layout_fragment_settings.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.*
 import srjhlab.com.myownbarcode.Dialog.ProgressDialog
 import srjhlab.com.myownbarcode.R
@@ -176,7 +177,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
         }
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(obj: CommonEventbusObejct) {
         Log.d(TAG, "##### onEvent #####")
         when (obj.type) {

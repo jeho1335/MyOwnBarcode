@@ -10,8 +10,8 @@ android {
         applicationId "srjhlab.com.myownbarcode"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 6
-        versionName "2.02"
+        versionCode 7
+        versionName "2.03"
         multiDexEnabled true
     }
     dataBinding {
