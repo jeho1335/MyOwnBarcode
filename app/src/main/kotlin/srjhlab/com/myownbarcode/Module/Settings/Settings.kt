@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 interface Settings {
     interface view{
         fun onResultGoogleSignInClient(result : Boolean, msg : Int, client : GoogleSignInClient?)
+        fun onResultGoogleSignOutClient(result : Boolean, msg : Int)
         fun onResultGoogleSignIn(result : Boolean, msg : Int, auth : FirebaseAuth)
         fun onResultSetDataBackup(result : Boolean, msg : Int)
         fun onResultGetDataBackup(result : Boolean, msg : Int)
@@ -17,6 +18,7 @@ interface Settings {
     }
     interface presenter{
         fun requestGoogleSignInClient(activity : Activity)
+        fun requestGoogleSignOutClient(activity : Activity)
         fun requestSignInIntent(activity : Activity, client : GoogleSignInClient?)
         fun requestGoogleSignIn(activity : Activity, data : Intent?)
         fun requestSetDataBackup(activity: Activity, auth : FirebaseAuth)

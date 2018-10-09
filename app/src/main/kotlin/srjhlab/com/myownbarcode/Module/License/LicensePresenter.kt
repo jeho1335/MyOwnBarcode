@@ -2,7 +2,11 @@ package srjhlab.com.myownbarcode.Module.License
 
 import android.app.Activity
 import android.util.Log
+import android.view.KeyEvent
+import org.greenrobot.eventbus.EventBus
 import srjhlab.com.myownbarcode.R
+import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
+import srjhlab.com.myownbarcode.Utils.ConstVariables
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
@@ -28,6 +32,13 @@ class LicensePresenter(view : License.view) : License.presenter {
             mView.onResultLicense(data)
         } catch (e: IOException) {
             e.printStackTrace()
+        }
+    }
+
+    override fun requestHandleKeyEvent(keyCode: Int) {
+        Log.d(TAG, "##### requestHandleKeyEvent #####")
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_GO_TO_BACKSTACK))
         }
     }
 }

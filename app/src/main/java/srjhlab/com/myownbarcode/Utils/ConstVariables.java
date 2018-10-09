@@ -18,6 +18,7 @@ public class ConstVariables {
     public final static int EVENTBUS_LONGCLICK_BARCODELIST = 13;
     public final static int EVENTBUS_ON_ACTIBITY_RESULT = 14;
     public final static int EVENTBUS_GO_TO_LICENSE = 15;
+    public final static int EVENTBUS_GO_TO_BACKSTACK = 16;
 
     //Fragment change
     public final static int FRAGMENT_STATE_BARCODE_LIST = 100;

@@ -14,6 +14,7 @@ class ProgressDialog : DialogFragment() {
     private val TAG = this.javaClass.simpleName
     private var mProgressTitle = ""
 
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Log.d(TAG, "##### onCreateView #####")
         dialog.window.attributes.windowAnimations = R.style.SelectDialogAnimation
@@ -28,6 +29,7 @@ class ProgressDialog : DialogFragment() {
         initializeUi()
     }
 
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     override fun onResume() {
         Log.d(TAG, "##### onResume #####")
         super.onResume()

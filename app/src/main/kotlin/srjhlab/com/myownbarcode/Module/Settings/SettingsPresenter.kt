@@ -37,11 +37,10 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
         try {
             val googleSignInOptions = GoogleSignInOptions
                     .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getGoogleAuthApiKey())
+                    .requestIdToken(activity.resources.getString(R.string.api_key))
                     .requestEmail()
                     .build()
             val googleSignInClient = GoogleSignIn.getClient(activity, googleSignInOptions)
-            //googleSignInClient.signOut()
             mView.onResultGoogleSignInClient(true, -1, googleSignInClient)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -49,9 +48,26 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
         }
     }
 
+    override fun requestGoogleSignOutClient(activity: Activity) {
+        Log.d(TAG, "##### requestGoogleSignOutClient #####")
+        try {
+            val googleSignInOptions = GoogleSignInOptions
+                    .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(activity.resources.getString(R.string.api_key))
+                    .requestEmail()
+                    .build()
+            val googleSignInClient = GoogleSignIn.getClient(activity, googleSignInOptions)
+            googleSignInClient.signOut()
+            mView.onResultGoogleSignOutClient(true, R.string.string_success_sign_out_google)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            mView.onResultGoogleSignOutClient(false, R.string.string_failed_sign_out_google)
+        }
+    }
+
     override fun requestSignInIntent(activity: Activity, client: GoogleSignInClient?) {
         Log.d(TAG, "##### requestGoogleSIgnInClient #####")
-        val signInIntent = client!!.signInIntent
+        val signInIntent = client?.signInIntent
         activity.startActivityForResult(signInIntent, ConstVariables.RC_SIGN_IN)
     }
 
@@ -61,7 +77,7 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
         try {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             val account = task.getResult(ApiException::class.java)
-            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+            val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
             firebaseAuth.signInWithCredential(credential).addOnCompleteListener(activity) {
                 if (task.isSuccessful) {
                     mView.onResultGoogleSignIn(true, R.string.string_sign_in_google, firebaseAuth)

@@ -1,12 +1,12 @@
 package srjhlab.com.myownbarcode.Dialog
 
-import android.app.DialogFragment
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.v4.app.DialogFragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -42,6 +42,7 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
     private lateinit var mColorPickerArr: Array<ImageView>
     private var mPicColor: Long = -1
 
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Log.d(TAG, "##### onCreateView #####")
         dialog.window.attributes.windowAnimations = R.style.SelectDialogAnimation
@@ -50,18 +51,18 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
         dialog.setCanceledOnTouchOutside(true)
 
         mColorArr = arrayOf(
-                activity.getColor(R.color.color_pic_1)
-                , activity.getColor(R.color.color_pic_2)
-                , activity.getColor(R.color.color_pic_3)
-                , activity.getColor(R.color.color_pic_4)
-                , activity.getColor(R.color.color_pic_5)
-                , activity.getColor(R.color.color_pic_6)
-                , activity.getColor(R.color.color_pic_7)
-                , activity.getColor(R.color.color_pic_8)
-                , activity.getColor(R.color.color_pic_9)
-                , activity.getColor(R.color.color_pic_10)
-                , activity.getColor(R.color.color_pic_11)
-                , activity.getColor(R.color.color_pic_12)
+                activity!!.getColor(R.color.color_pic_1)
+                , activity!!.getColor(R.color.color_pic_2)
+                , activity!!.getColor(R.color.color_pic_3)
+                , activity!!.getColor(R.color.color_pic_4)
+                , activity!!.getColor(R.color.color_pic_5)
+                , activity!!.getColor(R.color.color_pic_6)
+                , activity!!.getColor(R.color.color_pic_7)
+                , activity!!.getColor(R.color.color_pic_8)
+                , activity!!.getColor(R.color.color_pic_9)
+                , activity!!.getColor(R.color.color_pic_10)
+                , activity!!.getColor(R.color.color_pic_11)
+                , activity!!.getColor(R.color.color_pic_12)
         )
         return inflater.inflate(R.layout.layout_dialog_addinfo, container, false)
     }
@@ -77,7 +78,6 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
         when (v.id) {
             textview_dialog_ok.id -> {
                 saveBarcode()
-                dismiss()
                 return
             }
             textview_dialog_cancel.id -> {
@@ -153,14 +153,12 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
     private fun saveBarcode() {
         Log.d(TAG, "##### saveBarcode #####")
         if (mPicColor == -1L) {
-//            ToastUtil.getInstance(activity).showToast(resources.getString(R.string.string_request_pic_color))
-            toast(resources.getString(R.string.string_request_pic_color))
+            activity!!.toast(resources.getString(R.string.string_request_pic_color))
             return
         }
 
         if (edittext_dialog_add_barcode.text.toString() == "") {
-//            ToastUtil.getInstance(activity).showToast(resources.getString(R.string.string_request_write_name))
-            toast(resources.getString(R.string.string_request_write_name))
+            activity!!.toast(resources.getString(R.string.string_request_write_name))
             return
         }
 
@@ -175,18 +173,18 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
     private fun setPreSelectedColor(color: Int) {
         Log.d(TAG, "##### setPreSelectedColor #####")
         when (color) {
-            activity.getColor(R.color.color_pic_1) -> mColorPickerArr.get(0).isSelected = true
-            activity.getColor(R.color.color_pic_2) -> mColorPickerArr.get(1).isSelected = true
-            activity.getColor(R.color.color_pic_3) -> mColorPickerArr.get(2).isSelected = true
-            activity.getColor(R.color.color_pic_4) -> mColorPickerArr.get(3).isSelected = true
-            activity.getColor(R.color.color_pic_5) -> mColorPickerArr.get(4).isSelected = true
-            activity.getColor(R.color.color_pic_6) -> mColorPickerArr.get(5).isSelected = true
-            activity.getColor(R.color.color_pic_7) -> mColorPickerArr.get(6).isSelected = true
-            activity.getColor(R.color.color_pic_8) -> mColorPickerArr.get(7).isSelected = true
-            activity.getColor(R.color.color_pic_9) -> mColorPickerArr.get(8).isSelected = true
-            activity.getColor(R.color.color_pic_10) -> mColorPickerArr.get(9).isSelected = true
-            activity.getColor(R.color.color_pic_11) -> mColorPickerArr.get(10).isSelected = true
-            activity.getColor(R.color.color_pic_12) -> mColorPickerArr.get(11).isSelected = true
+            activity!!.getColor(R.color.color_pic_1) -> mColorPickerArr.get(0).isSelected = true
+            activity!!.getColor(R.color.color_pic_2) -> mColorPickerArr.get(1).isSelected = true
+            activity!!.getColor(R.color.color_pic_3) -> mColorPickerArr.get(2).isSelected = true
+            activity!!.getColor(R.color.color_pic_4) -> mColorPickerArr.get(3).isSelected = true
+            activity!!.getColor(R.color.color_pic_5) -> mColorPickerArr.get(4).isSelected = true
+            activity!!.getColor(R.color.color_pic_6) -> mColorPickerArr.get(5).isSelected = true
+            activity!!.getColor(R.color.color_pic_7) -> mColorPickerArr.get(6).isSelected = true
+            activity!!.getColor(R.color.color_pic_8) -> mColorPickerArr.get(7).isSelected = true
+            activity!!.getColor(R.color.color_pic_9) -> mColorPickerArr.get(8).isSelected = true
+            activity!!.getColor(R.color.color_pic_10) -> mColorPickerArr.get(9).isSelected = true
+            activity!!.getColor(R.color.color_pic_11) -> mColorPickerArr.get(10).isSelected = true
+            activity!!.getColor(R.color.color_pic_12) -> mColorPickerArr.get(11).isSelected = true
         }
     }
 

@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "687505231144",
-    "firebase_url": "https://myownbarcode.firebaseio.com",
-    "project_id": "myownbarcode",
-    "storage_bucket": "myownbarcode.appspot.com"
+    "project_number": "1069323023636",
+    "firebase_url": "https://myownbarcode-7ebbb.firebaseio.com",
+    "project_id": "myownbarcode-7ebbb",
+    "storage_bucket": "myownbarcode-7ebbb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:687505231144:android:f8d0b211132b23ac",
+        "mobilesdk_app_id": "1:1069323023636:android:f8d0b211132b23ac",
         "android_client_info": {
           "package_name": "srjhlab.com.myownbarcode"
         }
       },
       "oauth_client": [
         {
-          "client_id": "687505231144-it1rofqvho0fj8cphb35f8em0vojj42j.apps.googleusercontent.com",
+          "client_id": "1069323023636-vde7375a1mvoo1mfiqbffjo4ofggj043.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "srjhlab.com.myownbarcode",
@@ -23,21 +23,13 @@
           }
         },
         {
-          "client_id": "687505231144-59snrui3ar726fsqee7pdqpl8in6mbah.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "srjhlab.com.myownbarcode",
-            "certificate_hash": "d66b8c5693c46c88c2c8ef9e799b1be2807e3124"
-          }
-        },
-        {
-          "client_id": "687505231144-ebmfooo856j10gn1mabr35mgop1lh80u.apps.googleusercontent.com",
+          "client_id": "1069323023636-d1ojrm7v5gjenqv4g1133mv31lrove4t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBCWToJTspYOvz1NhLIGlExfi5O1wQOGHY"
+          "current_key": "AIzaSyBykhYp149elDXLwhpSXNxsksBYtcFRJc0"
         }
       ],
       "services": {
@@ -48,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "687505231144-ebmfooo856j10gn1mabr35mgop1lh80u.apps.googleusercontent.com",
+              "client_id": "1069323023636-d1ojrm7v5gjenqv4g1133mv31lrove4t.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

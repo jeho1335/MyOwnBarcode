@@ -89,29 +89,41 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
         }
     }
 
+    override fun onResultGoogleSignOutClient(result: Boolean, msg: Int) {
+        Log.d(TAG, "##### onResultGetDataBackup #####")
+        if (mProgress.showsDialog) {
+            mProgress.dismiss()
+        }
+        activity!!.toast(getString(msg))
+    }
+
     override fun onResultGoogleSignIn(result: Boolean, msg: Int, auth: FirebaseAuth) {
         Log.d(TAG, "##### onResultGoogleSignIn #####")
         if (mProgress.showsDialog) {
             mProgress.dismiss()
         }
         if (result) {
-            val menuList = listOf(getString(R.string.string_alert_select_setdata), getString(R.string.string_alert_select_getdata), getString(R.string.string_alert_select_deletedata))
+            val menuList = listOf(getString(R.string.string_alert_select_setdata), getString(R.string.string_alert_select_getdata), getString(R.string.string_alert_select_deletedata), getString(R.string.string_alert_select_logout))
             activity!!.selector("", menuList) { dialogInterface, i ->
                 when (i) {
                     0 -> {
                         activity!!.alert(getString(R.string.string_alert_setdata_from_google)) {
                             yesButton {
                                 mPresenter.requestSetDataBackup(activity as Activity, auth)
-                                mProgress.setTitle(getString(R.string.string_wait_export)).show(activity!!.fragmentManager, this.javaClass.simpleName)
+                                mProgress
+                                        .setTitle(getString(R.string.string_wait_export))
+                                        .show(activity!!.fragmentManager, this.javaClass.simpleName)
                             }
                             noButton { }
                         }.show()
                     }
                     1 -> {
-                        activity!!.alert(getString(R.string.string_alert_deletedata_from_google)) {
+                        activity!!.alert(getString(R.string.string_alert_getdata_from_google)) {
                             yesButton {
                                 mPresenter.requestGetDataBackup(activity as Activity, auth)
-                                mProgress.setTitle(getString(R.string.string_wait_import)).show(activity!!.fragmentManager, this.javaClass.simpleName)
+                                mProgress
+                                        .setTitle(getString(R.string.string_wait_import))
+                                        .show(activity!!.fragmentManager, this.javaClass.simpleName)
                             }
                             noButton { }
                         }.show()
@@ -120,7 +132,17 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
                         activity!!.alert(getString(R.string.string_alert_deletedata_from_google)) {
                             yesButton {
                                 mPresenter.requestDeleteDataBackup(activity as Activity, auth)
-                                mProgress.setTitle(getString(R.string.string_wait_delete)).show(activity!!.fragmentManager, this.javaClass.simpleName)
+                                mProgress
+                                        .setTitle(getString(R.string.string_wait_delete))
+                                        .show(activity!!.fragmentManager, this.javaClass.simpleName)
+                            }
+                            noButton { }
+                        }.show()
+                    }
+                    3 -> {
+                        activity!!.alert(String.format(getString(R.string.string_alert_logout_from_google), auth.currentUser?.email)) {
+                            yesButton {
+                                mPresenter.requestGoogleSignOutClient(activity as Activity)
                             }
                             noButton { }
                         }.show()

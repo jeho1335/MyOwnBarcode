@@ -3,8 +3,8 @@ package srjhlab.com.myownbarcode.Module.License
 import android.app.Activity
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.text.method.ScrollingMovementMethod
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,10 +29,21 @@ class LicenseFragment : Fragment(), License.view {
     private fun initializeUi(){
         Log.d(TAG, "##### initializeUi #####")
         mPresenter.requestLicense(activity as Activity)
+        this.view!!.isFocusableInTouchMode = true
+        this.view!!.requestFocus()
+        this.view!!.setOnKeyListener(mBackKeyListenr)
     }
 
     override fun onResultLicense(txt: String) {
         Log.d(TAG, "##### onResultLicense #####")
         txt_license.text = txt
+    }
+
+    private val mBackKeyListenr : View.OnKeyListener = object : View.OnKeyListener{
+        override fun onKey(p0: View?, keyCode: Int, keyEvent: KeyEvent?): Boolean {
+            Log.d(TAG, "##### onKey #####")
+            mPresenter.requestHandleKeyEvent(keyCode)
+            return true
+        }
     }
 }

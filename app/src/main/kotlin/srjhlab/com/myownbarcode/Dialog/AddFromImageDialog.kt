@@ -35,6 +35,7 @@ class AddFromImageDialog : DialogFragment() {
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.FullSizeDialog)
     }
 
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Log.d(TAG, "##### onCreateView #####")
         dialog.window.attributes.windowAnimations = R.style.SelectDialogAnimation

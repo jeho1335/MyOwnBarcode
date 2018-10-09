@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
@@ -98,7 +99,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         Log.d(TAG, "##### onActivityResult #####")
-        super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == ConstVariables.RC_SIGN_IN) {
             EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ON_ACTIBITY_RESULT, ActivityResultEvent(requestCode, resultCode, data)))
@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
                 AddBarcodeInfoDialog()
                         .setCommandType(AddBarcodeInfoDialog.MODE_ADD_BARCODE)
                         .setBarcodeItem(BarcodeItem(result.contents, CommonUtils.convertBarcodeType(this, result.formatName).toLong()))
-                        .show(fragmentManager, this.javaClass.simpleName)
+                        .show(supportFragmentManager, this.javaClass.simpleName)
             else -> toast(R.string.string_not_supported_format)
         }
     }
@@ -167,7 +167,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
                 fr = LicenseFragment()
             }
         }
-//        fm.popBackStack()
         if (fr.isAdded) {
             ft.show(fr)
         } else {
@@ -175,6 +174,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
         }
         ft.addToBackStack(null)
         ft.commit()
+    }
+
+    override fun onResultBarcodeScan(result: Boolean, msg: Int) {
+        Log.d(TAG, "##### onResultBarcodeScan #####")
+        if(result){
+
+        }else{
+            toast(getString(msg))
+        }
     }
 
     override fun onBackPressed() {
@@ -204,21 +212,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
                 AddBarcodeInfoDialog()
                         .setBarcodeItem(busObject.`val` as BarcodeItem)
                         .setCommandType(AddBarcodeInfoDialog.MODE_ADD_BARCODE)
-                        .show(fragmentManager, this.javaClass.simpleName)
+                        .show(supportFragmentManager, this.javaClass.simpleName)
             }
             ConstVariables.EVENTBUS_EDIT_BARCODE -> {
                 Log.d(TAG, "##### EVENTBUS_EDIT_BARCODE #####")
                 AddBarcodeInfoDialog()
                         .setBarcodeItem(busObject.`val` as BarcodeItem)
                         .setCommandType(AddBarcodeInfoDialog.MODE_EDIT_BARCODE)
-                        .show(fragmentManager, this.javaClass.simpleName)
+                        .show(supportFragmentManager, this.javaClass.simpleName)
             }
             ConstVariables.EVENTBUS_SHARE_BARCODE -> {
                 Log.d(TAG, "##### EVENTBUS_SHARE_BARCODE #####")
                 BarcodeFocusDialog()
                         .setBarcodeItem(busObject.`val` as BarcodeItem)
                         .setCommandType(BarcodeFocusDialog.VIEW_TYPE_SHARE)
-                        .show(fragmentManager, this.javaClass.simpleName)
+                        .show(supportFragmentManager, this.javaClass.simpleName)
             }
             ConstVariables.EVENTBUS_CLICK_BARCODELIST -> {
                 Log.d(TAG, "##### EVENTBUS_CLICK_BARCODELIST #####")
@@ -241,7 +249,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
                         }
                     }
                     ConstVariables.ITEM_TYPE_BARCODE -> {
-                        BarcodeFocusDialog().setBarcodeItem(item).setCommandType(BarcodeFocusDialog.VIEW_TYPE_FOCUS).show(fragmentManager, this.javaClass.simpleName)
+                        BarcodeFocusDialog().setBarcodeItem(item).setCommandType(BarcodeFocusDialog.VIEW_TYPE_FOCUS).show(supportFragmentManager, this.javaClass.simpleName)
                     }
                 }
             }
@@ -259,7 +267,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
                                     AddBarcodeInfoDialog()
                                             .setBarcodeItem(busObject.`val` as BarcodeItem)
                                             .setCommandType(AddBarcodeInfoDialog.MODE_EDIT_BARCODE)
-                                            .show(fragmentManager, this.javaClass.simpleName)
+                                            .show(supportFragmentManager, this.javaClass.simpleName)
                                 }
                                 1 -> {
                                     EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_DELETE_BARCODE, busObject.`val` as BarcodeItem))
@@ -268,7 +276,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
                                     BarcodeFocusDialog()
                                             .setBarcodeItem(busObject.`val` as BarcodeItem)
                                             .setCommandType(BarcodeFocusDialog.VIEW_TYPE_SHARE)
-                                            .show(fragmentManager, this.javaClass.simpleName)
+                                            .show(supportFragmentManager, this.javaClass.simpleName)
                                 }
                             }
                         }
@@ -278,6 +286,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
             ConstVariables.EVENTBUS_GO_TO_LICENSE -> {
                 Log.d(TAG, "##### EVENTBUS_GO_TO_LICENSE #####")
                 handleFragment(ConstVariables.FRAGMENT_STATE_LICENSE)
+            }
+            ConstVariables.EVENTBUS_GO_TO_BACKSTACK -> {
+                Log.d(TAG, "##### EVENTBUS_GO_TO_BACKSTACK #####")
+                handleFragment(ConstVariables.GOTO_BACKSTACK)
+
             }
         }
     }

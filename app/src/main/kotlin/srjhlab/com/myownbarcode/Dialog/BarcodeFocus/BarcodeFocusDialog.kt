@@ -1,7 +1,9 @@
 package srjhlab.com.myownbarcode.Dialog
 
+import Dialog.BarcodeFocus.BarcodeFocus
 import Dialog.BarcodeFocus.BarcodeFocusPresenter
 import android.Manifest
+import android.app.Activity
 import android.app.DialogFragment
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -14,12 +16,14 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import kotlinx.android.synthetic.main.layout_dialog_barcodefocus.*
 import org.apache.commons.lang.StringUtils
+import org.jetbrains.anko.toast
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
+import srjhlab.com.myownbarcode.R.id.*
 import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.MakeBarcode
 
-class BarcodeFocusDialog : DialogFragment() {
+class BarcodeFocusDialog : android.support.v4.app.DialogFragment(), BarcodeFocus.view {
     private val TAG = this.javaClass.simpleName
     private var mViewType = VIEW_TYPE_FOCUS
     private lateinit var mPresenter: BarcodeFocusPresenter
@@ -42,7 +46,7 @@ class BarcodeFocusDialog : DialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Log.d(TAG, "##### onActivityCreated #####")
         super.onActivityCreated(savedInstanceState)
-        mPresenter = BarcodeFocusPresenter()
+        mPresenter = BarcodeFocusPresenter(this)
         initializeUi()
     }
 
@@ -50,25 +54,19 @@ class BarcodeFocusDialog : DialogFragment() {
     override fun onResume() {
         Log.d(TAG, "##### onResume #####")
         super.onResume()
-        var params = dialog.window.attributes
+        val params = dialog.window.attributes
         params.width = ViewGroup.LayoutParams.MATCH_PARENT
         dialog.window.attributes = params as android.view.WindowManager.LayoutParams
 
-        var layoutParams = layout_barcode_focus.layoutParams
+        val layoutParams = layout_barcode_focus.layoutParams
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
 
         if (mViewType.equals(VIEW_TYPE_SHARE)) {
-            val permissionCheck = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            if (permissionCheck == PackageManager.PERMISSION_DENIED) {
-                if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-                }
-            } else {
-                CommonUtils.shareBitmapToApps(activity, CommonUtils.viewToBitmap(activity, layout_barcode_focus))
-                dismiss()
-            }
+            mPresenter.requestShareBarcode(activity as Activity, layout_barcode_focus)
+            dismiss()
+
         } else {
-            mPresenter.requestScreenBrightMax(activity, dialog.window)
+            mPresenter.requestScreenBrightMax(activity as Activity, dialog.window)
         }
     }
 
@@ -84,10 +82,14 @@ class BarcodeFocusDialog : DialogFragment() {
         return this
     }
 
+    override fun onResultSharedBarcode(result: Boolean, msg: Int) {
+        Log.d(TAG, "##### onResultSharedBarcode #####")
+    }
+
     private fun initializeUi() {
         text_name.text = mItem.barcodeName
-        var strArr = CommonUtils.splitStringEvery(mItem.barcodeValue, 4);
-        var str = StringUtils.join(strArr, " ")
+        val strArr = CommonUtils.splitStringEvery(mItem.barcodeValue, 4);
+        val str = StringUtils.join(strArr, " ")
         text_value.text = str
         text_value.invalidate()
         img_barcode.setImageBitmap((MakeBarcode.getInstance().makeBarcode(mItem.barcodeType.toInt(), mItem.barcodeValue)))

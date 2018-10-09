@@ -2,6 +2,9 @@
     <string name="app_name">나만의멤버십</string>
     <string name="title_activity_show_messages">ShowMessages</string>
 
+    <!-- WebAPI Key-->
+    <string name="api_key">1069323023636-d1ojrm7v5gjenqv4g1133mv31lrove4t.apps.googleusercontent.com</string>
+
     <!-- Common Strings -->
     <string name="db_name">barcodeimg.db</string>
 
@@ -13,9 +16,11 @@
     <string name="string_alert_setdata_from_google">서버에 백업중인 멤버십 리스트가 초기화되고 새로 생성됩니다. 계속 하시겠습니까?</string>
     <string name="string_alert_getdata_from_google">현재 멤버십 리스트가 초기화되고 새로 생성됩니다. 계속 하시겠습니까?</string>
     <string name="string_alert_deletedata_from_google">서버에 백업중인 멤버십 리스트 및 계정 정보를 삭제합니다. 계속 하시겠습니까?</string>
+    <string name="string_alert_logout_from_google">%1$s 계정에서 로그아웃 합니다. 계속 하시겠습니까?(서버에 연동된 데이터는 지워지지 않습니다.)</string>
     <string name="string_alert_select_setdata">데이터 백업</string>
     <string name="string_alert_select_getdata">데이터 가져오기</string>
     <string name="string_alert_select_deletedata">데이터 삭제</string>
+    <string name="string_alert_select_logout">로그아웃</string>
 
     <!-- Select Dialog -->
     <string name="string_modify_barcode">바코드 수정</string>
@@ -51,8 +56,10 @@
     <string name="string_not_supported_format">지원하지 않는 바코드 포맷입니다.</string>
     <string name="string_scan_guide">바코드를 사각형 안에 비춰주세요. \n스캔이 잘 안될 경우 주위 배경을 깔끔하게 해주세요. \n볼륨 UP/DOWN 버튼으로 플래시를 켜고 끌 수 있습니다.</string>
     <string name="string_require_camera_permission">바코드 스캔을 위해 카메라 사용 권한을 허용해야 합니다.</string>
-    <string name="string_sign_in_google">구글 계정 %s 로 로그인 하였습니다.</string>
+    <string name="string_sign_in_google">구글 계정 %1%s 로 로그인 하였습니다.</string>
     <string name="string_cannot_sign_in_google">로그인에 실패했습니다.</string>
+    <string name="string_success_sign_out_google">로그아웃</string>
+    <string name="string_failed_sign_out_google">로그아웃 실패</string>
     <string name="string_success_set_backup_google">백업 완료</string>
     <string name="string_failed_set_backup_google">백업 실패</string>
     <string name="string_success_delete_backup_google">삭제 완료</string>
@@ -68,6 +75,7 @@
     <string name="string_wait_export">데이터를 내보내는 중..</string>
     <string name="string_wait_import">데이터를 가져오는 중..</string>
     <string name="string_wait_delete">데이터를 지우는 중..</string>
+    <string name="string_wait_logout">로그아웃 중..</string>
 
     <!-- GNB / Toolbar -->
     <string name="string_menu_home">멤버십 리스트</string>
@@ -79,7 +87,7 @@
     <string name="string_title_version_settings">버전</string>
     <string name="string_title_backup_settings">데이터 관리</string>
     <string name="string_subtitle_backup_settings">Google 계정을 이용해서 멤버십 데이터를 관리할 수 있습니다.</string>
-    <string name="string_backup_settings">가져오기 / 내보내기</string>
+    <string name="string_backup_settings">백업 설정</string>
     <string name="string_title_bright_settings">화면 밝기 자동 조정</string>
     <string name="string_subtitle_bright_settings">멤버십 바코드 확대시 화면 밝기를 최대치로 설정합니다.</string>
     <string name="string_bright_on_settings">ON</string>
@@ -93,6 +101,7 @@
         \ncom.google.code.gson
         \norg.greenrobot:eventbus
         \norg.mod4j.org.apache.commons
-        \norg.jetbrains.anko:anko</string>
+        \norg.jetbrains.anko
+        \ngun0912.ted:tedpermission</string>
 
 </resources>

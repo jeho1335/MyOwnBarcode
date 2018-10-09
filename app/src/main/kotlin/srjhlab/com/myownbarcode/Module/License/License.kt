@@ -8,5 +8,6 @@ interface License {
     }
     interface presenter{
         fun requestLicense(activity : Activity)
+        fun requestHandleKeyEvent(keyCode : Int)
     }
 }
