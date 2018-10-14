@@ -8,7 +8,9 @@ public class CommonEventbusObejct {
         this.mType = type;
     }
 
-    public CommonEventbusObejct(int type, Object val){
+    public
+
+    CommonEventbusObejct(int type, Object val){
         this.mType = type;
         this.mVal = val;
     }

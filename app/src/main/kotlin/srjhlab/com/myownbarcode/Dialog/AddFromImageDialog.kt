@@ -24,7 +24,8 @@ import srjhlab.com.myownbarcode.Utils.ConstVariables
 import srjhlab.com.myownbarcode.Utils.ScanFromImage
 import java.io.ByteArrayOutputStream
 
-class AddFromImageDialog : DialogFragment() {
+class
+AddFromImageDialog : DialogFragment() {
     private val TAG = this.javaClass.simpleName
     private val REQ_CODE = 200
 

@@ -96,7 +96,8 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
         Log.d(TAG, "##### requestSetDataBackup #####")
         var currentUserEmail = auth.currentUser!!.email
         try {
-            currentUserEmail = currentUserEmail!!.substring(0, currentUserEmail.lastIndexOf("@"))
+//            currentUserEmail = currentUserEmail!!.substring(0, currentUserEmail.lastIndexOf("@"))
+            currentUserEmail = currentUserEmail!!.replace(".", "")
         } catch (e: Exception) {
             e.printStackTrace()
             mView.onResultSetDataBackup(false, R.string.string_failed_set_backup_google)
@@ -149,7 +150,8 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
         Log.d(TAG, "##### requestGetDataBackup #####")
         var currentUserEmail = auth.currentUser!!.email
         try {
-            currentUserEmail = currentUserEmail!!.substring(0, currentUserEmail.lastIndexOf("@"))
+//            currentUserEmail = currentUserEmail!!.substring(0, currentUserEmail.lastIndexOf("@"))
+            currentUserEmail = currentUserEmail!!.replace(".", "")
         } catch (e: Exception) {
             mView.onResultGetDataBackup(false, R.string.string_success_set_backup_google)
             return

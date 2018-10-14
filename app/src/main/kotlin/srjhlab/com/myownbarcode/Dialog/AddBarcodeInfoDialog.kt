@@ -7,6 +7,8 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentTransaction
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +28,8 @@ import srjhlab.com.myownbarcode.Utils.MakeBarcode
 
 @Suppress("DEPRECATION")
 
-class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
+class
+AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
     private val TAG = this.javaClass.simpleName
 
     companion object {
@@ -71,6 +74,13 @@ class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "##### onACtivityCReated #####")
         initializeUI()
+    }
+
+    override fun show(manager: FragmentManager?, tag: String?) {
+        Log.d(TAG, "##### show #####")
+        val ft = manager?.beginTransaction()
+        ft?.add(this, tag)
+        ft?.commitAllowingStateLoss()
     }
 
     override fun onClick(v: View) {
