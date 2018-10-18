@@ -5,7 +5,7 @@
     android:background="@drawable/dialog_radius_bg"
     android:gravity="center">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_select_dialog_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

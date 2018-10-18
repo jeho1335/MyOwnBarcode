@@ -32,7 +32,7 @@
             android:text="바코드 타입"
             android:textStyle="bold" />
 
-        <android.support.v4.view.ViewPager
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/dialog_viewpager"
             android:layout_width="match_parent"
             android:layout_height="150dp"

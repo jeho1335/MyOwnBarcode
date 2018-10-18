@@ -2,13 +2,10 @@ package srjhlab.com.myownbarcode.Dialog
 
 import Dialog.BarcodeFocus.BarcodeFocus
 import Dialog.BarcodeFocus.BarcodeFocusPresenter
-import android.Manifest
 import android.app.Activity
-import android.app.DialogFragment
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,14 +13,13 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import kotlinx.android.synthetic.main.layout_dialog_barcodefocus.*
 import org.apache.commons.lang.StringUtils
-import org.jetbrains.anko.toast
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.R.id.*
 import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.MakeBarcode
 
-class BarcodeFocusDialog : android.support.v4.app.DialogFragment(), BarcodeFocus.view {
+class BarcodeFocusDialog : androidx.fragment.app.DialogFragment(), BarcodeFocus.view {
     private val TAG = this.javaClass.simpleName
     private var mViewType = VIEW_TYPE_FOCUS
     private lateinit var mPresenter: BarcodeFocusPresenter

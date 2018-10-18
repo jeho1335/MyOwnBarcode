@@ -2,7 +2,7 @@ package srjhlab.com.myownbarcode.Module.License
 
 import android.app.Activity
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater

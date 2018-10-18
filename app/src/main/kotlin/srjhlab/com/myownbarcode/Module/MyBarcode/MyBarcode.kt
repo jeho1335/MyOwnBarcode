@@ -1,6 +1,6 @@
 package srjhlab.com.myownbarcode.Module.MyBarcode
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import srjhlab.com.myownbarcode.Adapter.BarcodeRecyclerviewAdapter
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 
