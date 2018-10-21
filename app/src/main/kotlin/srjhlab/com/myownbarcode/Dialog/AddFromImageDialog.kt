@@ -13,15 +13,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import com.google.zxing.Result
 import kotlinx.android.synthetic.main.layout_dialog_addimage.*
 import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.toast
 import srjhlab.com.myownbarcode.Item.BarcodeItem
+import srjhlab.com.myownbarcode.Module.Utils.ScanImage
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.ConstVariables
-import srjhlab.com.myownbarcode.Utils.ScanFromImage
 import java.io.ByteArrayOutputStream
 
 class
@@ -29,7 +30,7 @@ AddFromImageDialog : DialogFragment() {
     private val TAG = this.javaClass.simpleName
     private val REQ_CODE = 200
 
-    private val mScanImage = ScanFromImage()
+    private lateinit var mScanImage : ScanImage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +44,7 @@ AddFromImageDialog : DialogFragment() {
         dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setCanceledOnTouchOutside(true)
+        mScanImage = ScanImage(listener)
         return inflater.inflate(R.layout.layout_dialog_addimage, container, false)
     }
 
@@ -63,18 +65,10 @@ AddFromImageDialog : DialogFragment() {
                     Log.d(TAG, "##### image is null")
                 } else {
                     Log.d(TAG, "##### image is not null #####")
+                    imageview_dialog_addimage.setImageBitmap(image)
+                    mScanImage.setImage(image)
                 }
 
-                imageview_dialog_addimage.setImageBitmap(image)
-                mScanImage.putImage(image)
-                Log.d(TAG, "##### format : ${mScanImage.format} value : ${mScanImage.value}")
-                if (mScanImage.format == null || mScanImage.value == null) {
-//                    Toast.makeText(activity, "바코드를 인식할 수 없습니다.", Toast.LENGTH_SHORT).show()
-                    toast("바코드를 인식할 수 없습니다")
-                } else {
-                    EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE, BarcodeItem(mScanImage.value, CommonUtils.convertBarcodeType(activity, mScanImage.format).toLong())))
-                }
-                dismiss()
             } catch (e: Exception) {
 //                Toast.makeText(activity, "이미지 처리 과정에서 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
                 toast("이미지 처리 과정에서 오류가 발생했습니다")
@@ -82,6 +76,19 @@ AddFromImageDialog : DialogFragment() {
             }
 
         } else if (resultCode == RESULT_CANCELED) {
+            dismiss()
+        }
+    }
+
+    val listener = object : ScanImage.ImageScanResult {
+        override fun onImageScanResult(result: Result?) {
+            val format = result?.barcodeFormat.toString()
+            val value = result?.text
+            if (format == null || value == null) {
+                toast("바코드를 인식할 수 없습니다")
+            } else {
+                EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ADD_BARCODE, BarcodeItem(value, CommonUtils.convertBarcodeType(activity, format).toLong())))
+            }
             dismiss()
         }
     }
