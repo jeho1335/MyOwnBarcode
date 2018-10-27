@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "1069323023636",
-    "firebase_url": "https://myownbarcode-7ebbb.firebaseio.com",
-    "project_id": "myownbarcode-7ebbb",
-    "storage_bucket": "myownbarcode-7ebbb.appspot.com"
+    "project_number": "1072187006828",
+    "firebase_url": "https://myownbarcode-e79be.firebaseio.com",
+    "project_id": "myownbarcode-e79be",
+    "storage_bucket": "myownbarcode-e79be.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1069323023636:android:f8d0b211132b23ac",
+        "mobilesdk_app_id": "1:1072187006828:android:f8d0b211132b23ac",
         "android_client_info": {
           "package_name": "srjhlab.com.myownbarcode"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1069323023636-vde7375a1mvoo1mfiqbffjo4ofggj043.apps.googleusercontent.com",
+          "client_id": "1072187006828-dabs3i3ja9ke5nvmq82hk5e18jrs67ho.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "srjhlab.com.myownbarcode",
@@ -23,13 +23,29 @@
           }
         },
         {
-          "client_id": "1069323023636-d1ojrm7v5gjenqv4g1133mv31lrove4t.apps.googleusercontent.com",
+          "client_id": "1072187006828-grfkn9b1obaikm1q9h7q3ijpcum5gdrl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "srjhlab.com.myownbarcode",
+            "certificate_hash": "447c110e518a8b451a386f1c5878e52a7685fa0f"
+          }
+        },
+        {
+          "client_id": "1072187006828-4qmmfhdsqtkdguimgo2aoe45701l0sok.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "srjhlab.com.myownbarcode",
+            "certificate_hash": "ff72a63bc389b74f0af224042403f1498c6619d9"
+          }
+        },
+        {
+          "client_id": "1072187006828-bcrg7v2nakl4gd1qehpua9sor1tqlm5h.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBykhYp149elDXLwhpSXNxsksBYtcFRJc0"
+          "current_key": "AIzaSyBNSka78ZwbkYhGupP4q8PYG7gw9evZQxs"
         }
       ],
       "services": {
@@ -40,7 +56,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1069323023636-d1ojrm7v5gjenqv4g1133mv31lrove4t.apps.googleusercontent.com",
+              "client_id": "1072187006828-bcrg7v2nakl4gd1qehpua9sor1tqlm5h.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

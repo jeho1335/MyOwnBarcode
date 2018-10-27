@@ -94,7 +94,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
         if (mProgress.showsDialog) {
             mProgress.dismiss()
         }
-        activity!!.toast(getString(msg))
+        activity?.toast(getString(msg))
     }
 
     override fun onResultGoogleSignIn(result: Boolean, msg: Int, auth: FirebaseAuth) {
@@ -104,10 +104,10 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
         }
         if (result) {
             val menuList = listOf(getString(R.string.string_alert_select_setdata), getString(R.string.string_alert_select_getdata), getString(R.string.string_alert_select_deletedata), getString(R.string.string_alert_select_logout))
-            activity!!.selector("", menuList) { dialogInterface, i ->
+            activity?.selector("", menuList) { dialogInterface, i ->
                 when (i) {
                     0 -> {
-                        activity!!.alert(getString(R.string.string_alert_setdata_from_google)) {
+                        activity?.alert(getString(R.string.string_alert_setdata_from_google)) {
                             yesButton {
                                 mPresenter.requestSetDataBackup(activity as Activity, auth)
                                 mProgress
@@ -115,10 +115,10 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
                                         .show(activity!!.fragmentManager, this.javaClass.simpleName)
                             }
                             noButton { }
-                        }.show()
+                        }?.show()
                     }
                     1 -> {
-                        activity!!.alert(getString(R.string.string_alert_getdata_from_google)) {
+                        activity?.alert(getString(R.string.string_alert_getdata_from_google)) {
                             yesButton {
                                 mPresenter.requestGetDataBackup(activity as Activity, auth)
                                 mProgress
@@ -126,10 +126,10 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
                                         .show(activity!!.fragmentManager, this.javaClass.simpleName)
                             }
                             noButton { }
-                        }.show()
+                        }?.show()
                     }
                     2 -> {
-                        activity!!.alert(getString(R.string.string_alert_deletedata_from_google)) {
+                        activity?.alert(getString(R.string.string_alert_deletedata_from_google)) {
                             yesButton {
                                 mPresenter.requestDeleteDataBackup(activity as Activity, auth)
                                 mProgress
@@ -137,15 +137,15 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
                                         .show(activity!!.fragmentManager, this.javaClass.simpleName)
                             }
                             noButton { }
-                        }.show()
+                        }?.show()
                     }
                     3 -> {
-                        activity!!.alert(String.format(getString(R.string.string_alert_logout_from_google), auth.currentUser?.email)) {
+                        activity?.alert(String.format(getString(R.string.string_alert_logout_from_google), auth.currentUser?.email)) {
                             yesButton {
                                 mPresenter.requestGoogleSignOutClient(activity as Activity)
                             }
                             noButton { }
-                        }.show()
+                        }?.show()
                     }
                 }
             }
