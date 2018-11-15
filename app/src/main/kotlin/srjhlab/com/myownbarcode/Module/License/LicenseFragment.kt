@@ -2,12 +2,12 @@ package srjhlab.com.myownbarcode.Module.License
 
 import android.app.Activity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.layout_fragment_license.*
 import srjhlab.com.myownbarcode.R
 
@@ -26,6 +26,13 @@ class LicenseFragment : Fragment(), License.view {
         super.onActivityCreated(savedInstanceState)
         initializeUi()
     }
+
+    override fun onDestroy() {
+        Log.d(TAG, "##### onDestroy #####")
+        super.onDestroy()
+        mPresenter.onDestroy()
+    }
+
     private fun initializeUi(){
         Log.d(TAG, "##### initializeUi #####")
         mPresenter.requestLicense(activity as Activity)

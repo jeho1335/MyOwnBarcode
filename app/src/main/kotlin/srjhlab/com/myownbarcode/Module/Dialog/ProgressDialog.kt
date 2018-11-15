@@ -1,4 +1,4 @@
-package srjhlab.com.myownbarcode.Dialog
+package srjhlab.com.myownbarcode.Module.Dialog
 
 import android.app.DialogFragment
 import android.os.Bundle

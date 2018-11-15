@@ -1,11 +1,11 @@
 package srjhlab.com.myownbarcode.Adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_list_barcode.view.*
 import org.greenrobot.eventbus.EventBus
 import srjhlab.com.myownbarcode.Item.BarcodeItem

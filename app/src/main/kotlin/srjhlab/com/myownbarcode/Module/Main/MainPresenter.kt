@@ -16,6 +16,10 @@ class MainPresenter(activity: Activity) : Main.presenter {
     private val FINISH_INTERVAL_TIME: Long = 2000
     private var mBackPressedTime: Long = 0
 
+    override fun onDestroy() {
+        Log.d(TAG, "##### onDestroy #####")
+    }
+
     override fun requestBarcodeScan() {
         Log.d(TAG, "##### requestBarcodeScan #####")
 

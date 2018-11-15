@@ -1,12 +1,10 @@
 package srjhlab.com.myownbarcode.Utils
 
 import android.content.Context
-import android.graphics.drawable.BitmapDrawable
 import android.preference.PreferenceManager
 import android.util.Log
 import com.google.gson.GsonBuilder
 import srjhlab.com.myownbarcode.Item.BarcodeItem
-import srjhlab.com.myownbarcode.R
 import java.util.*
 import kotlin.collections.ArrayList
 

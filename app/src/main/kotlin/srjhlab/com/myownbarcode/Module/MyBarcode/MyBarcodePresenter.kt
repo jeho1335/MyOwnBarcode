@@ -1,9 +1,9 @@
 package srjhlab.com.myownbarcode.Module.MyBarcode
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.animation.AnimationUtils
+import androidx.recyclerview.widget.RecyclerView
 import srjhlab.com.myownbarcode.Adapter.BarcodeRecyclerviewAdapter
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
@@ -14,6 +14,10 @@ class MyBarcodePresenter(context: Context, barcodeView: MyBarcode.view) : MyBarc
     var mContext = context
     var mBarcodeView = barcodeView
     var mPreferenceManager = PreferencesManager
+
+    override fun onDestroy() {
+        Log.d(TAG, "##### onDestroy #####")
+    }
 
     override fun requestBarcodeList(recyclerView : RecyclerView, adapter: BarcodeRecyclerviewAdapter) {
         Log.d(TAG, "##### requestBarcodeList #####")

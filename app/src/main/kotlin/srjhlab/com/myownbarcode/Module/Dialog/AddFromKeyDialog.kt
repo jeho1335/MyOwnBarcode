@@ -1,18 +1,18 @@
-package srjhlab.com.myownbarcode.Dialog
+package srjhlab.com.myownbarcode.Module.Dialog
 
 import android.app.DialogFragment
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.layout_dialog_addfromkey.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe

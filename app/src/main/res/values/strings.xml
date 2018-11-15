@@ -3,7 +3,6 @@
     <string name="title_activity_show_messages">ShowMessages</string>
 
     <!-- WebAPI Key-->
-    <string name="api_key">1072187006828-bcrg7v2nakl4gd1qehpua9sor1tqlm5h.apps.googleusercontent.com</string>
 
     <!-- Common Strings -->
     <string name="db_name">barcodeimg.db</string>
@@ -69,6 +68,7 @@
     <string name="string_request_backkey">한번 더 누르면 종료합니다.</string>
     <string name="string_autobright_on">자동 밝기 ON</string>
     <string name="string_autobright_off">자동 밝기 OFF</string>
+    <string name="string_cannot_find_barcode">바코드를 인식할 수 없습니다.</string>
 
     <!-- Progress Dialog -->
     <string name="string_wait_signin">계정 연결중..</string>
@@ -102,6 +102,8 @@
         \norg.greenrobot:eventbus
         \norg.mod4j.org.apache.commons
         \norg.jetbrains.anko
+        \nio.reactivex.rxjava2:rxjava
+        \nio.reactivex.rxjava2:rxandroid
         \ngun0912.ted:tedpermission</string>
 
 </resources>

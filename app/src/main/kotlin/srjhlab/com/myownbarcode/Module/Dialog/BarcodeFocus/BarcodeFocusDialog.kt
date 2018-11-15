@@ -1,11 +1,9 @@
-package srjhlab.com.myownbarcode.Dialog
+package srjhlab.com.myownbarcode.Module.Dialog
 
 import Dialog.BarcodeFocus.BarcodeFocus
 import Dialog.BarcodeFocus.BarcodeFocusPresenter
 import android.app.Activity
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +13,6 @@ import kotlinx.android.synthetic.main.layout_dialog_barcodefocus.*
 import org.apache.commons.lang.StringUtils
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
-import srjhlab.com.myownbarcode.R.id.*
 import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.MakeBarcode
 

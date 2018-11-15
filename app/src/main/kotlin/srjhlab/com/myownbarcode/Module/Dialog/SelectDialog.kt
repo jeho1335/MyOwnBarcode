@@ -1,15 +1,15 @@
-package srjhlab.com.myownbarcode.Dialog
+package srjhlab.com.myownbarcode.Module.Dialog
 
 import android.app.DialogFragment
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.layout_dialog.*
 import org.greenrobot.eventbus.EventBus
 import srjhlab.com.myownbarcode.Adapter.SelectRecyclerViewAdapter

@@ -1,4 +1,4 @@
-package srjhlab.com.myownbarcode.Dialog
+package srjhlab.com.myownbarcode.Module.Dialog
 
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -6,14 +6,14 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import kotlinx.android.synthetic.main.layout_dialog_addinfo.*
 import org.apache.commons.lang.StringUtils
 import org.greenrobot.eventbus.EventBus

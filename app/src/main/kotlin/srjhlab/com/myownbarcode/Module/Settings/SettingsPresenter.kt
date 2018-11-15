@@ -32,12 +32,16 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
 
     private external fun getGoogleAuthApiKey(): String
 
+    override fun onDestroy() {
+        Log.d(TAG, "##### onDestroy #####")
+    }
+
     override fun requestGoogleSignInClient(activity: Activity) {
         Log.d(TAG, "##### requestGoogleSIgnInClient #####")
         try {
             val googleSignInOptions = GoogleSignInOptions
                     .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(activity.resources.getString(R.string.api_key))
+                    .requestIdToken(getGoogleAuthApiKey())
                     .requestEmail()
                     .build()
             val googleSignInClient = GoogleSignIn.getClient(activity, googleSignInOptions)
@@ -53,7 +57,7 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
         try {
             val googleSignInOptions = GoogleSignInOptions
                     .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(activity.resources.getString(R.string.api_key))
+                    .requestIdToken(getGoogleAuthApiKey())
                     .requestEmail()
                     .build()
             val googleSignInClient = GoogleSignIn.getClient(activity, googleSignInOptions)
@@ -150,7 +154,6 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
         Log.d(TAG, "##### requestGetDataBackup #####")
         var currentUserEmail = auth.currentUser!!.email
         try {
-//            currentUserEmail = currentUserEmail!!.substring(0, currentUserEmail.lastIndexOf("@"))
             currentUserEmail = currentUserEmail!!.replace(".", "")
         } catch (e: Exception) {
             mView.onResultGetDataBackup(false, R.string.string_success_set_backup_google)

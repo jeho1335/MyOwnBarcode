@@ -14,6 +14,10 @@ class LicensePresenter(view : License.view) : License.presenter {
     val TAG = this.javaClass.simpleName
     val mView = view
 
+    override fun onDestroy() {
+        Log.d(TAG, "##### onDestroy #####")
+    }
+
     override fun requestLicense(activity: Activity) {
         Log.d(TAG, "##### requestLicense #####")
         var data: String? = null

@@ -6,10 +6,10 @@ import Module.Main.MainPresenter
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
@@ -17,10 +17,10 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.selector
 import org.jetbrains.anko.toast
-import srjhlab.com.myownbarcode.Dialog.AddBarcodeInfoDialog
-import srjhlab.com.myownbarcode.Dialog.AddFromImageDialog
-import srjhlab.com.myownbarcode.Dialog.AddFromKeyDialog
-import srjhlab.com.myownbarcode.Dialog.BarcodeFocusDialog
+import srjhlab.com.myownbarcode.Module.Dialog.AddBarcodeInfoDialog
+import srjhlab.com.myownbarcode.Module.Dialog.AddFromImage.AddFromImageDialog
+import srjhlab.com.myownbarcode.Module.Dialog.AddFromKeyDialog
+import srjhlab.com.myownbarcode.Module.Dialog.BarcodeFocusDialog
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.Module.License.LicenseFragment
 import srjhlab.com.myownbarcode.Module.MyBarcode.MyBarcodeFragment
@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
+        mPresenter.onDestroy()
     }
 
     override fun onClick(v: View) {
@@ -100,6 +101,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
         Log.d(TAG, "##### onActivityResult #####")
 
         if (requestCode == ConstVariables.RC_SIGN_IN) {
+            EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ON_ACTIBITY_RESULT, ActivityResultEvent(requestCode, resultCode, data)))
+            return
+        }else if(requestCode == ConstVariables.RC_FROM_IMAGE){
             EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ON_ACTIBITY_RESULT, ActivityResultEvent(requestCode, resultCode, data)))
             return
         }

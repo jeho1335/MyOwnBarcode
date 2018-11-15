@@ -50,5 +50,6 @@ public class ConstVariables {
     public final static String PREF_AUTO_BRIGHT_MAX = "setting.auto.bright";
 
     //Google sign in
+    public final static int RC_FROM_IMAGE = 300;
     public final static int RC_SIGN_IN = 700;
 }

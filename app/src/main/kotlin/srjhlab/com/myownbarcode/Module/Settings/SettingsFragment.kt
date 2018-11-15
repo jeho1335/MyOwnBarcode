@@ -5,11 +5,11 @@ import Module.Settings.Settings
 import Module.Settings.SettingsPresenter
 import android.app.Activity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.layout_fragment_settings.*
@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.*
-import srjhlab.com.myownbarcode.Dialog.ProgressDialog
+import srjhlab.com.myownbarcode.Module.Dialog.ProgressDialog
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.ConstVariables
@@ -46,6 +46,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
+        mPresenter.onDestroy()
     }
 
     private fun initializeUi() {

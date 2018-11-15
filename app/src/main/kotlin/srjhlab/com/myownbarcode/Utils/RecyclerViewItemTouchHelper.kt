@@ -1,8 +1,8 @@
 package srjhlab.com.myownbarcode.Adapter
 
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.Log
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerViewItemTouchHelper(adapter : IItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
     val TAG = this.javaClass.simpleName!!

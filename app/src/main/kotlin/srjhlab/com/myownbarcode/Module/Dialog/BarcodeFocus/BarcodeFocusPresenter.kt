@@ -7,10 +7,8 @@ import android.view.View
 import android.view.Window
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
-import kotlinx.android.synthetic.main.layout_dialog_barcodefocus.*
 import org.jetbrains.anko.toast
 import srjhlab.com.myownbarcode.R
-import srjhlab.com.myownbarcode.R.id.layout_barcode_focus
 import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.PreferencesManager
 
@@ -18,6 +16,10 @@ import srjhlab.com.myownbarcode.Utils.PreferencesManager
 class BarcodeFocusPresenter(view : BarcodeFocus.view) : BarcodeFocus.presenter {
     private val TAG = this.javaClass.simpleName
     private val mView = view
+
+    override fun onDestroy() {
+        Log.d(TAG, "##### onDestroy #####")
+    }
 
     override fun requestShareBarcode(activity: Activity, view : View) {
         Log.d(TAG, "##### requestShareBarcode #####")
