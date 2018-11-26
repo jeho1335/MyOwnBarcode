@@ -10,8 +10,8 @@ android {
         applicationId "srjhlab.com.myownbarcode"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 11
-        versionName "2.11"
+        versionCode 13
+        versionName "2.21"
         multiDexEnabled true
     }
     dataBinding {
@@ -58,23 +58,42 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.0'
     implementation 'com.google.android.material:material:1.0.0'
+
+    //zxing
     implementation 'com.google.zxing:core:3.3.0'
-    implementation 'com.google.firebase:firebase-core:16.0.4'
-    implementation 'com.google.firebase:firebase-auth:16.0.4'
-    implementation 'com.google.firebase:firebase-database:16.0.3'
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
-    implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.journeyapps:zxing-android-embedded:2.3.0@aar'
     implementation 'com.journeyapps:zxing-android-legacy:2.3.0@aar'
     implementation 'com.journeyapps:zxing-android-integration:2.3.0@aar'
+
+    //friebase
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-auth:16.0.4'
+    implementation 'com.google.firebase:firebase-database:16.0.3'
+
+    //gms auth
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    //eventbus
     implementation 'org.greenrobot:eventbus:3.1.1'
+
+    //tedpermission
     implementation 'gun0912.ted:tedpermission:2.2.2'
+
+    //rx
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'org.mod4j.org.apache.commons:lang:2.1.0'
+
+    //anko
     implementation 'org.jetbrains.anko:anko-commons:0.10.6'
     implementation 'org.jetbrains.anko:anko-design:0.10.6'
+
+    //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation 'org.mod4j.org.apache.commons:lang:2.1.0'
 }
 apply plugin: 'com.google.gms.google-services'
 repositories {

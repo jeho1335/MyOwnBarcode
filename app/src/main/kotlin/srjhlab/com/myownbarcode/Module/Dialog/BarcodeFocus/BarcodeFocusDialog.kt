@@ -3,6 +3,7 @@ package srjhlab.com.myownbarcode.Module.Dialog
 import Dialog.BarcodeFocus.BarcodeFocus
 import Dialog.BarcodeFocus.BarcodeFocusPresenter
 import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -40,7 +41,18 @@ class BarcodeFocusDialog : androidx.fragment.app.DialogFragment(), BarcodeFocus.
         Log.d(TAG, "##### onActivityCreated #####")
         super.onActivityCreated(savedInstanceState)
         mPresenter = BarcodeFocusPresenter(this)
+        if (savedInstanceState != null) {
+            val bundle = savedInstanceState.getSerializable("KEY")
+            if(bundle is BarcodeItem){
+                mItem = bundle
+            }
+        }
         initializeUi()
+    }
+
+    override fun onSaveInstanceState(bundle: Bundle) {
+        super.onSaveInstanceState(bundle)
+        bundle.putSerializable("KEY", mItem)
     }
 
     @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")

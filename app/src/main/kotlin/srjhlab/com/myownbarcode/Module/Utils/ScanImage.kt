@@ -13,7 +13,7 @@ import java.io.ByteArrayOutputStream
 class ScanImage() {
     val TAG = this.javaClass.simpleName
 
-    fun getBarcodeInfo(bm: Bitmap): Result {
+    fun getBarcodeInfo(bm: Bitmap): Result? {
         Log.d(TAG, "##### getBarcodeInfo #####")
         val intArray = IntArray(bm.width * bm.height)
         bm.getPixels(intArray, 0, bm.width, 0, 0, bm.width, bm.height)
@@ -23,16 +23,16 @@ class ScanImage() {
 
         val reader = MultiFormatReader()
         return try {
-            return reader.decode(bitmap)
+            reader.decode(bitmap)
         } catch (e: Exception) {
             Log.e(TAG, "Error decoding barcode", e)
-            Result(null, null, null, null)
+            null
         }
     }
 
-     fun getBitmap(intent : Intent?) : Bitmap?{
-         Log.d(TAG, "##### getBitmap #####")
-         try {
+    fun getBitmap(intent: Intent?): Bitmap? {
+        Log.d(TAG, "##### getBitmap #####")
+        try {
             val image = intent?.getParcelableExtra<Bitmap>("data")
             val byteArrayOutputStream = ByteArrayOutputStream()
             image?.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)

@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.util.Log
 import com.google.zxing.Result
 import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import srjhlab.com.myownbarcode.Module.Utils.ScanImage
@@ -36,19 +37,23 @@ class AddFromImagePresenter(view: AddFromImage.view) : AddFromImage.presenter {
     @SuppressLint("CheckResult")
     override fun getBitmapFromImage(intent: Intent?) {
         Log.d(TAG, "##### getBitmapFromImage #####")
-        Flowable.fromCallable<Bitmap> { ScanImage().getBitmap(intent) }
+        Maybe.fromCallable<Bitmap> { ScanImage().getBitmap(intent) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.single())
-                .subscribe({ result ->
-                    if (result is Bitmap) {
-                        Log.d(TAG, "##### subscribe #####")
-                        getBarcodeInfo(result)
+                .subscribe({
+                    Log.d(TAG, "##### onSuccess #####")
+                    if (it is Bitmap) {
+                        getBarcodeInfo(it)
                     } else {
                         mView.onResultErrorHandling()
                     }
                 }, {
+                    Log.d(TAG, "##### onError #####")
                     it.printStackTrace()
+                    mView.onResultErrorHandling()
+                }, {
+                    Log.d(TAG, "##### onComplete #####")
                     mView.onResultErrorHandling()
                 })
     }
@@ -56,23 +61,28 @@ class AddFromImagePresenter(view: AddFromImage.view) : AddFromImage.presenter {
     @SuppressLint("CheckResult")
     fun getBarcodeInfo(bm: Bitmap) {
         Log.d(TAG, "##### getBarcodeInfo #####")
-        Flowable.fromCallable<Result> { ScanImage().getBarcodeInfo(bm) }
+        Maybe.fromCallable<Result> { ScanImage().getBarcodeInfo(bm) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.single())
-                .subscribe({ result ->
-                    if (result is Result) {
+                .subscribe({
+                    Log.d(TAG, "##### onSuccess #####")
+                    if (it is Result) {
                         Log.d(TAG, "##### subscribe #####")
-                        if(result.barcodeFormat == null) {
+                        if(it.barcodeFormat == null) {
                             mView.onResultErrorHandling()
                         }else{
-                            mView.onResultScanFromImage(result.barcodeFormat.toString(), result.text)
+                            mView.onResultScanFromImage(it.barcodeFormat.toString(), it.text)
                         }
                     } else {
                         mView.onResultErrorHandling()
                     }
                 }, {
+                    Log.d(TAG, "##### onError #####")
                     it.printStackTrace()
+                    mView.onResultErrorHandling()
+                }, {
+                    Log.d(TAG, "##### onComplete #####")
                     mView.onResultErrorHandling()
                 })
     }

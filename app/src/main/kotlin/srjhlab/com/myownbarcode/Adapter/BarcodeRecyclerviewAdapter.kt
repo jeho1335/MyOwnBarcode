@@ -1,13 +1,18 @@
 package srjhlab.com.myownbarcode.Adapter
 
+import android.graphics.Bitmap
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import io.reactivex.Maybe
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.item_list_barcode.view.*
 import org.greenrobot.eventbus.EventBus
+import srjhlab.com.myownbarcode.Animations.SimpleViewFadeAnimation
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
@@ -20,6 +25,7 @@ class BarcodeRecyclerviewAdapter(listener: IOnItemClick) : RecyclerView.Adapter<
 
     private var mListener: IOnItemClick = listener
     private var mItems: MutableList<BarcodeItem> = ArrayList()
+    private lateinit var mSimpleAnimation: SimpleViewFadeAnimation
 
     interface IOnItemClick {
         fun onItemClick(item: BarcodeItem)
@@ -30,26 +36,20 @@ class BarcodeRecyclerviewAdapter(listener: IOnItemClick) : RecyclerView.Adapter<
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         Log.d(TAG, "##### onCreateViewHolder #####")
 
-        var view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_list_barcode, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_list_barcode, parent, false)
+        mSimpleAnimation = SimpleViewFadeAnimation()
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d(TAG, "##### onBindViewHolder #####")
 
-        val item: BarcodeItem = mItems.get(position)
+        val item: BarcodeItem = mItems[position]
         when (item.itemType) {
             ConstVariables.ITEM_TYPE_BARCODE -> {
-                holder.itemView.img_body.visibility = View.VISIBLE
+                holder.itemView.img_body.visibility = View.GONE
                 holder.itemView.cardview_layout.visibility = View.VISIBLE
                 holder.itemView.textview_empty_body.visibility = View.GONE
-                val bmp = MakeBarcode.getInstance().makeBarcode(item.barcodeType.toInt(), item.barcodeValue)
-                if(bmp != null) {
-                    holder.itemView.img_body.setImageBitmap(bmp)
-                    holder.itemView.txt_load_failed.visibility = View.GONE
-                }else{
-                    holder.itemView.txt_load_failed.visibility = View.VISIBLE
-                }
                 holder.itemView.txt_id.text = item.barcodeName
                 holder.itemView.cardview.tag = position
                 holder.itemView.cardview_layout.setBackgroundColor(item.barcodeCardColor.toInt())
@@ -60,6 +60,30 @@ class BarcodeRecyclerviewAdapter(listener: IOnItemClick) : RecyclerView.Adapter<
                     }
                     false
                 }
+
+                Maybe.fromCallable<Bitmap> {
+                    MakeBarcode.getInstance().makeBarcode(item.barcodeType.toInt(), item.barcodeValue)
+                }
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.single())
+                        .subscribe({
+                            Log.d(TAG, "##### ${item.barcodeName} onSuccess #####")
+                            if (it is Bitmap) {
+                                holder.itemView.img_body.setImageBitmap(it)
+                                mSimpleAnimation.startAnimation(mSimpleAnimation.FADE_IN, holder.itemView.img_body)
+                                holder.itemView.txt_load_failed.visibility = View.GONE
+                            } else {
+                                holder.itemView.txt_load_failed.visibility = View.VISIBLE
+                            }
+                        }, {
+                            Log.d(TAG, "##### ${item.barcodeName} onError #####")
+                            holder.itemView.txt_load_failed.visibility = View.VISIBLE
+
+                        }, {
+                            Log.d(TAG, "##### ${item.barcodeName} onCompletion #####")
+                            holder.itemView.txt_load_failed.visibility = View.VISIBLE
+                        })
             }
             ConstVariables.ITEM_TYPE_EMPTY -> {
                 holder.itemView.img_body.visibility = View.GONE
