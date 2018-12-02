@@ -36,9 +36,9 @@ class LicenseFragment : Fragment(), License.view {
     private fun initializeUi(){
         Log.d(TAG, "##### initializeUi #####")
         mPresenter.requestLicense(activity as Activity)
-        this.view!!.isFocusableInTouchMode = true
-        this.view!!.requestFocus()
-        this.view!!.setOnKeyListener(mBackKeyListenr)
+        this.view?.isFocusableInTouchMode = true
+        this.view?.requestFocus()
+        this.view?.setOnKeyListener(mBackKeyListenr)
     }
 
     override fun onResultLicense(txt: String) {

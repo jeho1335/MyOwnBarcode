@@ -6,12 +6,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.util.Log
 import com.google.zxing.Result
-import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import srjhlab.com.myownbarcode.Module.Utils.ScanImage
 import srjhlab.com.myownbarcode.Utils.ConstVariables
+import srjhlab.com.myownbarcode.Utils.ScanImage
 
 class AddFromImagePresenter(view: AddFromImage.view) : AddFromImage.presenter {
     val mView = view

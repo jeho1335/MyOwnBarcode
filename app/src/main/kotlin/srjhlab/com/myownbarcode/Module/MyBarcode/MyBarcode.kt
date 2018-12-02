@@ -8,6 +8,7 @@ import srjhlab.com.myownbarcode.Item.BarcodeItem
 interface MyBarcode {
     interface view{
         fun onResultBarcodeList(result : Boolean, msg : Int)
+        fun onResultProgress(msg : String)
     }
     interface presenter : BasePresenter{
         fun requestBarcodeList(recyclerView : RecyclerView, adapter : BarcodeRecyclerviewAdapter)

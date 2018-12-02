@@ -1,4 +1,4 @@
-package srjhlab.com.myownbarcode.Module.Utils
+package srjhlab.com.myownbarcode.Utils
 
 import android.content.Intent
 import android.graphics.Bitmap

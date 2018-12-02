@@ -32,7 +32,8 @@ object PreferencesManager {
         editor.apply()
     }
 
-    fun loadBarcodeItemList(context: Context): MutableList<BarcodeItem> {
+    fun
+            loadBarcodeItemList(context: Context): MutableList<BarcodeItem> {
         Log.d(TAG, "##### loadBarcodeItemList #####")
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -58,7 +59,7 @@ object PreferencesManager {
         return barcodeItemList
     }
 
-    fun saveAutoBrightState(context: Context, state : Boolean) {
+    fun saveAutoBrightState(context: Context, state: Boolean) {
         Log.d(TAG, "##### saveAutoBrightState #####")
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -67,7 +68,7 @@ object PreferencesManager {
         editor.apply()
     }
 
-    fun loadAutoBrightState(context: Context) : Boolean {
+    fun loadAutoBrightState(context: Context): Boolean {
         Log.d(TAG, "##### loadAutoBrightState #####")
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)

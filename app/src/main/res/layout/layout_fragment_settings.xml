@@ -1,136 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="15dp"
-    android:background="@color/color_app_Theme"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:background="@color/color_app_Theme"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
     <RelativeLayout
-        android:id="@+id/layout_func_version_settings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/txt_title_version_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/string_title_version_settings"
-            android:textColor="@color/color_settings_title"
-            android:textSize="26sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txt_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:textColor="@color/color_settings_subtitle"
-            android:textSize="17sp"
-            tools:text="2.00" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_backup_settings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_func_version_settings"
-        android:layout_marginTop="40dp">
-
-        <RelativeLayout
-            android:id="@+id/layout_func_backup_settings"
+            android:id="@+id/layout_func_version_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txt_backup_settings"
+        <TextView
+                android:id="@+id/txt_title_version_settings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/string_title_backup_settings"
+                android:text="@string/string_title_version_settings"
                 android:textColor="@color/color_settings_title"
                 android:textSize="26sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/txt_backup_signin"
+        <TextView
+                android:id="@+id/txt_version"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:text="@string/string_backup_settings"
-                android:textColor="@drawable/txt_settings_selector"
-                android:textSize="17sp" />
+                android:textColor="@color/color_settings_subtitle"
+                android:textSize="17sp"
+                tools:text="2.00"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/layout_backup_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_func_version_settings"
+            android:layout_marginTop="40dp">
+
+        <RelativeLayout
+                android:id="@+id/layout_func_backup_settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:id="@+id/txt_backup_settings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/string_title_backup_settings"
+                    android:textColor="@color/color_settings_title"
+                    android:textSize="26sp"
+                    android:textStyle="bold"/>
+
+            <TextView
+                    android:id="@+id/txt_backup_signin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/string_backup_settings"
+                    android:textColor="@drawable/txt_settings_selector"
+                    android:textSize="17sp"/>
         </RelativeLayout>
 
 
         <TextView
-            android:id="@+id/txt_backup_tip_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_func_backup_settings"
-            android:layout_marginTop="5dp"
-            android:singleLine="true"
-            android:text="@string/string_subtitle_backup_settings"
-            android:textColor="@color/color_settings_subtitle"
-            android:textSize="13sp" />
+                android:id="@+id/txt_backup_tip_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_func_backup_settings"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:text="@string/string_subtitle_backup_settings"
+                android:textColor="@color/color_settings_subtitle"
+                android:textSize="13sp"/>
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/layout_bright_settings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_backup_settings"
-        android:layout_marginTop="40dp">
-
-        <RelativeLayout
-            android:id="@+id/layout_func_bright_settings"
+            android:id="@+id/layout_bright_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_below="@+id/layout_backup_settings"
+            android:layout_marginTop="40dp">
 
-            <TextView
-                android:id="@+id/txt_bright_settings"
-                android:layout_width="wrap_content"
+        <RelativeLayout
+                android:id="@+id/layout_func_bright_settings"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/string_title_bright_settings"
-                android:textColor="@color/color_settings_title"
-                android:textSize="26sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:id="@+id/layout_func_bright"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/txt_bright_on"
+            <TextView
+                    android:id="@+id/txt_bright_settings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:text="@string/string_bright_on_settings"
-                    android:textColor="@drawable/btn_autobright_selector"
-                    android:textSize="17sp" />
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/string_title_bright_settings"
+                    android:textColor="@color/color_settings_title"
+                    android:textSize="26sp"
+                    android:textStyle="bold"/>
+
+            <LinearLayout
+                    android:id="@+id/layout_func_bright"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/txt_bright_off"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:text="@string/string_bright_off_settings"
-                    android:textColor="@drawable/btn_autobright_selector"
-                    android:textSize="17sp" />
+                        android:id="@+id/txt_bright_on"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/string_bright_on_settings"
+                        android:textColor="@drawable/btn_autobright_selector"
+                        android:textSize="17sp"/>
+
+                <TextView
+                        android:id="@+id/txt_bright_off"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="@string/string_bright_off_settings"
+                        android:textColor="@drawable/btn_autobright_selector"
+                        android:textSize="17sp"/>
 
             </LinearLayout>
 
@@ -138,41 +138,41 @@
 
 
         <TextView
-            android:id="@+id/txt_bright_tip_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_func_bright_settings"
-            android:layout_marginTop="5dp"
-            android:singleLine="true"
-            android:text="@string/string_subtitle_bright_settings"
-            android:textColor="@color/color_settings_subtitle"
-            android:textSize="13sp" />
+                android:id="@+id/txt_bright_tip_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_func_bright_settings"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:text="@string/string_subtitle_bright_settings"
+                android:textColor="@color/color_settings_subtitle"
+                android:textSize="13sp"/>
 
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/txt_privacy_settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_bright_settings"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="40dp"
-        android:text="@string/string_menu_privacy"
-        android:textColor="@drawable/txt_settings_selector_2"
-        android:textSize="26sp"
-        android:textStyle="bold" />
+            android:id="@+id/txt_privacy_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_bright_settings"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="40dp"
+            android:text="@string/string_menu_privacy"
+            android:textColor="@drawable/txt_settings_selector_2"
+            android:textSize="26sp"
+            android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/txt_liscense_settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_privacy_settings"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="40dp"
-        android:text="@string/string_menu_liscense"
-        android:textColor="@drawable/txt_settings_selector_2"
-        android:textSize="26sp"
-        android:textStyle="bold" />
+            android:id="@+id/txt_liscense_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_privacy_settings"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="40dp"
+            android:text="@string/string_menu_liscense"
+            android:textColor="@drawable/txt_settings_selector_2"
+            android:textSize="26sp"
+            android:textStyle="bold"/>
 
 
 </RelativeLayout>

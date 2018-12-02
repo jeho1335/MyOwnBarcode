@@ -79,11 +79,11 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
 
     override fun onResultGoogleSignInClient(result: Boolean, msg: Int, client: GoogleSignInClient?) {
         Log.d(TAG, "##### onResultGoogleSignInClient ##### result : $result")
-        mProgress.setTitle(getString(R.string.string_wait_signin)).show(activity!!.fragmentManager, this.javaClass.simpleName)
+        mProgress.setTitle(getString(R.string.string_wait_signin)).show(activity?.fragmentManager, this.javaClass.simpleName)
         if (result) {
             mPresenter.requestSignInIntent(activity as Activity, client)
         } else {
-            activity!!.toast(resources.getString(msg))
+            activity?.toast(resources.getString(msg))
             if (mProgress.showsDialog) {
                 mProgress.dismiss()
             }
@@ -113,7 +113,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
                                 mPresenter.requestSetDataBackup(activity as Activity, auth)
                                 mProgress
                                         .setTitle(getString(R.string.string_wait_export))
-                                        .show(activity!!.fragmentManager, this.javaClass.simpleName)
+                                        .show(activity?.fragmentManager, this.javaClass.simpleName)
                             }
                             noButton { }
                         }?.show()
@@ -124,7 +124,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
                                 mPresenter.requestGetDataBackup(activity as Activity, auth)
                                 mProgress
                                         .setTitle(getString(R.string.string_wait_import))
-                                        .show(activity!!.fragmentManager, this.javaClass.simpleName)
+                                        .show(activity?.fragmentManager, this.javaClass.simpleName)
                             }
                             noButton { }
                         }?.show()
@@ -135,7 +135,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
                                 mPresenter.requestDeleteDataBackup(activity as Activity, auth)
                                 mProgress
                                         .setTitle(getString(R.string.string_wait_delete))
-                                        .show(activity!!.fragmentManager, this.javaClass.simpleName)
+                                        .show(activity?.fragmentManager, this.javaClass.simpleName)
                             }
                             noButton { }
                         }?.show()
@@ -151,7 +151,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
                 }
             }
         } else {
-            activity!!.toast(getString(msg))
+            activity?.toast(getString(msg))
         }
     }
 
@@ -160,7 +160,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
         if (mProgress.showsDialog) {
             mProgress.dismiss()
         }
-        activity!!.toast(getString(msg))
+        activity?.toast(getString(msg))
     }
 
     override fun onResultGetDataBackup(result: Boolean, msg: Int) {
@@ -168,7 +168,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
         if (mProgress.showsDialog) {
             mProgress.dismiss()
         }
-        activity!!.toast(getString(msg))
+        activity?.toast(getString(msg))
     }
 
     override fun onResultDeleteDataBackup(result: Boolean, msg: Int) {
@@ -176,13 +176,13 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
         if (mProgress.showsDialog) {
             mProgress.dismiss()
         }
-        activity!!.toast(getString(msg))
+        activity?.toast(getString(msg))
     }
 
     override fun onResultGetAutoBright(result: Boolean, msg: Int) {
         Log.d(TAG, "##### onResultGetAutoBright ##### result : $result")
         if (msg != -1) {
-            activity!!.toast(getString(msg))
+            activity?.toast(getString(msg))
         }
         if (result) {
             txt_bright_on.isSelected = true

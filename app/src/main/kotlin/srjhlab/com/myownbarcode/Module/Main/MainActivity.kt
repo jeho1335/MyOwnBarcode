@@ -17,11 +17,11 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.selector
 import org.jetbrains.anko.toast
-import srjhlab.com.myownbarcode.Module.Dialog.AddBarcodeInfoDialog
+import srjhlab.com.myownbarcode.Item.BarcodeItem
+import srjhlab.com.myownbarcode.Module.Dialog.AddBarcodeInfo.AddBarcodeInfoDialog
 import srjhlab.com.myownbarcode.Module.Dialog.AddFromImage.AddFromImageDialog
 import srjhlab.com.myownbarcode.Module.Dialog.AddFromKeyDialog
 import srjhlab.com.myownbarcode.Module.Dialog.BarcodeFocusDialog
-import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.Module.License.LicenseFragment
 import srjhlab.com.myownbarcode.Module.MyBarcode.MyBarcodeFragment
 import srjhlab.com.myownbarcode.Module.Settings.SettingsFragment

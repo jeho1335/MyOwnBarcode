@@ -98,7 +98,7 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
 
     override fun requestSetDataBackup(activity: Activity, auth: FirebaseAuth) {
         Log.d(TAG, "##### requestSetDataBackup #####")
-        var currentUserEmail = auth.currentUser!!.email
+        var currentUserEmail = auth.currentUser?.email
         try {
 //            currentUserEmail = currentUserEmail!!.substring(0, currentUserEmail.lastIndexOf("@"))
             currentUserEmail = currentUserEmail!!.replace(".", "")
@@ -183,7 +183,8 @@ class SettingsPresenter(view: Settings.view) : Settings.presenter {
                             , 0L
                             , decodeBarcodeName
                             , value.value.child("mBarcodeCardColor").value as Long
-                            , decodeBarcodeValue))
+                            , decodeBarcodeValue
+                            , null))
 
                 }
                 resultList.add(BarcodeItem(ConstVariables.ITEM_TYPE_EMPTY, 0L, "새 바코드 추가", 0L, " "))

@@ -5,11 +5,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerViewItemTouchHelper(adapter : IItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
-    val TAG = this.javaClass.simpleName!!
+    val TAG = this.javaClass.simpleName
     private var mListener : IItemTouchHelperAdapter = adapter
 
     interface IItemTouchHelperAdapter{
         fun onItemMove(fromPosition : Int, toPosition : Int)
+        fun onItemTrackingStart()
+        fun onItemTrackingEnd()
     }
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
@@ -20,8 +22,17 @@ class RecyclerViewItemTouchHelper(adapter : IItemTouchHelperAdapter) : ItemTouch
         return makeMovementFlags(dragFlags, swipeFlags)
     }
 
+    override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+        Log.d(TAG, "##### onSelectedChanged ##### $actionState")
+        super.onSelectedChanged(viewHolder, actionState)
+        when(actionState){
+            2 -> mListener.onItemTrackingStart()
+            0 -> mListener.onItemTrackingEnd()
+        }
+    }
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+        Log.d(TAG, "##### onMove #####")
         mListener.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
         return true
     }

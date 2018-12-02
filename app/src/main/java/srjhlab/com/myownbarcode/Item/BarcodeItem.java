@@ -17,6 +17,7 @@ public class BarcodeItem implements Serializable {
     private Long mBarcodeId;
     private String mBarcodeName;
     private String mBarcodeValue;
+    private byte[] mBarcodeBitmapArr;
 
     public void setItemType(Long type) {
         Log.d(TAG, "##### getItemType #####");
@@ -33,7 +34,7 @@ public class BarcodeItem implements Serializable {
         this.mBarcodeType = type;
     }
 
-    public Long getBarcodeType(){
+    public Long getBarcodeType() {
         Log.d(TAG, "##### getBarcodeType #####");
         return this.mBarcodeType;
     }
@@ -48,7 +49,7 @@ public class BarcodeItem implements Serializable {
         return this.mBarcodeName;
     }
 
-    public void setBarcodeValue(String value){
+    public void setBarcodeValue(String value) {
         this.mBarcodeValue = value;
     }
 
@@ -57,7 +58,7 @@ public class BarcodeItem implements Serializable {
         return this.mBarcodeValue;
     }
 
-    public void setBarcodeCardColor(Long color){
+    public void setBarcodeCardColor(Long color) {
         this.mBarcodeCardColor = color;
     }
 
@@ -66,15 +67,26 @@ public class BarcodeItem implements Serializable {
         return this.mBarcodeCardColor;
     }
 
-    public void setBarcodeId(Long id){
+    public void setBarcodeId(Long id) {
         this.mBarcodeId = id;
     }
+
     public Long getBarcodeId() {
         Log.d(TAG, "##### getBarcodeId #####");
         return this.mBarcodeId;
     }
 
-    public BarcodeItem(Long type, Long barcodeType, Long barcodeId, String barcodeName, Long barcodeColor, String barcodeValue ) {
+    public void setBarcodeBitmapArr(byte[] arr) {
+        Log.d(TAG, "##### setBarcodeBitmapArr #####");
+        this.mBarcodeBitmapArr = arr;
+    }
+
+    public byte[] getBarcodeBitmapArr() {
+        Log.d(TAG, "##### getBarcodeBitmapArr #####");
+        return this.mBarcodeBitmapArr;
+    }
+
+    public BarcodeItem(Long type, Long barcodeType, Long barcodeId, String barcodeName, Long barcodeColor, String barcodeValue, byte[] bitmapArr) {
         Log.d(TAG, "##### BarcodeItem #####"
                 + "\n type : " + type
                 + "\n barcodeType : " + barcodeType
@@ -82,6 +94,7 @@ public class BarcodeItem implements Serializable {
                 + "\n barcodeName : " + barcodeName
                 + "\n barcodeColor : " + barcodeColor
                 + "\n barcodeValue : " + barcodeValue
+                + "\n bitmapArr : " + bitmapArr
                 + "\n #####################");
 
         this.mItemType = type;
@@ -90,6 +103,7 @@ public class BarcodeItem implements Serializable {
         this.mBarcodeName = barcodeName;
         this.mBarcodeCardColor = barcodeColor;
         this.mBarcodeValue = barcodeValue;
+        this.mBarcodeBitmapArr = bitmapArr;
         //this.mBarcodeBitmap = barcodeBitmap;
     }
 
@@ -120,5 +134,6 @@ public class BarcodeItem implements Serializable {
         this.mBarcodeValue = barcodeValue;
     }
 
-    public BarcodeItem(){}
+    public BarcodeItem() {
+    }
 }

@@ -3,7 +3,6 @@ package srjhlab.com.myownbarcode.Module.Dialog
 import Dialog.BarcodeFocus.BarcodeFocus
 import Dialog.BarcodeFocus.BarcodeFocusPresenter
 import android.app.Activity
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -97,7 +96,7 @@ class BarcodeFocusDialog : androidx.fragment.app.DialogFragment(), BarcodeFocus.
         val str = StringUtils.join(strArr, " ")
         text_value.text = str
         text_value.invalidate()
-        img_barcode.setImageBitmap((MakeBarcode.getInstance().makeBarcode(mItem.barcodeType.toInt(), mItem.barcodeValue)))
+        img_barcode.setImageBitmap((MakeBarcode().makeBarcode(mItem.barcodeType.toInt(), mItem.barcodeValue)))
     }
 
 }

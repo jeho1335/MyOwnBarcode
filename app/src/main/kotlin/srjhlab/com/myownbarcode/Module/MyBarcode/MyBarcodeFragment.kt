@@ -14,9 +14,11 @@ import kotlinx.android.synthetic.main.layout_fragment_my_barcode.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.jetbrains.anko.toast
 import srjhlab.com.myownbarcode.Adapter.BarcodeRecyclerviewAdapter
 import srjhlab.com.myownbarcode.Adapter.RecyclerViewItemTouchHelper
 import srjhlab.com.myownbarcode.Item.BarcodeItem
+import srjhlab.com.myownbarcode.Module.Dialog.ProgressDialog
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.ConstVariables
@@ -26,6 +28,7 @@ class MyBarcodeFragment : Fragment(), MyBarcode.view {
 
     private val PERMISSIONS_REQUEST = 1
     private lateinit var mPresenter: MyBarcodePresenter
+    private val mProgress = ProgressDialog()
 
     private lateinit var mItems: MutableList<BarcodeItem>
     private lateinit var mAdapter: BarcodeRecyclerviewAdapter
@@ -62,6 +65,20 @@ class MyBarcodeFragment : Fragment(), MyBarcode.view {
 
     override fun onResultBarcodeList(result: Boolean, msg: Int) {
         Log.d(TAG, "##### onResultBarcodeList #####")
+        if(result){
+            if (mProgress.showsDialog) {
+                mProgress.dismissAllowingStateLoss()
+            }
+        }else{
+            activity?.toast(resources.getString(msg))
+        }
+    }
+
+    override fun onResultProgress(msg: String) {
+        Log.d(TAG, "##### onResultProgress #####")
+        if(mProgress.showsDialog){
+            mProgress.setSubTitle(msg)
+        }
     }
 
     private val mIOnItemCLickListener: BarcodeRecyclerviewAdapter.IOnItemClick = object : BarcodeRecyclerviewAdapter.IOnItemClick {
@@ -101,6 +118,8 @@ class MyBarcodeFragment : Fragment(), MyBarcode.view {
         handler.postDelayed({
             if(recyclerView != null) {
                 mPresenter.requestBarcodeList(recyclerView, recyclerView.adapter as BarcodeRecyclerviewAdapter)
+                mProgress.setTitle(getString(R.string.string_wait_init_barcode)).show(activity?.fragmentManager, this.javaClass.simpleName)
+                // 여기서 프로그레스바를 띄우고
             }
         }, 800)
     }

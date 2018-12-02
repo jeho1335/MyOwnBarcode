@@ -1,5 +1,6 @@
 package srjhlab.com.myownbarcode.Adapter
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.Maybe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_list_barcode.view.*
 import org.greenrobot.eventbus.EventBus
 import srjhlab.com.myownbarcode.Animations.SimpleViewFadeAnimation
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
+import srjhlab.com.myownbarcode.Utils.BitmapByteConverter
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.ConstVariables
 import srjhlab.com.myownbarcode.Utils.MakeBarcode
@@ -26,6 +29,7 @@ class BarcodeRecyclerviewAdapter(listener: IOnItemClick) : RecyclerView.Adapter<
     private var mListener: IOnItemClick = listener
     private var mItems: MutableList<BarcodeItem> = ArrayList()
     private lateinit var mSimpleAnimation: SimpleViewFadeAnimation
+    private var mIsRequestItemMove = false
 
     interface IOnItemClick {
         fun onItemClick(item: BarcodeItem)
@@ -41,6 +45,7 @@ class BarcodeRecyclerviewAdapter(listener: IOnItemClick) : RecyclerView.Adapter<
         return ViewHolder(view)
     }
 
+    @SuppressLint("CheckResult")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d(TAG, "##### onBindViewHolder #####")
 
@@ -58,32 +63,60 @@ class BarcodeRecyclerviewAdapter(listener: IOnItemClick) : RecyclerView.Adapter<
                     when (event.action) {
                         MotionEvent.ACTION_DOWN -> mListener.onStartDrag(holder)
                     }
-                    false
+                    true
                 }
 
-                Maybe.fromCallable<Bitmap> {
-                    MakeBarcode.getInstance().makeBarcode(item.barcodeType.toInt(), item.barcodeValue)
-                }
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.single())
-                        .subscribe({
-                            Log.d(TAG, "##### ${item.barcodeName} onSuccess #####")
-                            if (it is Bitmap) {
-                                holder.itemView.img_body.setImageBitmap(it)
-                                mSimpleAnimation.startAnimation(mSimpleAnimation.FADE_IN, holder.itemView.img_body)
-                                holder.itemView.txt_load_failed.visibility = View.GONE
-                            } else {
+                if (item.barcodeBitmapArr != null) {
+                    Log.d(TAG, "test it will search from bytearr")
+//                    Glide.with(holder.itemView.img_body).load(BitmapByteConverter().byteToBitmap(item.barcodeBitmapArr))
+                    Maybe.fromCallable<Bitmap> {
+                        BitmapByteConverter().byteToBitmap(item.barcodeBitmapArr)
+                    }
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                Log.d(TAG, "##### ${item.barcodeName} onSuccess #####")
+                                if (it is Bitmap) {
+                                    holder.itemView.img_body.setImageBitmap(it)
+                                    holder.itemView.img_body.visibility = View.VISIBLE
+//                                    mSimpleAnimation.startAnimation(mSimpleAnimation.FADE_IN, holder.itemView.img_body)
+                                    holder.itemView.txt_load_failed.visibility = View.GONE
+                                } else {
+                                    holder.itemView.txt_load_failed.visibility = View.VISIBLE
+                                }
+                            }, {
+                                Log.d(TAG, "##### ${item.barcodeName} onError #####")
                                 holder.itemView.txt_load_failed.visibility = View.VISIBLE
-                            }
-                        }, {
-                            Log.d(TAG, "##### ${item.barcodeName} onError #####")
-                            holder.itemView.txt_load_failed.visibility = View.VISIBLE
 
-                        }, {
-                            Log.d(TAG, "##### ${item.barcodeName} onCompletion #####")
-                            holder.itemView.txt_load_failed.visibility = View.VISIBLE
-                        })
+                            }, {
+                                Log.d(TAG, "##### ${item.barcodeName} onCompletion #####")
+                                holder.itemView.txt_load_failed.visibility = View.VISIBLE
+                            })
+                } else {
+                    Log.d(TAG, "test it will search from metadata")
+                    Maybe.fromCallable<Bitmap> {
+                        MakeBarcode().makeBarcode(item.barcodeType.toInt(), item.barcodeValue)
+                    }
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                Log.d(TAG, "##### ${item.barcodeName} onSuccess #####")
+                                if (it is Bitmap) {
+                                    holder.itemView.img_body.setImageBitmap(it)
+                                    mSimpleAnimation.startAnimation(mSimpleAnimation.FADE_IN, holder.itemView.img_body)
+                                    holder.itemView.txt_load_failed.visibility = View.GONE
+                                } else {
+                                    holder.itemView.txt_load_failed.visibility = View.VISIBLE
+                                }
+                            }, {
+                                Log.d(TAG, "##### ${item.barcodeName} onError #####")
+                                holder.itemView.txt_load_failed.visibility = View.VISIBLE
+
+                            }, {
+                                Log.d(TAG, "##### ${item.barcodeName} onCompletion #####")
+                                holder.itemView.txt_load_failed.visibility = View.VISIBLE
+                            })
+                }
             }
             ConstVariables.ITEM_TYPE_EMPTY -> {
                 holder.itemView.img_body.visibility = View.GONE
@@ -104,20 +137,34 @@ class BarcodeRecyclerviewAdapter(listener: IOnItemClick) : RecyclerView.Adapter<
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
         Log.d(TAG, "##### onItemMove ##### from $fromPosition  to $toPosition")
+        mIsRequestItemMove = true
         if (ConstVariables.ITEM_TYPE_EMPTY.equals(mItems.get(toPosition).itemType)) {
             Log.d(TAG, "##### onItemMove ##### This is the end of List. return!!!")
             return
         }
         Collections.swap(mItems, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
-        EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ITEM_MOVE_FINISH))
+    }
+
+    override fun onItemTrackingStart() {
+        Log.d(TAG, "##### onItemTrackingStart #####")
+    }
+
+    override fun onItemTrackingEnd() {
+        Log.d(TAG, "##### onItemTrackingEnd #####")
+        if (mIsRequestItemMove) {
+            EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ITEM_MOVE_FINISH))
+            mIsRequestItemMove = false
+        }
     }
 
     fun setItems(items: MutableList<BarcodeItem>) {
         Log.d(TAG, "##### setItems #####")
+        for (i in 0 until items.size) {
+            Log.d(TAG, " ##### test arr ##### ${items[i].barcodeBitmapArr}")
+        }
         this.mItems.clear()
         this.mItems.addAll(items)
-//        notifyDataSetChanged()
     }
 
     fun addItem(item: BarcodeItem) {
@@ -144,7 +191,7 @@ class BarcodeRecyclerviewAdapter(listener: IOnItemClick) : RecyclerView.Adapter<
         return this.mItems
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
+    inner class ViewHolder(itemView: View) : AndroidExtensionViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
         val TAG = this.javaClass.simpleName
 
         init {
@@ -163,5 +210,9 @@ class BarcodeRecyclerviewAdapter(listener: IOnItemClick) : RecyclerView.Adapter<
             mListener.onItemLongCLick(mItems.get(adapterPosition), adapterPosition)
             return false
         }
+    }
+
+    abstract class AndroidExtensionViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+
     }
 }

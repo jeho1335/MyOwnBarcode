@@ -79,6 +79,10 @@ dependencies {
     //eventbus
     implementation 'org.greenrobot:eventbus:3.1.1'
 
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    kapt 'com.github.bumptech.glide:compiler:4.8.0'
+
     //tedpermission
     implementation 'gun0912.ted:tedpermission:2.2.2'
 
@@ -94,6 +98,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation 'org.mod4j.org.apache.commons:lang:2.1.0'
+}
+androidExtensions {
+    experimental = true
 }
 apply plugin: 'com.google.gms.google-services'
 repositories {

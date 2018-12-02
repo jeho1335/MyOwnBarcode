@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import kotlinx.android.synthetic.main.layout_dialog_progress.*
+import org.jetbrains.anko.runOnUiThread
 import srjhlab.com.myownbarcode.R
 
 class ProgressDialog : DialogFragment() {
@@ -42,12 +43,21 @@ class ProgressDialog : DialogFragment() {
     private fun initializeUi() {
         Log.d(TAG, "##### initializeUi #####")
         txt_title_progress.text = mProgressTitle
+        txt_subtitle_progress.visibility = View.GONE
     }
 
     fun setTitle(title : String) : ProgressDialog{
         Log.d(TAG, "##### setTitle #####")
         mProgressTitle = title
         return this
+    }
+
+    fun setSubTitle(subTitle : String){
+        runOnUiThread {
+            Log.d(TAG, "##### setSubtitle #####")
+            txt_subtitle_progress.visibility = View.VISIBLE
+            txt_subtitle_progress.text = subTitle
+        }
     }
 
 }
