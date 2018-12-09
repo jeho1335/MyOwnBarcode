@@ -104,7 +104,7 @@
         \norg.greenrobot:eventbus
         \norg.mod4j.org.apache.commons
         \norg.jetbrains.anko
-        \nio.reactivex.rxjava2:rxjava
+        \nio.reactivex.rxjava2:rxkotlin
         \nio.reactivex.rxjava2:rxandroid
         \ngun0912.ted:tedpermission</string>
 
