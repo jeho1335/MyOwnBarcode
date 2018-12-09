@@ -68,7 +68,6 @@ class BarcodeRecyclerviewAdapter(listener: IOnItemClick) : RecyclerView.Adapter<
 
                 if (item.barcodeBitmapArr != null) {
                     Log.d(TAG, "test it will search from bytearr")
-//                    Glide.with(holder.itemView.img_body).load(BitmapByteConverter().byteToBitmap(item.barcodeBitmapArr))
                     Maybe.fromCallable<Bitmap> {
                         BitmapByteConverter().byteToBitmap(item.barcodeBitmapArr)
                     }

@@ -1,6 +1,5 @@
 package srjhlab.com.myownbarcode.Module.Dialog
 
-import android.app.DialogFragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import kotlinx.android.synthetic.main.layout_dialog_progress.*
-import org.jetbrains.anko.runOnUiThread
+import srjhlab.com.myownbarcode.Base.BaseDialog
 import srjhlab.com.myownbarcode.R
 
-class ProgressDialog : DialogFragment() {
+class ProgressDialog : BaseDialog() {
     private val TAG = this.javaClass.simpleName
     private var mProgressTitle = ""
 
@@ -46,15 +45,15 @@ class ProgressDialog : DialogFragment() {
         txt_subtitle_progress.visibility = View.GONE
     }
 
-    fun setTitle(title : String) : ProgressDialog{
+    fun setTitle(title: String): ProgressDialog {
         Log.d(TAG, "##### setTitle #####")
         mProgressTitle = title
         return this
     }
 
-    fun setSubTitle(subTitle : String){
-        runOnUiThread {
-            Log.d(TAG, "##### setSubtitle #####")
+    fun setSubTitle(subTitle: String) {
+        Log.d(TAG, "##### setSubtitle #####")
+        if(txt_subtitle_progress != null) {
             txt_subtitle_progress.visibility = View.VISIBLE
             txt_subtitle_progress.text = subTitle
         }

@@ -203,12 +203,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
             ConstVariables.EVENTBUS_ADD_FROM_KEY -> {
                 Log.d(TAG, "##### EVENTBUS_ADD_FROM_KEY #####")
                 AddFromKeyDialog()
-                        .show(fragmentManager, this.javaClass.simpleName)
+                        .show(supportFragmentManager, this.javaClass.simpleName)
             }
             ConstVariables.EVENTBUS_ADD_FROM_IMAGE -> {
                 Log.d(TAG, "##### EVENTBUS_ADD_FROM_IMAGE #####")
                 AddFromImageDialog()
-                        .show(fragmentManager, this.javaClass.simpleName)
+                        .show(supportFragmentManager, this.javaClass.simpleName)
             }
             ConstVariables.EVENTBUS_ADD_BARCODE -> {
                 Log.d(TAG, "##### EVENTBUS_ADD_BARCODE #####")
@@ -240,13 +240,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
                         selector("", menuList) { dialogInterface, i ->
                             when (i) {
                                 0 -> {
-                                    AddFromKeyDialog().show(fragmentManager, this.javaClass.simpleName)
+                                    AddFromKeyDialog().show(supportFragmentManager, this.javaClass.simpleName)
                                 }
                                 1 -> {
                                     mPresenter.requestBarcodeScan()
                                 }
                                 2 -> {
-                                    AddFromImageDialog().show(fragmentManager, this.javaClass.simpleName)
+                                    AddFromImageDialog().show(supportFragmentManager, this.javaClass.simpleName)
                                 }
                             }
                         }

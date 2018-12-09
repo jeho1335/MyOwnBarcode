@@ -22,9 +22,8 @@ import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.ConstVariables
 import srjhlab.com.myownbarcode.Utils.PreferencesManager
 
-class SettingsPresenter(view: Settings.view) : Settings.presenter {
+class SettingsPresenter(val mView: Settings.view) : Settings.presenter {
     private val TAG = this.javaClass.simpleName
-    private val mView = view
 
     init {
         System.loadLibrary("keys")

@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.layout_fragment_settings.*
@@ -17,12 +16,13 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.*
+import srjhlab.com.myownbarcode.Base.BaseFragment
 import srjhlab.com.myownbarcode.Module.Dialog.ProgressDialog
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.ConstVariables
 
-class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
+class SettingsFragment : BaseFragment(), View.OnClickListener, Settings.view {
     private val TAG = this.javaClass.simpleName
     private lateinit var mPresenter: SettingsPresenter
     private val mProgress = ProgressDialog()
@@ -79,7 +79,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
 
     override fun onResultGoogleSignInClient(result: Boolean, msg: Int, client: GoogleSignInClient?) {
         Log.d(TAG, "##### onResultGoogleSignInClient ##### result : $result")
-        mProgress.setTitle(getString(R.string.string_wait_signin)).show(activity?.fragmentManager, this.javaClass.simpleName)
+        mProgress.setTitle(getString(R.string.string_wait_signin)).show(activity?.supportFragmentManager, this.javaClass.simpleName)
         if (result) {
             mPresenter.requestSignInIntent(activity as Activity, client)
         } else {
@@ -113,7 +113,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
                                 mPresenter.requestSetDataBackup(activity as Activity, auth)
                                 mProgress
                                         .setTitle(getString(R.string.string_wait_export))
-                                        .show(activity?.fragmentManager, this.javaClass.simpleName)
+                                        .show(activity?.supportFragmentManager, this.javaClass.simpleName)
                             }
                             noButton { }
                         }?.show()
@@ -124,7 +124,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
                                 mPresenter.requestGetDataBackup(activity as Activity, auth)
                                 mProgress
                                         .setTitle(getString(R.string.string_wait_import))
-                                        .show(activity?.fragmentManager, this.javaClass.simpleName)
+                                        .show(activity?.supportFragmentManager, this.javaClass.simpleName)
                             }
                             noButton { }
                         }?.show()
@@ -135,7 +135,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, Settings.view {
                                 mPresenter.requestDeleteDataBackup(activity as Activity, auth)
                                 mProgress
                                         .setTitle(getString(R.string.string_wait_delete))
-                                        .show(activity?.fragmentManager, this.javaClass.simpleName)
+                                        .show(activity?.supportFragmentManager, this.javaClass.simpleName)
                             }
                             noButton { }
                         }?.show()

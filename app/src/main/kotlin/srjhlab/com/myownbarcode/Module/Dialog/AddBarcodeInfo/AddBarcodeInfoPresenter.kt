@@ -9,8 +9,9 @@ import io.reactivex.schedulers.Schedulers
 import srjhlab.com.myownbarcode.Utils.BitmapByteConverter
 import srjhlab.com.myownbarcode.Utils.MakeBarcode
 
-class AddBarcodeInfoPresenter(val mView: AddBarcodeInfo.view) : AddBarcodeInfo.presenter {
-    val TAG = this.javaClass.simpleName
+class AddBarcodeInfoPresenter(private val view: AddBarcodeInfoDialog) : AddBarcodeInfo.presenter {
+    private val TAG = this.javaClass.simpleName
+    private val mView = view as AddBarcodeInfo.view
 
     @SuppressLint("CheckResult")
     override fun requestOverviewBarcode(type: Int, value: String) {
@@ -20,7 +21,6 @@ class AddBarcodeInfoPresenter(val mView: AddBarcodeInfo.view) : AddBarcodeInfo.p
         }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.single())
                 .subscribe({
                     Log.d(TAG, "##### onSuccess #####")
                     if (it is Bitmap) {
@@ -35,6 +35,9 @@ class AddBarcodeInfoPresenter(val mView: AddBarcodeInfo.view) : AddBarcodeInfo.p
                     Log.d(TAG, "##### onCompletion #####")
                     mView.onResultOverviewBarcode(false, null)
                 })
+                .apply {
+                    view.disposables.add(this)
+                }
     }
 
     @SuppressLint("CheckResult")
@@ -45,7 +48,6 @@ class AddBarcodeInfoPresenter(val mView: AddBarcodeInfo.view) : AddBarcodeInfo.p
         }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.single())
                 .subscribe({
                     Log.d(TAG, "##### onSuccess #####")
                     if (it is ByteArray) {
@@ -60,5 +62,8 @@ class AddBarcodeInfoPresenter(val mView: AddBarcodeInfo.view) : AddBarcodeInfo.p
                     Log.d(TAG, "##### onCompletion #####")
                     mView.onResultConvertBitmapToByte(false, null)
                 })
+                .apply {
+                    view.disposables.add(this)
+                }
     }
 }

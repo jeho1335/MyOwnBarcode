@@ -10,9 +10,8 @@ import srjhlab.com.myownbarcode.Utils.ConstVariables
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
-class LicensePresenter(view : License.view) : License.presenter {
-    val TAG = this.javaClass.simpleName
-    val mView = view
+class LicensePresenter(private val mView : License.view) : License.presenter {
+    val TAG = this.javaClass.simpleName!!
 
     override fun onDestroy() {
         Log.d(TAG, "##### onDestroy #####")

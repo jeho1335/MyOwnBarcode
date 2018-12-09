@@ -1,6 +1,6 @@
 package srjhlab.com.myownbarcode.Module.Dialog
 
-import android.app.DialogFragment
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.layout_dialog_addfromkey.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import srjhlab.com.myownbarcode.Base.BaseDialog
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.Item.BarcodePagerItem
 import srjhlab.com.myownbarcode.R
@@ -25,7 +26,7 @@ import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.ConstVariables
 import srjhlab.com.myownbarcode.Utils.ValidityCheck
 
-class AddFromKeyDialog : DialogFragment(), View.OnClickListener {
+class AddFromKeyDialog : BaseDialog(), View.OnClickListener {
     private val TAG = this.javaClass.simpleName
 
     private var mSelectBarcodeType = -1
@@ -78,7 +79,7 @@ class AddFromKeyDialog : DialogFragment(), View.OnClickListener {
 
     fun initializeUI() {
         Log.d(TAG, "##### initializeUI #####")
-        dialog_viewpager.adapter = BarcodePagerAdapter(activity)
+        dialog_viewpager.adapter = BarcodePagerAdapter(activity as Activity)
         dialog_viewpager.addOnPageChangeListener(mPageChangeListener)
         dialog_viewpager.offscreenPageLimit = 1
         dialog_viewpager.clipToOutline = true

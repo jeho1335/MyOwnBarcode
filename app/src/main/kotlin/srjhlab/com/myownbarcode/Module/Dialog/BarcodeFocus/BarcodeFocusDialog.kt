@@ -11,12 +11,13 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import kotlinx.android.synthetic.main.layout_dialog_barcodefocus.*
 import org.apache.commons.lang.StringUtils
+import srjhlab.com.myownbarcode.Base.BaseDialog
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.MakeBarcode
 
-class BarcodeFocusDialog : androidx.fragment.app.DialogFragment(), BarcodeFocus.view {
+class BarcodeFocusDialog : BaseDialog(), BarcodeFocus.view {
     private val TAG = this.javaClass.simpleName
     private var mViewType = VIEW_TYPE_FOCUS
     private lateinit var mPresenter: BarcodeFocusPresenter

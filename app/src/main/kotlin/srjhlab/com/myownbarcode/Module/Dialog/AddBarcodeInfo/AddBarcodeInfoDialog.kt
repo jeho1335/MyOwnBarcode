@@ -10,12 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import kotlinx.android.synthetic.main.layout_dialog_addinfo.*
 import org.apache.commons.lang.StringUtils
 import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.toast
+import srjhlab.com.myownbarcode.Base.BaseDialog
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
@@ -24,7 +24,7 @@ import srjhlab.com.myownbarcode.Utils.ConstVariables
 
 @Suppress("DEPRECATION", "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 
-class AddBarcodeInfoDialog : DialogFragment(), View.OnClickListener, AddBarcodeInfo.view {
+class AddBarcodeInfoDialog : BaseDialog(), View.OnClickListener, AddBarcodeInfo.view {
     private val TAG = this.javaClass.simpleName
 
     companion object {

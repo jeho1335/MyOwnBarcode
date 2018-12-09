@@ -7,11 +7,11 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.layout_fragment_license.*
+import srjhlab.com.myownbarcode.Base.BaseFragment
 import srjhlab.com.myownbarcode.R
 
-class LicenseFragment : Fragment(), License.view {
+class LicenseFragment : BaseFragment(), License.view {
     val TAG = this.javaClass.simpleName
     private lateinit var mPresenter : LicensePresenter
 

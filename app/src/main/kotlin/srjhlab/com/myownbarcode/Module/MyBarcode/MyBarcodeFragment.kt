@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.layout_fragment_my_barcode.*
@@ -17,13 +16,14 @@ import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.toast
 import srjhlab.com.myownbarcode.Adapter.BarcodeRecyclerviewAdapter
 import srjhlab.com.myownbarcode.Adapter.RecyclerViewItemTouchHelper
+import srjhlab.com.myownbarcode.Base.BaseFragment
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.Module.Dialog.ProgressDialog
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.ConstVariables
 
-class MyBarcodeFragment : Fragment(), MyBarcode.view {
+class MyBarcodeFragment : BaseFragment(), MyBarcode.view {
     val TAG = this.javaClass.simpleName
 
     private val PERMISSIONS_REQUEST = 1
@@ -77,7 +77,9 @@ class MyBarcodeFragment : Fragment(), MyBarcode.view {
     override fun onResultProgress(msg: String) {
         Log.d(TAG, "##### onResultProgress #####")
         if(mProgress.showsDialog){
-            mProgress.setSubTitle(msg)
+            activity?.runOnUiThread {
+                mProgress.setSubTitle(msg)
+            }
         }
     }
 
@@ -118,7 +120,7 @@ class MyBarcodeFragment : Fragment(), MyBarcode.view {
         handler.postDelayed({
             if(recyclerView != null) {
                 mPresenter.requestBarcodeList(recyclerView, recyclerView.adapter as BarcodeRecyclerviewAdapter)
-                mProgress.setTitle(getString(R.string.string_wait_init_barcode)).show(activity?.fragmentManager, this.javaClass.simpleName)
+                mProgress.setTitle(getString(R.string.string_wait_init_barcode)).show(activity?.supportFragmentManager, this.javaClass.simpleName)
                 // 여기서 프로그레스바를 띄우고
             }
         }, 800)

@@ -13,9 +13,8 @@ import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.PreferencesManager
 
 
-class BarcodeFocusPresenter(view : BarcodeFocus.view) : BarcodeFocus.presenter {
+class BarcodeFocusPresenter(private val mView : BarcodeFocus.view) : BarcodeFocus.presenter {
     private val TAG = this.javaClass.simpleName
-    private val mView = view
 
     override fun onDestroy() {
         Log.d(TAG, "##### onDestroy #####")

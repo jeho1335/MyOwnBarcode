@@ -1,7 +1,7 @@
 package srjhlab.com.myownbarcode.Module.Dialog.AddFromImage
 
 import Model.ActivityResultEvent
-import android.app.DialogFragment
+import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -14,20 +14,21 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.toast
+import srjhlab.com.myownbarcode.Base.BaseDialog
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.ConstVariables
 
-class AddFromImageDialog : DialogFragment(), AddFromImage.view{
+class AddFromImageDialog : BaseDialog(), AddFromImage.view{
     private val TAG = this.javaClass.simpleName
     private lateinit var mPresenter : AddFromImagePresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "##### onCreate #####")
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.FullSizeDialog)
+        setStyle(STYLE_NO_TITLE, R.style.FullSizeDialog)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -44,7 +45,7 @@ class AddFromImageDialog : DialogFragment(), AddFromImage.view{
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Log.d(TAG, "##### onActivityCreated #####")
         super.onActivityCreated(savedInstanceState)
-        mPresenter.getImageFromGallery(activity)
+        mPresenter.getImageFromGallery(activity as Activity)
     }
 
     override fun onDestroy() {

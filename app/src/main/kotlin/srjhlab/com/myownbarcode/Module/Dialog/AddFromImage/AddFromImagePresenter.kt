@@ -12,9 +12,9 @@ import io.reactivex.schedulers.Schedulers
 import srjhlab.com.myownbarcode.Utils.ConstVariables
 import srjhlab.com.myownbarcode.Utils.ScanImage
 
-class AddFromImagePresenter(view: AddFromImage.view) : AddFromImage.presenter {
-    val mView = view
+class AddFromImagePresenter(val view : AddFromImageDialog) : AddFromImage.presenter {
     val TAG = this.javaClass.simpleName
+    private val mView = view as AddFromImage.view
 
     override fun onDestroy() {
         Log.d(TAG, "##### onDestroy #####")
@@ -55,6 +55,9 @@ class AddFromImagePresenter(view: AddFromImage.view) : AddFromImage.presenter {
                     Log.d(TAG, "##### onComplete #####")
                     mView.onResultErrorHandling()
                 })
+                .apply {
+                    view.disposables.add(this)
+                }
     }
 
     @SuppressLint("CheckResult")
@@ -84,5 +87,8 @@ class AddFromImagePresenter(view: AddFromImage.view) : AddFromImage.presenter {
                     Log.d(TAG, "##### onComplete #####")
                     mView.onResultErrorHandling()
                 })
+                .apply {
+                    view.disposables.add(this)
+                }
     }
 }

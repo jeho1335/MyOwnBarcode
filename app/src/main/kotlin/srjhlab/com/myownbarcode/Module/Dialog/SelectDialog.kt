@@ -1,6 +1,5 @@
 package srjhlab.com.myownbarcode.Module.Dialog
 
-import android.app.DialogFragment
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,16 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_dialog.*
 import org.greenrobot.eventbus.EventBus
 import srjhlab.com.myownbarcode.Adapter.SelectRecyclerViewAdapter
+import srjhlab.com.myownbarcode.Base.BaseDialog
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.Item.SelectDialogItem
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.ConstVariables
 
-class SelectDialog : DialogFragment(), SelectRecyclerViewAdapter.IClickListener {
+class SelectDialog : BaseDialog(), SelectRecyclerViewAdapter.IClickListener {
     val TAG = this.javaClass.simpleName
 
     private lateinit var mAdapter: SelectRecyclerViewAdapter
@@ -45,7 +46,7 @@ class SelectDialog : DialogFragment(), SelectRecyclerViewAdapter.IClickListener 
         Log.d(TAG, "#####  initializeUi #####")
         mAdapter = SelectRecyclerViewAdapter(mItems, this)
         recyclerview_select_dialog_body.adapter = mAdapter
-        recyclerview_select_dialog_body.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        recyclerview_select_dialog_body.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         recyclerview_select_dialog_body.setHasFixedSize(true)
     }
 

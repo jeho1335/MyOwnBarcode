@@ -10,8 +10,8 @@ android {
         applicationId "srjhlab.com.myownbarcode"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 13
-        versionName "2.21"
+        versionCode 15
+        versionName "2.31"
         multiDexEnabled true
     }
     dataBinding {
@@ -79,15 +79,11 @@ dependencies {
     //eventbus
     implementation 'org.greenrobot:eventbus:3.1.1'
 
-    //glide
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
-    kapt 'com.github.bumptech.glide:compiler:4.8.0'
-
     //tedpermission
     implementation 'gun0912.ted:tedpermission:2.2.2'
 
     //rx
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
 
     //anko

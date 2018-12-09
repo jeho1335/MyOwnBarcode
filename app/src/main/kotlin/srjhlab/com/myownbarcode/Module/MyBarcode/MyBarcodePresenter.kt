@@ -14,9 +14,9 @@ import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.MakeBarcode
 import srjhlab.com.myownbarcode.Utils.PreferencesManager
 
-class MyBarcodePresenter(context: Context, val mView: MyBarcode.view) : MyBarcode.presenter {
+class MyBarcodePresenter(private val mContext: Context, private val view: MyBarcodeFragment) : MyBarcode.presenter {
     val TAG = this.javaClass.simpleName
-    var mContext = context
+    private val mView = view as MyBarcode.view
 
     override fun onDestroy() {
         Log.d(TAG, "##### onDestroy #####")
@@ -57,6 +57,9 @@ class MyBarcodePresenter(context: Context, val mView: MyBarcode.view) : MyBarcod
                     Log.d(TAG, "##### onCompletion #####")
                     mView.onResultBarcodeList(false, R.string.string_unknown_error)
                 })
+                .apply {
+                    view.disposables.add(this)
+                }
     }
 
     override fun requestAddBarcode(adapter: BarcodeRecyclerviewAdapter, item: BarcodeItem) {
