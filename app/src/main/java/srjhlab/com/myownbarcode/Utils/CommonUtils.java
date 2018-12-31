@@ -15,9 +15,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import srjhlab.com.myownbarcode.R;
 
 import java.io.ByteArrayOutputStream;
+
+import srjhlab.com.myownbarcode.R;
 
 public class CommonUtils {
     private final static String TAG = CommonUtils.class.getSimpleName();

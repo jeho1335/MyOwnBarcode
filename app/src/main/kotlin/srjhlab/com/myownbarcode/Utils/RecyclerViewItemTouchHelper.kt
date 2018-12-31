@@ -4,12 +4,12 @@ import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerViewItemTouchHelper(adapter : IItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
+class RecyclerViewItemTouchHelper(adapter: IItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
     val TAG = this.javaClass.simpleName
-    private var mListener : IItemTouchHelperAdapter = adapter
+    private var mListener: IItemTouchHelperAdapter = adapter
 
-    interface IItemTouchHelperAdapter{
-        fun onItemMove(fromPosition : Int, toPosition : Int)
+    interface IItemTouchHelperAdapter {
+        fun onItemMove(fromPosition: Int, toPosition: Int)
         fun onItemTrackingStart()
         fun onItemTrackingEnd()
     }
@@ -23,16 +23,15 @@ class RecyclerViewItemTouchHelper(adapter : IItemTouchHelperAdapter) : ItemTouch
     }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
-        Log.d(TAG, "##### onSelectedChanged ##### $actionState")
+        Log.d(TAG, "##### onSelectedChanged #####")
         super.onSelectedChanged(viewHolder, actionState)
-        when(actionState){
+        when (actionState) {
             2 -> mListener.onItemTrackingStart()
             0 -> mListener.onItemTrackingEnd()
         }
     }
-
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        Log.d(TAG, "##### onMove #####")
+        Log.d(TAG, "##### onMove ##### firstPosition : ${viewHolder.adapterPosition}, secondPosition : ${target.adapterPosition}")
         mListener.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
         return true
     }

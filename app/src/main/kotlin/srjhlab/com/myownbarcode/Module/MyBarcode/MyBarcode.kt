@@ -7,11 +7,13 @@ import srjhlab.com.myownbarcode.Item.BarcodeItem
 
 interface MyBarcode {
     interface view{
-        fun onResultBarcodeList(result : Boolean, msg : Int)
+        // Preferences -> Real Database migration test
+        fun onResultRealmBarcodeList(isSuccess: Boolean, msg: Int)
         fun onResultProgress(msg : String)
     }
     interface presenter : BasePresenter{
-        fun requestBarcodeList(recyclerView : RecyclerView, adapter : BarcodeRecyclerviewAdapter)
+        // Preferences -> Realm Database migration test
+        fun requestRealmBarcodeList(recyclerView: RecyclerView, adapter: BarcodeRecyclerviewAdapter)
         fun requestAddBarcode(adapter : BarcodeRecyclerviewAdapter, item : BarcodeItem)
         fun requestDeleteBarcode(pos : Int, adapter : BarcodeRecyclerviewAdapter, item : BarcodeItem)
         fun requestModifyBarcode(pos : Int, adapter : BarcodeRecyclerviewAdapter, item : BarcodeItem)

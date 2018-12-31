@@ -1,6 +1,5 @@
 package srjhlab.com.myownbarcode.Module.MyBarcode
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -39,7 +38,7 @@ class MyBarcodeFragment : BaseFragment(), MyBarcode.view {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "##### onCreate #####")
-        mPresenter = MyBarcodePresenter(activity as Context, this)
+        mPresenter = MyBarcodePresenter(this)
         super.onCreate(savedInstanceState)
     }
 
@@ -63,20 +62,43 @@ class MyBarcodeFragment : BaseFragment(), MyBarcode.view {
         mPresenter.onDestroy()
     }
 
-    override fun onResultBarcodeList(result: Boolean, msg: Int) {
-        Log.d(TAG, "##### onResultBarcodeList #####")
-        if(result){
+    private fun initializeUi() {
+        Log.d(TAG, "##### initializeUi #####")
+
+        mItems = ArrayList<BarcodeItem>()
+        mAdapter = BarcodeRecyclerviewAdapter(mIOnItemCLickListener)
+        mRecyclerViewItemTouchHelper = RecyclerViewItemTouchHelper(mAdapter as RecyclerViewItemTouchHelper.IItemTouchHelperAdapter)
+        mItemTouchHelper = ItemTouchHelper(mRecyclerViewItemTouchHelper)
+        mItemTouchHelper.attachToRecyclerView(recyclerView)
+
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.adapter = mAdapter
+
+        // Preferences -> Real Database migration test
+        val handler = Handler()
+        handler.postDelayed({
+            if (recyclerView != null) {
+                mPresenter.requestRealmBarcodeList(recyclerView, recyclerView.adapter as BarcodeRecyclerviewAdapter)
+                mProgress.setTitle(getString(R.string.string_wait_init_barcode)).show(activity?.supportFragmentManager, this.javaClass.simpleName)
+            }
+        }, 800)
+    }
+
+    override fun onResultRealmBarcodeList(isSuccess: Boolean,  msg: Int ) {
+        Log.d(TAG, "##### onResultRealmBarcodeList #####")
+        if (isSuccess) {
             if (mProgress.showsDialog) {
                 mProgress.dismissAllowingStateLoss()
             }
-        }else{
+        } else {
             activity?.toast(resources.getString(msg))
         }
     }
 
     override fun onResultProgress(msg: String) {
         Log.d(TAG, "##### onResultProgress #####")
-        if(mProgress.showsDialog){
+        if (mProgress.showsDialog) {
             activity?.runOnUiThread {
                 mProgress.setSubTitle(msg)
             }
@@ -101,30 +123,6 @@ class MyBarcodeFragment : BaseFragment(), MyBarcode.view {
         }
     }
 
-    private fun initializeUi() {
-        Log.d(TAG, "##### initializeUi #####")
-
-        mItems = ArrayList<BarcodeItem>()
-        mAdapter = BarcodeRecyclerviewAdapter(mIOnItemCLickListener)
-        mRecyclerViewItemTouchHelper = RecyclerViewItemTouchHelper(mAdapter as RecyclerViewItemTouchHelper.IItemTouchHelperAdapter)
-        mItemTouchHelper = ItemTouchHelper(mRecyclerViewItemTouchHelper)
-        mItemTouchHelper.attachToRecyclerView(recyclerView)
-//        val layoutAnimation = AnimationUtils.loadLayoutAnimation(activity, R.anim.layout_animation_fall_down)
-
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = mAdapter
-//        recyclerView.layoutAnimation = layoutAnimation
-
-        val handler = Handler()
-        handler.postDelayed({
-            if(recyclerView != null) {
-                mPresenter.requestBarcodeList(recyclerView, recyclerView.adapter as BarcodeRecyclerviewAdapter)
-                mProgress.setTitle(getString(R.string.string_wait_init_barcode)).show(activity?.supportFragmentManager, this.javaClass.simpleName)
-                // 여기서 프로그레스바를 띄우고
-            }
-        }, 800)
-    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(busObject: CommonEventbusObejct) {

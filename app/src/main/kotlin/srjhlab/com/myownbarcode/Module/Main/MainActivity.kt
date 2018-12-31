@@ -11,12 +11,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.zxing.integration.android.IntentIntegrator
+import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.selector
 import org.jetbrains.anko.toast
+import srjhlab.com.myownbarcode.Base.BaseActivity
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.Module.Dialog.AddBarcodeInfo.AddBarcodeInfoDialog
 import srjhlab.com.myownbarcode.Module.Dialog.AddFromImage.AddFromImageDialog
@@ -29,18 +31,25 @@ import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.CommonUtils
 import srjhlab.com.myownbarcode.Utils.ConstVariables
 
-class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
-    val TAG = this.javaClass.simpleName
+class MainActivity : BaseActivity(), View.OnClickListener, Main.view {
+    private val TAG = this.javaClass.simpleName
     private val PERMISSIONS_REQUEST = 1
     private lateinit var mPresenter: MainPresenter
     private lateinit var mMyBarcodeFragment: MyBarcodeFragment
     private lateinit var mSettingsFragment: SettingsFragment
     private lateinit var mContentView: View
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         EventBus.getDefault().register(this)
+
+        Realm.init(this)
+        /*val realmConfig = RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build()
+        Realm.deleteRealm(realmConfig)
+        Realm.getInstance(realmConfig)*/
+
         mPresenter = MainPresenter(this)
         mMyBarcodeFragment = MyBarcodeFragment()
         mSettingsFragment = SettingsFragment()
@@ -103,7 +112,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
         if (requestCode == ConstVariables.RC_SIGN_IN) {
             EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ON_ACTIBITY_RESULT, ActivityResultEvent(requestCode, resultCode, data)))
             return
-        }else if(requestCode == ConstVariables.RC_FROM_IMAGE){
+        } else if (requestCode == ConstVariables.RC_FROM_IMAGE) {
             EventBus.getDefault().post(CommonEventbusObejct(ConstVariables.EVENTBUS_ON_ACTIBITY_RESULT, ActivityResultEvent(requestCode, resultCode, data)))
             return
         }
@@ -162,7 +171,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
                 fr = SettingsFragment()
             }
 
-            ConstVariables.FRAGMENT_STATE_LICENSE ->{
+            ConstVariables.FRAGMENT_STATE_LICENSE -> {
                 txt_title_toolbar.text = getString(R.string.string_open_source_licensee)
                 img_back_toolbar.visibility = View.VISIBLE
                 img_settings_toolbar.visibility = View.GONE
@@ -181,9 +190,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Main.view {
 
     override fun onResultBarcodeScan(result: Boolean, msg: Int) {
         Log.d(TAG, "##### onResultBarcodeScan #####")
-        if(result){
+        if (result) {
 
-        }else{
+        } else {
             toast(getString(msg))
         }
     }

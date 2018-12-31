@@ -8,9 +8,9 @@ import android.view.Window
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import org.jetbrains.anko.toast
+import srjhlab.com.myownbarcode.Model.PreferencesManager
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonUtils
-import srjhlab.com.myownbarcode.Utils.PreferencesManager
 
 
 class BarcodeFocusPresenter(private val mView : BarcodeFocus.view) : BarcodeFocus.presenter {

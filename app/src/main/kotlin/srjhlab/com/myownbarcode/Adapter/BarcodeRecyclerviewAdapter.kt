@@ -1,6 +1,5 @@
 package srjhlab.com.myownbarcode.Adapter
 
-import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.util.Log
 import android.view.LayoutInflater
@@ -45,7 +44,6 @@ class BarcodeRecyclerviewAdapter(listener: IOnItemClick) : RecyclerView.Adapter<
         return ViewHolder(view)
     }
 
-    @SuppressLint("CheckResult")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d(TAG, "##### onBindViewHolder #####")
 

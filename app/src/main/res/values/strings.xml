@@ -106,6 +106,7 @@
         \norg.jetbrains.anko
         \nio.reactivex.rxjava2:rxkotlin
         \nio.reactivex.rxjava2:rxandroid
+        \nio.realm:realm
         \ngun0912.ted:tedpermission</string>
 
 </resources>

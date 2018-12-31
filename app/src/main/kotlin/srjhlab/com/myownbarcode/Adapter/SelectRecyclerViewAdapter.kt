@@ -38,9 +38,9 @@ class SelectRecyclerViewAdapter(items: MutableList<SelectDialogItem>, listener: 
                 holder.itemView.textview_select_dialog_item.setText(R.string.string_input_image)
                 holder.itemView.textview_select_dialog_item.id = SelectDialogItem.INPUT_IMAGE
             }
-            SelectDialogItem.INPUT_MODIFTY -> {
+            SelectDialogItem.INPUT_EDIT -> {
                 holder.itemView.textview_select_dialog_item.setText(R.string.string_modify_barcode)
-                holder.itemView.textview_select_dialog_item.id = SelectDialogItem.INPUT_MODIFTY
+                holder.itemView.textview_select_dialog_item.id = SelectDialogItem.INPUT_EDIT
             }
             SelectDialogItem.INPUT_DELETE -> {
                 holder.itemView.textview_select_dialog_item.setText(R.string.string_delete_barcode)

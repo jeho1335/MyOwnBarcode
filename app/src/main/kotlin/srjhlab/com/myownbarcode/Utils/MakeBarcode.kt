@@ -72,65 +72,65 @@ class MakeBarcode {
         return bmp
     }
 
-    fun initBarcodeList(item: MutableList<BarcodeItem>, test : (Int) -> Unit): MutableList<BarcodeItem> {
+    fun initBarcodeList(items: MutableList<BarcodeItem>, test : (Int) -> Unit): MutableList<BarcodeItem> {
 
-        for (i in item.indices) {
-            if (item[i].barcodeBitmapArr == null && item[i].itemType === ConstVariables.ITEM_TYPE_BARCODE) {
-                when (item[i].barcodeType?.toInt()) {
+        for (i in items.indices) {
+            if (items[i].barcodeBitmapArr == null && items[i].itemType == ConstVariables.ITEM_TYPE_BARCODE) {
+                when (items[i].barcodeType?.toInt()) {
                     ConstVariables.CODE_39 -> {
                         Log.d(TAG, "##### initBarcodeList ##### CODE_39")
-                        item[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeCODE39(item[i].barcodeValue)))
+                        items[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeCODE39(items[i].barcodeValue)))
                     }
                     ConstVariables.CODE_93 -> {
                         Log.d(TAG, "##### initBarcodeList ##### CODE_93")
-                        item[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeCODE93(item[i].barcodeValue)))
+                        items[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeCODE93(items[i].barcodeValue)))
                     }
                     ConstVariables.CODE_128 -> {
                         Log.d(TAG, "##### initBarcodeList ##### CODE_128")
-                        item[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeCODE128(item[i].barcodeValue)))
+                        items[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeCODE128(items[i].barcodeValue)))
                     }
                     ConstVariables.EAN_8 -> {
                         Log.d(TAG, "##### initBarcodeList ##### EAN_8")
-                        item[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeEAN8(item[i].barcodeValue)))
+                        items[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeEAN8(items[i].barcodeValue)))
                     }
                     ConstVariables.EAN_13 -> {
                         Log.d(TAG, "##### initBarcodeList ##### EAN_13")
-                        item[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeEAN13(item[i].barcodeValue)))
+                        items[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeEAN13(items[i].barcodeValue)))
                     }
                     ConstVariables.PDF_417 -> {
                         Log.d(TAG, "##### initBarcodeList ##### PDF_417")
-                        item[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makePDF417(item[i].barcodeValue)))
+                        items[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makePDF417(items[i].barcodeValue)))
                     }
                     ConstVariables.UPC_A -> {
                         Log.d(TAG, "##### initBarcodeList ##### UPC_A")
-                        item[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeUPCA(item[i].barcodeValue)))
+                        items[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeUPCA(items[i].barcodeValue)))
                     }
                     ConstVariables.CODABAR -> {
                         Log.d(TAG, "##### initBarcodeList ##### CODABAR")
-                        item[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeCODABAR(item[i].barcodeValue)))
+                        items[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeCODABAR(items[i].barcodeValue)))
                     }
                     ConstVariables.ITF -> {
                         Log.d(TAG, "##### initBarcodeList ##### ITF")
-                        item[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeITF(item[i].barcodeValue)))
+                        items[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeITF(items[i].barcodeValue)))
                     }
                     ConstVariables.QR_CODE -> {
                         Log.d(TAG, "##### initBarcodeList ##### QR_CODE")
-                        item[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeQRCODE(item[i].barcodeValue)))
+                        items[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeQRCODE(items[i].barcodeValue)))
                     }
                     ConstVariables.MAXI_CODE -> {
                         Log.d(TAG, "##### initBarcodeList ##### MAXI_CODE")
-                        item[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeMAXICODE(item[i].barcodeValue)))
+                        items[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeMAXICODE(items[i].barcodeValue)))
                     }
                     ConstVariables.AZTEC -> {
                         Log.d(TAG, "##### initBarcodeList ##### AZTEC")
-                        item[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeAZTEC(item[i].barcodeValue)))
+                        items[i].barcodeBitmapArr = BitmapByteConverter().bitmapToByte(Objects.requireNonNull<Bitmap>(makeAZTEC(items[i].barcodeValue)))
                     }
                 }
                 test(i)
             }
         }
 
-        return item
+        return items
     }
 
     private fun makeCODE39(value: String): Bitmap? {

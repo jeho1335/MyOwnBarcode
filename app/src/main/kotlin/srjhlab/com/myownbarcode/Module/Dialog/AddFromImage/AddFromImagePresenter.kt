@@ -1,6 +1,5 @@
 package srjhlab.com.myownbarcode.Module.Dialog.AddFromImage
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
@@ -33,7 +32,6 @@ class AddFromImagePresenter(val view : AddFromImageDialog) : AddFromImage.presen
         activity.startActivityForResult(intent, ConstVariables.RC_FROM_IMAGE)
     }
 
-    @SuppressLint("CheckResult")
     override fun getBitmapFromImage(intent: Intent?) {
         Log.d(TAG, "##### getBitmapFromImage #####")
         Maybe.fromCallable<Bitmap> { ScanImage().getBitmap(intent) }
@@ -60,8 +58,7 @@ class AddFromImagePresenter(val view : AddFromImageDialog) : AddFromImage.presen
                 }
     }
 
-    @SuppressLint("CheckResult")
-    fun getBarcodeInfo(bm: Bitmap) {
+    private fun getBarcodeInfo(bm: Bitmap) {
         Log.d(TAG, "##### getBarcodeInfo #####")
         Maybe.fromCallable<Result> { ScanImage().getBarcodeInfo(bm) }
                 .subscribeOn(Schedulers.io())

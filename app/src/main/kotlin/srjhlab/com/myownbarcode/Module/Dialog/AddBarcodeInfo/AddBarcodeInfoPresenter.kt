@@ -1,6 +1,5 @@
 package srjhlab.com.myownbarcode.Module.Dialog.AddBarcodeInfo
 
-import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.util.Log
 import io.reactivex.Maybe
@@ -13,7 +12,6 @@ class AddBarcodeInfoPresenter(private val view: AddBarcodeInfoDialog) : AddBarco
     private val TAG = this.javaClass.simpleName
     private val mView = view as AddBarcodeInfo.view
 
-    @SuppressLint("CheckResult")
     override fun requestOverviewBarcode(type: Int, value: String) {
         Log.d(TAG, "##### requestOverviewBarcode #####")
         Maybe.fromCallable<Bitmap> {
@@ -40,7 +38,6 @@ class AddBarcodeInfoPresenter(private val view: AddBarcodeInfoDialog) : AddBarco
                 }
     }
 
-    @SuppressLint("CheckResult")
     override fun requestCovnertBitmapToByte(bitmap: Bitmap) {
         Log.d(TAG, "##### requestCovnertBitmapToByte #####")
         Maybe.fromCallable<ByteArray> {

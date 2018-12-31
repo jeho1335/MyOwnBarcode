@@ -15,15 +15,20 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
 import srjhlab.com.myownbarcode.Item.BarcodeItem
+import srjhlab.com.myownbarcode.Model.PreferencesManager
+import srjhlab.com.myownbarcode.Model.RealmClient
+import srjhlab.com.myownbarcode.Module.Settings.SettingsFragment
 import srjhlab.com.myownbarcode.R
 import srjhlab.com.myownbarcode.Utils.CommonEventbusObejct
 import srjhlab.com.myownbarcode.Utils.ConstVariables
-import srjhlab.com.myownbarcode.Utils.PreferencesManager
 
-class SettingsPresenter(val mView: Settings.view) : Settings.presenter {
+class SettingsPresenter(val view: SettingsFragment) : Settings.presenter {
     private val TAG = this.javaClass.simpleName
+    private val mView = view as Settings.view
 
     init {
         System.loadLibrary("keys")
@@ -116,34 +121,57 @@ class SettingsPresenter(val mView: Settings.view) : Settings.presenter {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.d(TAG, "##### requestSetDataBackup onDataChange currentUserEmail : $currentUserEmail #####")
                 FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).ref.removeValue()
-
                 val child = dataSnapshot.children.iterator()
+                val resultList: MutableList<BarcodeItem> = ArrayList()
                 while (child.hasNext()) {
                     if (child.next().value == currentUserEmail) {
                         Log.d(TAG, "##### requestSetDataBackup onDataChange currentUserEmail : $currentUserEmail #####")
                         FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).ref.removeValue(null)
                     }
                 }
+                RealmClient.readMyBarcodeRealm()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            Log.d(TAG, "##### requestSetDataBackup ##### onSuccess")
+                            for ((index) in it.withIndex()) {
+                                resultList.add(BarcodeItem(
+                                        ConstVariables.ITEM_TYPE_BARCODE,
+                                        it[index].barcodeType,
+                                        it[index].barcodeUid,
+                                        it[index].barcodeName,
+                                        it[index].barcodeCardColor,
+                                        it[index].barcodeValue,
+                                        it[index].barcodeBitmapArr))
+                            }
 
-                val currentBarcodeItems = PreferencesManager.loadBarcodeItemList(activity)
-                for ((index, value) in currentBarcodeItems.withIndex()) {
-                    Log.d(TAG, "##### requestSetDataBackup onDataChange id : ${value.itemType}#####")
-                    if (value.itemType != 0L) {
-                        val encodeBarcodeName = AES256Chiper().AES_Encode(value.barcodeName)
-                        val encodeBarcodeValue = AES256Chiper().AES_Encode(value.barcodeValue)
-                        Log.d(TAG, "##### requestSetDataBackup onDataChange email : $currentUserEmail id : $encodeBarcodeName#####")
+                            for ((index, value) in resultList.withIndex()) {
+                                Log.d(TAG, "##### requestSetDataBackup onDataChange id : ${value.itemType}#####")
+                                if (value.itemType != 0L) {
+                                    val encodeBarcodeName = AES256Chiper().AES_Encode(value.barcodeName)
+                                    val encodeBarcodeValue = AES256Chiper().AES_Encode(value.barcodeValue)
+                                    Log.d(TAG, "##### requestSetDataBackup onDataChange email : $currentUserEmail id : $encodeBarcodeName#####")
 
-                        val ref = FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).child(index.toString())
-                        ref.child("mItemType").setValue(value.itemType)
-                        ref.child("mBarcodeType").setValue(value.barcodeType)
-                        ref.child("mBarcodeCardColor").setValue(value.barcodeCardColor)
-                        ref.child("mBarcodeId").setValue(value.barcodeId)
-                        ref.child("mBarcodeName").setValue(encodeBarcodeName)
-                        ref.child("mBarcodeValue").setValue(encodeBarcodeValue)
-                    }
-                }
+                                    val ref = FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).child(index.toString())
+                                    ref.child("mItemType").setValue(value.itemType)
+                                    ref.child("mBarcodeType").setValue(value.barcodeType)
+                                    ref.child("mBarcodeCardColor").setValue(value.barcodeCardColor)
+                                    ref.child("mBarcodeId").setValue(0)
+                                    ref.child("mBarcodeName").setValue(encodeBarcodeName)
+                                    ref.child("mBarcodeValue").setValue(encodeBarcodeValue)
+                                }
+                            }
+                            mView.onResultSetDataBackup(true, R.string.string_success_set_backup_google)
+                        }, {
+                            Log.d(TAG, "##### requestSetDataBackup ##### onFailure")
+                            mView.onResultSetDataBackup(false, R.string.string_success_set_backup_google)
+                        }, {
+                            Log.d(TAG, "##### requestSetDataBackup ##### onComplete")
+                        })
+                        .apply {
+                            view.disposables.add(this)
+                        }
                 FirebaseDatabaseReference.mUserBarcodesDatabase.removeEventListener(this)
-                mView.onResultSetDataBackup(true, R.string.string_success_set_backup_google)
             }
         })
     }
@@ -175,20 +203,27 @@ class SettingsPresenter(val mView: Settings.view) : Settings.presenter {
                     val decodeBarcodeName = AES256Chiper().AES_Decode(value.value.child("mBarcodeName").value as String)
                     val decodeBarcodeValue = AES256Chiper().AES_Decode(value.value.child("mBarcodeValue").value as String)
                     Log.d(TAG, "##### requestGetDataBackup decodeBarcodeName : $decodeBarcodeName decodeBarcodeValue : $decodeBarcodeValue#####")
-
-                    resultList.add(BarcodeItem(
+                    BarcodeItem(
                             value.value.child("mItemType").value as Long
                             , value.value.child("mBarcodeType").value as Long
-                            , 0L
+                            , 0
                             , decodeBarcodeName
                             , value.value.child("mBarcodeCardColor").value as Long
                             , decodeBarcodeValue
-                            , null))
-
+                            , null)
+                            .let {item ->
+                                resultList.add(item)
+                            }
                 }
-                resultList.add(BarcodeItem(ConstVariables.ITEM_TYPE_EMPTY, 0L, "새 바코드 추가", 0L, " "))
+                RealmClient.clearMyBarcodeRealm()
 
-                PreferencesManager.saveBarcodeItemList(activity, resultList)
+                for ((index, value) in resultList.withIndex()) {
+                    if (value.barcodeType != null) {
+                        RealmClient.insertMyBarcodeRealm(value){}
+                    }
+                }
+//                resultList.add(BarcodeItem(ConstVariables.ITEM_TYPE_EMPTY, 0, "새 바코드 추가", 0L, " "))
+//                PreferencesManager.saveBarcodeItemList(activity, resultList)
                 FirebaseDatabaseReference.mUserBarcodesDatabase.removeEventListener(this)
                 mView.onResultGetDataBackup(true, R.string.string_success_get_backup_google)
             }
