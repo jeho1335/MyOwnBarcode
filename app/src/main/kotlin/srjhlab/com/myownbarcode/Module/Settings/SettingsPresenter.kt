@@ -111,22 +111,22 @@ class SettingsPresenter(val view: SettingsFragment) : Settings.presenter {
             mView.onResultSetDataBackup(false, R.string.string_failed_set_backup_google)
             return
         }
-        FirebaseDatabaseReference.mUserBarcodesDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+        FirebaseDatabaseReference.getUserBarcode.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.d(TAG, "##### requestSetDataBackup onCancelled ${databaseError.message}#####")
-                FirebaseDatabaseReference.mUserBarcodesDatabase.removeEventListener(this)
+                FirebaseDatabaseReference.getUserBarcode.removeEventListener(this)
                 mView.onResultSetDataBackup(false, R.string.string_failed_set_backup_google)
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.d(TAG, "##### requestSetDataBackup onDataChange currentUserEmail : $currentUserEmail #####")
-                FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).ref.removeValue()
+                FirebaseDatabaseReference.getUserBarcode.child(currentUserEmail).ref.removeValue()
                 val child = dataSnapshot.children.iterator()
                 val resultList: MutableList<BarcodeItem> = ArrayList()
                 while (child.hasNext()) {
                     if (child.next().value == currentUserEmail) {
                         Log.d(TAG, "##### requestSetDataBackup onDataChange currentUserEmail : $currentUserEmail #####")
-                        FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).ref.removeValue(null)
+                        FirebaseDatabaseReference.getUserBarcode.child(currentUserEmail).ref.removeValue(null)
                     }
                 }
                 RealmClient.readMyBarcodeRealm()
@@ -152,7 +152,7 @@ class SettingsPresenter(val view: SettingsFragment) : Settings.presenter {
                                     val encodeBarcodeValue = AES256Chiper().AES_Encode(value.barcodeValue)
                                     Log.d(TAG, "##### requestSetDataBackup onDataChange email : $currentUserEmail id : $encodeBarcodeName#####")
 
-                                    val ref = FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).child(index.toString())
+                                    val ref = FirebaseDatabaseReference.getUserBarcode.child(currentUserEmail).child(index.toString())
                                     ref.child("mItemType").setValue(value.itemType)
                                     ref.child("mBarcodeType").setValue(value.barcodeType)
                                     ref.child("mBarcodeCardColor").setValue(value.barcodeCardColor)
@@ -171,7 +171,7 @@ class SettingsPresenter(val view: SettingsFragment) : Settings.presenter {
                         .apply {
                             view.disposables.add(this)
                         }
-                FirebaseDatabaseReference.mUserBarcodesDatabase.removeEventListener(this)
+                FirebaseDatabaseReference.getUserBarcode.removeEventListener(this)
             }
         })
     }
@@ -187,10 +187,10 @@ class SettingsPresenter(val view: SettingsFragment) : Settings.presenter {
             return
         }
 
-        FirebaseDatabaseReference.mUserBarcodesDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+        FirebaseDatabaseReference.getUserBarcode.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.d(TAG, "##### requestGetDataBackup onCancelled ${databaseError.message}#####")
-                FirebaseDatabaseReference.mUserBarcodesDatabase.removeEventListener(this)
+                FirebaseDatabaseReference.getUserBarcode.removeEventListener(this)
                 mView.onResultGetDataBackup(false, R.string.string_failed_get_backup_google)
             }
 
@@ -224,7 +224,7 @@ class SettingsPresenter(val view: SettingsFragment) : Settings.presenter {
                 }
 //                resultList.add(BarcodeItem(ConstVariables.ITEM_TYPE_EMPTY, 0, "새 바코드 추가", 0L, " "))
 //                PreferencesManager.saveBarcodeItemList(activity, resultList)
-                FirebaseDatabaseReference.mUserBarcodesDatabase.removeEventListener(this)
+                FirebaseDatabaseReference.getUserBarcode.removeEventListener(this)
                 mView.onResultGetDataBackup(true, R.string.string_success_get_backup_google)
             }
         })
@@ -240,26 +240,26 @@ class SettingsPresenter(val view: SettingsFragment) : Settings.presenter {
             mView.onResultDeleteDataBackup(false, R.string.string_failed_delete_backup_google)
             return
         }
-        FirebaseDatabaseReference.mUserBarcodesDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+        FirebaseDatabaseReference.getUserBarcode.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.d(TAG, "##### requestDeleteDataBackup onCancelled ${databaseError.message}#####")
-                FirebaseDatabaseReference.mUserBarcodesDatabase.removeEventListener(this)
+                FirebaseDatabaseReference.getUserBarcode.removeEventListener(this)
                 mView.onResultDeleteDataBackup(false, R.string.string_failed_delete_backup_google)
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.d(TAG, "##### requestDeleteDataBackup onDataChange currentUserEmail : $currentUserEmail #####")
-                FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).ref.removeValue()
+                FirebaseDatabaseReference.getUserBarcode.child(currentUserEmail).ref.removeValue()
 
                 val child = dataSnapshot.children.iterator()
                 while (child.hasNext()) {
                     if (child.next().value == currentUserEmail) {
                         Log.d(TAG, "##### requestDeleteDataBackup onDataChange currentUserEmail : $currentUserEmail #####")
-                        FirebaseDatabaseReference.mUserBarcodesDatabase.child(currentUserEmail).ref.removeValue(null)
+                        FirebaseDatabaseReference.getUserBarcode.child(currentUserEmail).ref.removeValue(null)
                     }
                 }
 
-                FirebaseDatabaseReference.mUserBarcodesDatabase.removeEventListener(this)
+                FirebaseDatabaseReference.getUserBarcode.removeEventListener(this)
                 mView.onResultDeleteDataBackup(true, R.string.string_success_delete_backup_google)
             }
         })

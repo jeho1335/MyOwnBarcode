@@ -1,15 +1,20 @@
 package Module.Main
 
+import Model.FirebaseDatabaseReference
 import android.Manifest
 import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.util.Log
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.zxing.integration.android.IntentIntegrator
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import srjhlab.com.myownbarcode.Model.PreferencesManager
 import srjhlab.com.myownbarcode.R
 
-class MainPresenter(activity: Activity) : Main.presenter {
+class MainPresenter(val activity: Activity) : Main.presenter {
     private val mActivity = activity
     private val mView = activity as Main.view
     private val TAG = this.javaClass.simpleName
@@ -62,4 +67,29 @@ class MainPresenter(activity: Activity) : Main.presenter {
         }
         mView.onResultBackPressed(result, msg)
     }
+
+    override fun requestNewNotice() {
+        Log.d(TAG, "##### requestNewNotice #####")
+        FirebaseDatabaseReference.getNewNotice.orderByValue().limitToLast(1).let { query ->
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.d(TAG, "##### requestNewNotice onCancelled ##### ${databaseError.message}")
+                    mView.onResultNewNotice(false)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    Log.d(TAG, "##### onDataChange onDataChange #####")
+                    dataSnapshot.children.first().run {
+                        if(PreferencesManager.loadRealLastNotice(activity) == this.key!!.toInt()){
+                            mView.onResultNewNotice(false)
+                        }else{
+                            mView.onResultNewNotice(true, this.child("body").value.toString().replace("\n", "\n"))
+                            PreferencesManager.saveReadLastNotice(activity, this.key!!.toInt())
+                        }
+                    }
+                }
+            })
+        }
+    }
+
 }

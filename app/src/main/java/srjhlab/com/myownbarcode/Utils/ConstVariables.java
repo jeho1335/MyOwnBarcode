@@ -48,6 +48,8 @@ public class ConstVariables {
     public final static String PREF_BARCODE_ITEM = "barcode.item.list";
     public final static String PREF_SPLIT = ";";
     public final static String PREF_AUTO_BRIGHT_MAX = "setting.auto.bright";
+    public final static String PREF_READ_LAST_NOTICE = "new.notice";
+    public final static int PREF_NO_READ_LAST_NOTICE = 0;
 
     //Google sign in
     public final static int RC_FROM_IMAGE = 300;

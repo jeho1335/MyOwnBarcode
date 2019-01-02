@@ -16,8 +16,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.selector
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.yesButton
 import srjhlab.com.myownbarcode.Base.BaseActivity
 import srjhlab.com.myownbarcode.Item.BarcodeItem
 import srjhlab.com.myownbarcode.Module.Dialog.AddBarcodeInfo.AddBarcodeInfoDialog
@@ -44,12 +46,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, Main.view {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         EventBus.getDefault().register(this)
-
         Realm.init(this)
-        /*val realmConfig = RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build()
-        Realm.deleteRealm(realmConfig)
-        Realm.getInstance(realmConfig)*/
-
         mPresenter = MainPresenter(this)
         mMyBarcodeFragment = MyBarcodeFragment()
         mSettingsFragment = SettingsFragment()
@@ -63,6 +60,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, Main.view {
         img_list_toolbar.setOnClickListener(this)
         img_settings_toolbar.setOnClickListener(this)
         img_back_toolbar.setOnClickListener(this)
+        mPresenter.requestNewNotice()
     }
 
     override fun onDestroy() {
@@ -138,6 +136,21 @@ class MainActivity : BaseActivity(), View.OnClickListener, Main.view {
             toast(resources.getString(msg))
         }
     }
+
+    override fun onResultNewNotice(result: Boolean, notice: String) {
+        Log.d(TAG, "##### onResultNewNotice #####")
+        when (result) {
+            true -> {
+                alert(notice, "공지사항") {
+                    yesButton { }
+                }.show()
+            }
+            false -> {
+
+            }
+        }
+    }
+
 
     private fun handleFragment(state: Int) {
         Log.d(TAG, "##### handleFragment ##### state : $state")
