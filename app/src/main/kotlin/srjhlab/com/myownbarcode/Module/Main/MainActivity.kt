@@ -150,7 +150,6 @@ class MainActivity : BaseActivity(), View.OnClickListener, Main.view {
         }
     }
 
-
     private fun handleFragment(state: Int) {
         Log.d(TAG, "##### handleFragment ##### state : $state")
         val fm = supportFragmentManager
@@ -215,7 +214,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, Main.view {
     }
 
     @Subscribe
-    fun onEVent(busObject: CommonEventbusObejct) {
+    fun onEvent(busObject: CommonEventbusObejct) {
         when (busObject.type) {
             ConstVariables.EVENTBUS_ADD_FROM_SCAN -> {
                 Log.d(TAG, "##### EVENTBUS_ADD_FROM_SCAN #####")

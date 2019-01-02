@@ -15,7 +15,6 @@ import srjhlab.com.myownbarcode.Model.PreferencesManager
 import srjhlab.com.myownbarcode.R
 
 class MainPresenter(val activity: Activity) : Main.presenter {
-    private val mActivity = activity
     private val mView = activity as Main.view
     private val TAG = this.javaClass.simpleName
     private val FINISH_INTERVAL_TIME: Long = 2000
@@ -32,11 +31,15 @@ class MainPresenter(val activity: Activity) : Main.presenter {
             override fun onPermissionGranted() {
                 Log.d(TAG, "##### requestShareBarcode onPermissionGranted #####")
                 mView.onResultBarcodeScan(true, -1)
-                val integrator = IntentIntegrator(mActivity)
-                integrator.setOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                integrator.addExtra("PROMPT_MESSAGE", mActivity.resources.getString(R.string.string_scan_guide))
-                integrator.setWide()
-                integrator.initiateScan()
+                IntentIntegrator(activity).run {
+                    /*this.setOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                    this.setWide()
+                    this.addExtra("PROMPT_MESSAGE", activity.resources.getString(R.string.string_scan_guide))
+                    */
+                    this.setPrompt(activity.resources.getString(R.string.string_scan_guide))
+                    this.setBarcodeImageEnabled(true)
+                    this.initiateScan()
+                }
             }
 
             override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
@@ -46,7 +49,7 @@ class MainPresenter(val activity: Activity) : Main.presenter {
         }
 
         TedPermission
-                .with(mActivity)
+                .with(activity)
                 .setPermissionListener(listener)
                 .setPermissions(Manifest.permission.CAMERA)
                 .check()
