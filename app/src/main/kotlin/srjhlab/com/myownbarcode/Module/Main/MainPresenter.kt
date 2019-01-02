@@ -28,7 +28,7 @@ class MainPresenter(val activity: Activity) : Main.presenter {
     override fun requestBarcodeScan() {
         Log.d(TAG, "##### requestBarcodeScan #####")
 
-        val listener : PermissionListener = object : PermissionListener {
+        val listener: PermissionListener = object : PermissionListener {
             override fun onPermissionGranted() {
                 Log.d(TAG, "##### requestShareBarcode onPermissionGranted #####")
                 mView.onResultBarcodeScan(true, -1)
@@ -38,6 +38,7 @@ class MainPresenter(val activity: Activity) : Main.presenter {
                 integrator.setWide()
                 integrator.initiateScan()
             }
+
             override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
                 Log.d(TAG, "##### requestShareBarcode onPermissionDenied #####")
                 mView.onResultBarcodeScan(false, R.string.string_require_camera_permission)
@@ -80,9 +81,9 @@ class MainPresenter(val activity: Activity) : Main.presenter {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     Log.d(TAG, "##### onDataChange onDataChange #####")
                     dataSnapshot.children.first().run {
-                        if(PreferencesManager.loadRealLastNotice(activity) == this.key!!.toInt()){
+                        if (PreferencesManager.loadRealLastNotice(activity) == this.key!!.toInt()) {
                             mView.onResultNewNotice(false)
-                        }else{
+                        } else {
                             mView.onResultNewNotice(true, this.child("body").value.toString().replace("\n", "\n"))
                             PreferencesManager.saveReadLastNotice(activity, this.key!!.toInt())
                         }
