@@ -32,10 +32,6 @@ class MainPresenter(val activity: Activity) : Main.presenter {
                 Log.d(TAG, "##### requestShareBarcode onPermissionGranted #####")
                 mView.onResultBarcodeScan(true, -1)
                 IntentIntegrator(activity).run {
-                    /*this.setOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                    this.setWide()
-                    this.addExtra("PROMPT_MESSAGE", activity.resources.getString(R.string.string_scan_guide))
-                    */
                     this.setPrompt(activity.resources.getString(R.string.string_scan_guide))
                     this.setBarcodeImageEnabled(true)
                     this.initiateScan()
