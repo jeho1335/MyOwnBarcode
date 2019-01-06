@@ -211,7 +211,7 @@ class SettingsPresenter(val view: SettingsFragment) : Settings.presenter {
                             , value.value.child("mBarcodeCardColor").value as Long
                             , decodeBarcodeValue
                             , null)
-                            .let {item ->
+                            .let { item ->
                                 resultList.add(item)
                             }
                 }
@@ -219,11 +219,9 @@ class SettingsPresenter(val view: SettingsFragment) : Settings.presenter {
 
                 for ((index, value) in resultList.withIndex()) {
                     if (value.barcodeType != null) {
-                        RealmClient.insertMyBarcodeRealm(value){}
+                        RealmClient.insertMyBarcodeRealm(value) {}
                     }
                 }
-//                resultList.add(BarcodeItem(ConstVariables.ITEM_TYPE_EMPTY, 0, "새 바코드 추가", 0L, " "))
-//                PreferencesManager.saveBarcodeItemList(activity, resultList)
                 FirebaseDatabaseReference.getUserBarcode.removeEventListener(this)
                 mView.onResultGetDataBackup(true, R.string.string_success_get_backup_google)
             }

@@ -60,6 +60,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, Main.view {
         img_settings_toolbar.setOnClickListener(this)
         img_back_toolbar.setOnClickListener(this)
         mPresenter.requestNewNotice()
+        mPresenter.requestPrefToRealm()
     }
 
     override fun onDestroy() {
@@ -140,7 +141,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, Main.view {
         Log.d(TAG, "##### onResultNewNotice #####")
         when (result) {
             true -> {
-                alert(notice, "공지사항") {
+                alert(notice, getString(R.string.string_alert_notice)) {
                     yesButton { }
                 }.show()
             }

@@ -3,7 +3,6 @@ package Module.Main
 import Model.FirebaseDatabaseReference
 import android.Manifest
 import android.app.Activity
-import android.content.pm.ActivityInfo
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -12,6 +11,7 @@ import com.google.zxing.integration.android.IntentIntegrator
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import srjhlab.com.myownbarcode.Model.PreferencesManager
+import srjhlab.com.myownbarcode.Model.RealmClient
 import srjhlab.com.myownbarcode.R
 
 class MainPresenter(val activity: Activity) : Main.presenter {
@@ -92,4 +92,15 @@ class MainPresenter(val activity: Activity) : Main.presenter {
         }
     }
 
+    override fun requestPrefToRealm() {
+        Log.d(TAG, "##### requestNewNotice #####")
+        PreferencesManager.loadBarcodeItemList(activity).run {
+            if(this != null) {
+                for ((index, value) in this.withIndex()) {
+                    RealmClient.insertMyBarcodeRealm(value) {}
+                }
+            }
+        }
+        PreferencesManager.clearBarcodeItemList(activity)
+    }
 }
