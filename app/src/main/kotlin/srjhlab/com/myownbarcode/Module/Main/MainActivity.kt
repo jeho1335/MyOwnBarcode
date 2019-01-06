@@ -60,7 +60,6 @@ class MainActivity : BaseActivity(), View.OnClickListener, Main.view {
         img_settings_toolbar.setOnClickListener(this)
         img_back_toolbar.setOnClickListener(this)
         mPresenter.requestNewNotice()
-        mPresenter.requestPrefToRealm()
     }
 
     override fun onDestroy() {

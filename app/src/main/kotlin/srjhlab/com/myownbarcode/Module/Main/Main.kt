@@ -9,8 +9,6 @@ interface Main {
         fun onResultNewNotice(result : Boolean, notice : String = "")
     }
     interface presenter : BasePresenter{
-        //temp for migration
-        fun requestPrefToRealm()
         fun requestBarcodeScan()
         fun requestBackPressed()
         fun requestNewNotice()

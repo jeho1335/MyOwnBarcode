@@ -34,7 +34,8 @@ public class BarcodeItem implements Serializable {
         this.mBarcodeType = type;
     }
 
-    public Long getBarcodeType() {
+    public Long
+    getBarcodeType() {
         Log.d(TAG, "##### getBarcodeType #####");
         return this.mBarcodeType;
     }

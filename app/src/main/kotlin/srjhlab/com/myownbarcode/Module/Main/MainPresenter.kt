@@ -56,11 +56,9 @@ class MainPresenter(val activity: Activity) : Main.presenter {
         val tempTime = System.currentTimeMillis()
         val intervalTime = tempTime - mBackPressedTime
         var result = false
-        var msg = -1;
-
+        var msg = -1
         if (intervalTime in 0..FINISH_INTERVAL_TIME) {
             result = true
-
         } else {
             mBackPressedTime = tempTime
             msg = R.string.string_request_backkey
@@ -90,17 +88,5 @@ class MainPresenter(val activity: Activity) : Main.presenter {
                 }
             })
         }
-    }
-
-    override fun requestPrefToRealm() {
-        Log.d(TAG, "##### requestNewNotice #####")
-        PreferencesManager.loadBarcodeItemList(activity).run {
-            if(this != null) {
-                for ((index, value) in this.withIndex()) {
-                    RealmClient.insertMyBarcodeRealm(value) {}
-                }
-            }
-        }
-        PreferencesManager.clearBarcodeItemList(activity)
     }
 }
